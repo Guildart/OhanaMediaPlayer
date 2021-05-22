@@ -8,7 +8,7 @@
       <Label fx:id="userLabel" text="Username" />
       <ChoiceBox fx:id="choiceBox" prefWidth="150.0" />
       <Label fx:id="passLabel" text="Password" />
-      <PasswordField fx:id="passField" disable="false" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Entrez mots de passe" />
+      <PasswordField fx:id="passField" disable="false" maxWidth="150.0" onKeyPressed="#enterPassword" prefHeight="25.0" prefWidth="150.0" promptText="Entrez mots de passe" />
       <Label fx:id="message" text="message" />
       <Button fx:id="validButton" mnemonicParsing="false" onAction="#connexion" text="Valider" />
    </children>

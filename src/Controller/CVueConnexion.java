@@ -3,9 +3,12 @@ package Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -16,6 +19,7 @@ public class CVueConnexion implements Initializable{
     public ChoiceBox choiceBox;
     public PasswordField passField;
     public Label message;
+    public Button validButton;
 
 
     @Override
@@ -43,6 +47,16 @@ public class CVueConnexion implements Initializable{
                 message.setTextFill(Color.rgb(210, 39, 30));
                 message.setVisible(true);
             }
+        }else{
+            message.setText("You have to select a username");
+            message.setTextFill(Color.rgb(210, 39, 30));
+            message.setVisible(true);
+        }
+    }
+
+    public void enterPassword(KeyEvent actionEvent) {
+        if(actionEvent.getCode().equals(KeyCode.ENTER)){
+           validButton.fire(); //Si on appuie sur entrée depuis le password field on active le button valider
         }
     }
 }
