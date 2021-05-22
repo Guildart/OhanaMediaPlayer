@@ -3,9 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueConnexion">
    <children>
-      <Label text="Username" />
-      <ChoiceBox prefWidth="150.0" />
+      <Label fx:id="userLabel" text="Username" />
+      <ChoiceBox fx:id="choiceBox" prefWidth="150.0" />
+      <Label fx:id="passLabel" text="Password" />
+      <PasswordField fx:id="passField" disable="false" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Entrez mots de passe" />
+      <Label fx:id="message" text="message" />
+      <Button fx:id="validButton" mnemonicParsing="false" onAction="#connexion" text="Valider" />
    </children>
 </VBox>
