@@ -24,7 +24,7 @@ public class CVueConnexion implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String usernames[] = Modele.AccountManagement.getUsernames();
+        String usernames[] = Model.AccountManagement.getUsernames();
         for(String s : usernames){
             choiceBox.getItems().add(s);
         }
@@ -38,7 +38,7 @@ public class CVueConnexion implements Initializable{
         String username = (String) choiceBox.getSelectionModel().getSelectedItem();
 
         if(username != null){
-            if(Modele.AccountManagement.getPassword(username).equals(password)){
+            if(Model.AccountManagement.getPassword(username).equals(password)){
                 message.setText("Valid Password");
                 message.setTextFill(Color.rgb(21, 117, 84));
                 //Todo charger la scene de la videothèque (Admin ou User selon les cas)
