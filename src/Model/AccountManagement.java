@@ -49,5 +49,24 @@ public class AccountManagement {
         return "";
     }
 
+    public static String getUserImage(String userName){
+        for (Account account :getAccounts()
+        ) {
+            if (account.getUserName().equals(userName)){
+                return account.getPassword();
+            }
+        }
+        return "";
+    }
+
+    public static String getImgPath(String userName){
+        for (Account account :getAccounts()) {
+            if (account.getUserName().equals(userName)){
+                return account.getImagePath();
+            }
+        }
+        return "";
+    }
+
 
 }
