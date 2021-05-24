@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vue.VueVideotheque">
+<AnchorPane prefHeight="400" prefWidth="800" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueVideotheque">
    <children>
-      <AnchorPane prefHeight="40.0" prefWidth="600.0">
+      <VBox prefHeight="316.0" prefWidth="424.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField layoutX="14.0" layoutY="8.0" promptText="Barre de Recherche" />
-            <MenuButton layoutX="555.0" layoutY="8.0" mnemonicParsing="false">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
-              </items>
-            </MenuButton>
-         </children></AnchorPane>
+            <AnchorPane fx:id="topPanel" prefHeight="60.0">
+               <children>
+                  <TextField fx:id="barreRecherche" layoutX="14.0" layoutY="4.0" maxHeight="25.0" onKeyPressed="#research" prefHeight="25.0" promptText="Barre de Recherche" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+                  <MenuButton fx:id="menu" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="555.0" layoutY="8.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="57.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="1.0">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="compte" />
+                      <MenuItem mnemonicParsing="false" onAction="#logOut" text="log out" />
+                    </items>
+                  </MenuButton>
+                  <HBox layoutX="259.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#ajouterFilm" text="Ajouter Film">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#gererCategorie" text="Gérer Catégorie">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#gererUtilisateur" text="Gérer utilisateur">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children></HBox>
+               </children>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </AnchorPane>
+         </children></VBox>
    </children>
 </AnchorPane>
