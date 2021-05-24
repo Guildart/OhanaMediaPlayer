@@ -25,6 +25,8 @@ import java.util.ResourceBundle;
 
 public class CVueVideotheque implements Initializable {
 
+    public static String imgPath;
+
     @FXML
     public MenuButton menu;
     public TextField barreRecherche;
@@ -43,7 +45,7 @@ public class CVueVideotheque implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         FileInputStream inputstream = null;
         try {
-            inputstream = new FileInputStream("D:\\Guild\\Université\\S6\\OhanaMediaPlayer\\movie.jpg");
+            inputstream = new FileInputStream(imgPath);
             System.out.print(inputstream);
             ImageView imageView = new ImageView(new Image(inputstream));
             imageView.setFitHeight(topPanel.getPrefHeight());
@@ -62,7 +64,7 @@ public class CVueVideotheque implements Initializable {
 
     public void logOut(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vue/VueConnexion.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueConnexion.fxml"));
         Parent root = loader.load();
         stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());

@@ -1,6 +1,7 @@
 package Model;
 
 import javafx.scene.image.Image;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Account {
@@ -9,7 +10,7 @@ public class Account {
     private String imagePath = "";
 
 
-    Account (JSONObject jsonObject){
+    Account (JSONObject jsonObject) throws JSONException {
         userName = jsonObject.getString("user name");
         passWord = jsonObject.getString("password");
         imagePath = jsonObject.getString("image path");

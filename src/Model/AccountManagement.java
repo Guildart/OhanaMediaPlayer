@@ -29,12 +29,11 @@ public class AccountManagement {
             JSONObject obj = new JSONObject(data);
             JSONArray users = obj.getJSONArray("users");
 
-            for (Object user : users
-                 ) {
-                accounts.add(new Account(((JSONObject) user)));
+            for (int i = 0; i < users.length(); i++) {
+                accounts.add(new Account(((JSONObject) users.getJSONObject(i))));
             }
             return accounts;
-        }catch (java.io.FileNotFoundException e){
+        }catch (FileNotFoundException | JSONException e){
             e.printStackTrace();
             return null;
         }
