@@ -31,7 +31,6 @@ public class CVueConnexion implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("initialize");
         setupAllButtons();
     }
 
@@ -40,7 +39,6 @@ public class CVueConnexion implements Initializable{
         ArrayList<Account> accounts = AccountManagement.getAccounts();
         for(Account account : accounts){
             accountsBox.getChildren().add(this.createAccountVBox(account));
-            System.out.println(account.getUserName());
         }
         message.setVisible(false);
     }
@@ -77,13 +75,12 @@ public class CVueConnexion implements Initializable{
     public void tryToConnect(ActionEvent e){
 
         currentUserName = ((Button) e.getSource()).getId();
+        removeAllPasswordFields();
         if (currentUserName.equals("Enfant")){
-            System.out.println("pw less account");
             connection("");
             return;
         }
         VBox accountVbox = ((VBox) ((Button) e.getSource()).getParent());
-        removeAllPasswordFields();
         PasswordField pwField = new PasswordField();
         pwField.setPromptText("Enter " + currentUserName + " password :");
         pwField.setOnKeyPressed(this::enterPassword);
