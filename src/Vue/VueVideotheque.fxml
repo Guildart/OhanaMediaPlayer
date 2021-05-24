@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vue.VueVideotheque">
+   <children>
+      <AnchorPane prefHeight="40.0" prefWidth="600.0">
+         <children>
+            <TextField layoutX="14.0" layoutY="8.0" promptText="Barre de Recherche" />
+            <MenuButton layoutX="555.0" layoutY="8.0" mnemonicParsing="false">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </MenuButton>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
