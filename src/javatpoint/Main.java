@@ -21,9 +21,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         String[] usernames = AccountManagement.getUsernames();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vue/VueConnexion.fxml")); // on charge la première page fxml
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vue/VueVideotheque.fxml")); // on charge la première page fxml
         Parent root = loader.load(); // on charge le parent
         primaryStage.setTitle("Ohana Media Player");
+        primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1000, 800));// on set la sec à la fenêtre
         primaryStage.show(); // on affiche la taille
 
