@@ -1,38 +1,61 @@
 package Controller;
 
+import Model.Account;
+import Model.AccountManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CVueConnexion implements Initializable{
     @FXML
-    public ChoiceBox choiceBox;
-    public PasswordField passField;
     public Label message;
     public Button validButton;
+    public HBox accountBox;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String usernames[] = Model.AccountManagement.getUsernames();
-        for(String s : usernames){
-            choiceBox.getItems().add(s);
+        System.out.println("initialize");
+        ArrayList<Account> accounts = AccountManagement.getAccounts();
+        for(Account account : accounts){
+            accountBox.getChildren().add(this.createAccountVBox(account));
+            System.out.println(account.getUserName());
         }
         message.setVisible(false);
     }
 
+    public VBox createAccountVBox(Account account){
+        VBox accountBox = new VBox();
+        accountBox.setAlignment(Pos.CENTER);
+        ImageView imgVw = new ImageView();
+        Image img = account.getImage();
+        imgVw.setImage(img);
+        imgVw.setFitWidth(128);
+        imgVw.setFitHeight(128);
+        Button bt = new Button("");
+        bt.setId(account.getUserName());
+        bt.setGraphic(imgVw);
+        accountBox.getChildren().addAll(bt,new Label(account.getUserName()));
+        return accountBox;
+    }
 
-    /**Action lorsqu'on clique sur valider pour tenter une connexion**/
+/*
     public void connexion(ActionEvent actionEvent) {
         String password = passField.getText();
         String username = (String) choiceBox.getSelectionModel().getSelectedItem();
@@ -53,10 +76,10 @@ public class CVueConnexion implements Initializable{
         message.setVisible(true);
     }
 
-    /**Clique automatiquement sur le boutton valider si on clique sur la touche entrée depuis le password fiel**/
     public void enterPassword(KeyEvent actionEvent) {
         if(actionEvent.getCode().equals(KeyCode.ENTER)){
            validButton.fire();
         }
     }
+    */
 }

@@ -12,7 +12,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        String[] usernames = AccountManagement.getUsernames();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueConnexion.fxml")); // on charge la première page fxml
         Parent root = loader.load(); // on charge le parent
