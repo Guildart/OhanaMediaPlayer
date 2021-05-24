@@ -1,8 +1,6 @@
 package Model;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,7 +18,6 @@ public class AccountManagement {
             data += reader.nextLine() + "\n";
             //System.out.print(data);
         }
-
         return data;
     }
 
@@ -41,6 +38,17 @@ public class AccountManagement {
             e.printStackTrace();
             return null;
         }
-
     }
+
+    public static String getUserNamePassword(String userName){
+        for (Account account :getAccounts()
+             ) {
+            if (account.getUserName().equals(userName)){
+                return account.getPassword();
+            }
+        }
+        return "";
+    }
+
+
 }

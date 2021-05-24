@@ -15,7 +15,7 @@ public class Account {
         imagePath = jsonObject.getString("image path");
     }
 
-    public String getPassWord() {
+    public String getPassword() {
         return passWord;
     }
 

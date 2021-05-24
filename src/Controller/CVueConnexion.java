@@ -6,10 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -26,18 +24,35 @@ public class CVueConnexion implements Initializable{
     @FXML
     public Label message;
     public Button validButton;
-    public HBox accountBox;
+    public HBox accountsBox;
 
+
+    private String currentUserName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("initialize");
+        setupAllButtons();
+    }
+
+    public void setupAllButtons(){
+        accountsBox.getChildren().clear();
         ArrayList<Account> accounts = AccountManagement.getAccounts();
         for(Account account : accounts){
-            accountBox.getChildren().add(this.createAccountVBox(account));
+            accountsBox.getChildren().add(this.createAccountVBox(account));
             System.out.println(account.getUserName());
         }
         message.setVisible(false);
+    }
+
+    public void removeAllPasswordFields(){
+        for (Node accountBox : accountsBox.getChildren()
+             ) {
+            if (((VBox) accountBox).getChildren().get(1) instanceof PasswordField){
+                ((VBox) accountBox).getChildren().remove(1);
+            }
+
+        }
     }
 
     public VBox createAccountVBox(Account account){
@@ -49,37 +64,50 @@ public class CVueConnexion implements Initializable{
         imgVw.setFitWidth(128);
         imgVw.setFitHeight(128);
         Button bt = new Button("");
+        bt.setOnAction(this::tryToConnect);
         bt.setId(account.getUserName());
         bt.setGraphic(imgVw);
+
+
+
         accountBox.getChildren().addAll(bt,new Label(account.getUserName()));
         return accountBox;
     }
 
-/*
-    public void connexion(ActionEvent actionEvent) {
-        String password = passField.getText();
-        String username = (String) choiceBox.getSelectionModel().getSelectedItem();
+    public void tryToConnect(ActionEvent e){
 
-        if(username != null){
-            if(Model.AccountManagement.getPassword(username).equals(password)){
-                message.setText("Valid Password");
+        currentUserName = ((Button) e.getSource()).getId();
+        if (currentUserName.equals("Enfant")){
+            System.out.println("pw less account");
+            connection("");
+            return;
+        }
+        VBox accountVbox = ((VBox) ((Button) e.getSource()).getParent());
+        removeAllPasswordFields();
+        PasswordField pwField = new PasswordField();
+        pwField.setPromptText("Enter " + currentUserName + " password :");
+        pwField.setOnKeyPressed(this::enterPassword);
+        accountVbox.getChildren().add(1, pwField);
+    }
+
+
+    public void connection(String enteredPassword) {
+        if(currentUserName != null){
+            if(Model.AccountManagement.getUserNamePassword(currentUserName).equals(enteredPassword)){
+                message.setText("Welcome");
                 message.setTextFill(Color.rgb(21, 117, 84));
                 //Todo charger la scene de la videothèque (Admin ou User selon les cas)
             }else{
                 message.setText("Invalid Password");
                 message.setTextFill(Color.rgb(210, 39, 30));
             }
-        }else{
-            message.setText("You have to select a username");
-            message.setTextFill(Color.rgb(210, 39, 30));
         }
         message.setVisible(true);
     }
 
-    public void enterPassword(KeyEvent actionEvent) {
-        if(actionEvent.getCode().equals(KeyCode.ENTER)){
-           validButton.fire();
+    public void enterPassword(KeyEvent keyEvent) {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            connection(((PasswordField) keyEvent.getSource()).getText());
         }
     }
-    */
 }
