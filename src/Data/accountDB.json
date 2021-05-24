@@ -1,1 +1,4 @@
-{"password":["passtoto", "passfifi", "passracli"],"username":["toto", "fifi", "racli"]}
+{
+  "password":["passtoto", "passfifi", "passracli"],
+  "username":["toto", "fifi", "racli"]
+}
