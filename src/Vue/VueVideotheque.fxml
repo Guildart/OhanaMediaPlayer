@@ -15,7 +15,7 @@
                   <MenuButton fx:id="menu" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="555.0" layoutY="8.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="57.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="1.0">
                     <items>
                       <MenuItem mnemonicParsing="false" text="compte" />
-                      <MenuItem mnemonicParsing="false" onAction="#logOut" text="log out" />
+                      <MenuItem fx:id="logItem" mnemonicParsing="false" onAction="#logOut" text="log out" />
                     </items>
                   </MenuButton>
                   <HBox layoutX="259.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="10.0">
