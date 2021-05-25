@@ -3,8 +3,8 @@ package Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -22,6 +22,7 @@ public class CFilmCreationView {
     public Button choiceButton;
     public TextField pathText;
     public TextField nameText;
+    public ChoiceBox categoryChoice;
     public HBox categoryList;
     public ScrollPane notAllowedUsers;
 
@@ -35,8 +36,10 @@ public class CFilmCreationView {
         myFileChooser.getExtensionFilters().add(filters);
         myFileChooser.setTitle("selectioner un film");
         File file = myFileChooser.showOpenDialog(stage);
-        String myPath = file.getPath();
-        this.pathText.setText(myPath);
+        if (file != null) {
+            String myPath = file.getPath();
+            this.pathText.setText(myPath);
+        }
     }
 
     public void addCategory(ActionEvent e) {
