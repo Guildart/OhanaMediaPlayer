@@ -1,62 +1,131 @@
 package Controller;
 
+import Model.Account;
+import Model.AccountManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CVueConnexion implements Initializable{
     @FXML
-    public ChoiceBox choiceBox;
-    public PasswordField passField;
     public Label message;
     public Button validButton;
+    public HBox accountsBox;
 
+    private String currentUserName;
+    private String currentImgPath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String usernames[] = Modele.AccountManagement.getUsernames();
-        for(String s : usernames){
-            choiceBox.getItems().add(s);
+        setupAllButtons();
+    }
+
+    public void setupAllButtons(){
+        accountsBox.getChildren().clear();
+        ArrayList<Account> accounts = AccountManagement.getAccounts();
+        for(Account account : accounts){
+            accountsBox.getChildren().add(this.createAccountVBox(account));
         }
         message.setVisible(false);
     }
 
+    public void removeAllPasswordFields(){
+        for (Node accountBox : accountsBox.getChildren()
+             ) {
+            if (((VBox) accountBox).getChildren().get(1) instanceof PasswordField){
+                ((VBox) accountBox).getChildren().remove(1);
+            }
 
-    /**Action lorsqu'on clique sur valider pour tenter une connexion**/
-    public void connexion(ActionEvent actionEvent) {
-        String password = passField.getText();
-        String username = (String) choiceBox.getSelectionModel().getSelectedItem();
+        }
+    }
 
-        if(username != null){
-            if(Modele.AccountManagement.getPassword(username).equals(password)){
-                message.setText("Valid Password");
+    public VBox createAccountVBox(Account account){
+        VBox accountBox = new VBox();
+        accountBox.setAlignment(Pos.CENTER);
+        ImageView imgVw = new ImageView();
+        Image img = account.getImage();
+        imgVw.setImage(img);
+        imgVw.setFitWidth(128);
+        imgVw.setFitHeight(128);
+        Button bt = new Button("");
+        bt.setOnAction(this::tryToConnect);
+        bt.setId(account.getUserName());
+        bt.setGraphic(imgVw);
+
+
+
+        accountBox.getChildren().addAll(bt,new Label(account.getUserName()));
+        return accountBox;
+    }
+
+    public void tryToConnect(ActionEvent e){
+
+        currentUserName = ((Button) e.getSource()).getId();
+        currentImgPath = AccountManagement.getImgPath(currentUserName);
+        removeAllPasswordFields();
+        if (currentUserName.equals("Enfant")){
+            connection("");
+            return;
+        }
+        VBox accountVbox = ((VBox) ((Button) e.getSource()).getParent());
+        PasswordField pwField = new PasswordField();
+        pwField.setPromptText("Enter " + currentUserName + " password :");
+        pwField.setOnKeyPressed(this::enterPassword);
+
+        accountVbox.getChildren().add(1, pwField);
+        pwField.requestFocus(); //Auto-focus sur le passwordField
+    }
+
+
+    public void connection(String enteredPassword) {
+        if(currentUserName != null){
+            if(Model.AccountManagement.getUserNamePassword(currentUserName).equals(enteredPassword)){
+                CVueVideotheque.imgPath = currentImgPath;
+                message.setText("Welcome");
                 message.setTextFill(Color.rgb(21, 117, 84));
                 //Todo charger la scene de la videothèque (Admin ou User selon les cas)
+                Stage stage = (Stage) message.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+                stage.setMaximized(true);
+                Parent root = null;
+                try {
+                    root = loader.load();
+                    Scene scene = new Scene(root, stage.getWidth(), stage.getScene().getHeight());
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }else{
                 message.setText("Invalid Password");
                 message.setTextFill(Color.rgb(210, 39, 30));
             }
-        }else{
-            message.setText("You have to select a username");
-            message.setTextFill(Color.rgb(210, 39, 30));
         }
         message.setVisible(true);
     }
 
-    /**Clique automatiquement sur le boutton valider si on clique sur la touche entrée depuis le password fiel**/
-    public void enterPassword(KeyEvent actionEvent) {
-        if(actionEvent.getCode().equals(KeyCode.ENTER)){
-           validButton.fire();
+    public void enterPassword(KeyEvent keyEvent) {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            connection(((PasswordField) keyEvent.getSource()).getText());
         }
     }
 }

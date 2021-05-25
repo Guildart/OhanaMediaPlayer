@@ -1,1 +1,8 @@
-{"password":["passtoto", "passfifi", "passracli"],"username":["toto", "fifi", "racli"]}
+{
+  "users" : [
+    {"user name" :  "Jacqueline", "password" :  "felix", "image path" :  "res/JacquelinePP.png"},
+    {"user name" :  "Kevin", "password" : "Camille<3", "image path" :  "res/KevinPP.png"},
+    {"user name" :  "Enfant", "password" : "", "image path" :  "res/childrenPP.png"}
+
+  ]
+}
