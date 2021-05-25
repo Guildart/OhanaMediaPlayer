@@ -31,8 +31,9 @@ public class CFilmCreationView {
     public void choiceAction(ActionEvent e){
         Stage stage = new Stage();
         FileChooser myFileChooser = new FileChooser();
-        myFileChooser.setTitle("Sauvegarder un fichier png");
-        myFileChooser.setInitialFileName("Untitled.png");
+        FileChooser.ExtensionFilter filters = new FileChooser.ExtensionFilter("MP4 files (*.mp4)", "*.mp4");
+        myFileChooser.getExtensionFilters().add(filters);
+        myFileChooser.setTitle("selectioner un film");
         File file = myFileChooser.showOpenDialog(stage);
         String myPath = file.getPath();
         this.pathText.setText(myPath);
