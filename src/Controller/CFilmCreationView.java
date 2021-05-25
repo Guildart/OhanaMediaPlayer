@@ -15,16 +15,23 @@ import javafx.scene.control.Label;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class CFilmCreationView {
+public class CFilmCreationView implements Initializable{
     @FXML
     public Button choiceButton;
     public TextField pathText;
     public TextField nameText;
-    public ChoiceBox categoryChoice;
+    public SplitMenuButton splitMenuCategory;
     public HBox categoryList;
     public ScrollPane notAllowedUsers;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
 
 
 
@@ -46,5 +53,6 @@ public class CFilmCreationView {
         Button testButton = new Button("test");
         this.categoryList.getChildren().add(testButton);
     }
+
 
 }

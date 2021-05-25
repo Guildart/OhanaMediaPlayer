@@ -13,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vue/FilmCreationView.fxml")); // on charge la première page fxml
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/FilmCreationView.fxml")); // on charge la première page fxml
         Parent root = loader.load(); // on charge le parent
         primaryStage.setTitle("Ohana Media Player");
         primaryStage.setMaximized(true);
