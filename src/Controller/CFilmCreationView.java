@@ -4,7 +4,10 @@ import Model.CategoriesDB;
 import Model.MoviesDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -17,6 +20,7 @@ import javafx.scene.control.Label;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +34,8 @@ public class CFilmCreationView implements Initializable{
     public SplitMenuButton splitMenuCategory;
     public HBox categoryList;
     public ScrollPane notAllowedUsers;
+    public Label pathErrorMessage;
+    public Label titleErrorMessage;
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
 
@@ -41,6 +47,8 @@ public class CFilmCreationView implements Initializable{
             cate.setOnAction(e -> categoryClicked(e));
             this.splitMenuCategory.getItems().add(cate);
         }
+        this.pathErrorMessage.setVisible(false);
+        this.titleErrorMessage.setVisible(false);
     }
 
     public void categoryClicked(ActionEvent e){
@@ -75,12 +83,28 @@ public class CFilmCreationView implements Initializable{
         }
     }
 
-    public void validate(ActionEvent e){
-        if(this.pathText.getText() != null &&
-           this.nameText.getText() != null){
+    public void validate(ActionEvent e) throws IOException {
+        this.pathErrorMessage.setVisible(false);
+        this.titleErrorMessage.setVisible(false);
+        if(this.pathText.getText() != "" &&
+           this.nameText.getText() != ""){
             //MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded);
-            System.out.println(this.categoryAdded);
+            System.out.println("titre : " + this.nameText.getText());
+            System.out.println("chemain d'acces : " + this.pathText.getText());
+            System.out.println("liste des categorie \n" + this.categoryAdded);
         }
+        else {
+            if(this.pathText.getText() == ""){
+                this.pathErrorMessage.setVisible(true);
+            }
+            if(this.nameText.getText() == ""){
+                this.titleErrorMessage.setVisible(true);
+            }
+        }
+    }
+
+    public void updateUserAllowed(){
+
     }
 
 
