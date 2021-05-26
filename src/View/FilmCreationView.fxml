@@ -121,6 +121,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Button>
+            <Label fx:id="errorToAddMessage" text="Le film n'a pas pu s'ajouter correctement&#10;Important : Il est possible qu'un film du même nom est deja été ajouté&#10;&#9;&#9;&#9;ou que vous ayez deja ajouté ce film." textFill="RED" />
          </children>
          <opaqueInsets>
             <Insets bottom="50.0" />

@@ -36,6 +36,7 @@ public class CFilmCreationView implements Initializable{
     public ScrollPane notAllowedUsers;
     public Label pathErrorMessage;
     public Label titleErrorMessage;
+    public Label errorToAddMessage;
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
 
@@ -49,6 +50,7 @@ public class CFilmCreationView implements Initializable{
         }
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
+        this.errorToAddMessage.setVisible(false);
     }
 
     public void categoryClicked(ActionEvent e){
@@ -86,9 +88,12 @@ public class CFilmCreationView implements Initializable{
     public void validate(ActionEvent e) throws IOException {
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
+        this.errorToAddMessage.setVisible(false);
         if(this.pathText.getText() != "" &&
            this.nameText.getText() != ""){
-            //MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded);
+            /**if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded)){
+                this.errorToAddMessage.setVisible(true);
+            }**/
             //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
