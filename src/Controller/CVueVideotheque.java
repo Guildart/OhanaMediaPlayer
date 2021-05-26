@@ -38,7 +38,14 @@ public class CVueVideotheque implements Initializable {
     public void gererUtilisateur(ActionEvent actionEvent) {
     }
 
-    public void ajouterFilm(ActionEvent actionEvent) {
+    public void ajouterFilm(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) menu.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/FilmCreationView.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override

@@ -89,9 +89,18 @@ public class CFilmCreationView implements Initializable{
         if(this.pathText.getText() != "" &&
            this.nameText.getText() != ""){
             //MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded);
+            //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
             System.out.println("liste des categorie \n" + this.categoryAdded);
+
+            Stage stage = (Stage) categoryList.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+            Parent root = loader.load();
+            stage.setMaximized(true);
+            Scene scene = new Scene(root, categoryList.getScene().getWidth(), categoryList.getScene().getHeight());
+            stage.setScene(scene);
+            stage.show();
         }
         else {
             if(this.pathText.getText() == ""){
