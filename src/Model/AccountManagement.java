@@ -49,15 +49,6 @@ public class AccountManagement {
         return "";
     }
 
-    public static String getUserImage(String userName){
-        for (Account account :getAccounts()
-        ) {
-            if (account.getUserName().equals(userName)){
-                return account.getPassword();
-            }
-        }
-        return "";
-    }
 
     public static String getImgPath(String userName){
         for (Account account :getAccounts()) {
@@ -67,6 +58,18 @@ public class AccountManagement {
         }
         return "";
     }
+
+    public static Account getAccount(String userName){
+        for (Account account :getAccounts()
+        ) {
+            if (account.getUserName().equals(userName)){
+                return account;
+            }
+        }
+        System.out.println("account not found");
+        return null;
+    }
+
 
 
 }

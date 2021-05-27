@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Account;
 import Model.AccountManagement;
+import Model.Role;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -80,10 +81,11 @@ public class CVueConnexion implements Initializable{
     public void tryToConnect(ActionEvent e){
 
         currentUserName = ((Button) e.getSource()).getId();
-        currentImgPath = AccountManagement.getImgPath(currentUserName);
+        Account currentAccount = AccountManagement.getAccount(currentUserName);
+        currentImgPath = currentAccount.getImagePath();
         removeAllPasswordFields();
-        if (currentUserName.equals("Enfant")){
-            connection("");
+        if (currentAccount.getRole().equals(Role.child)){
+            connection(currentAccount.getPassword());
             return;
         }
         VBox accountVbox = ((VBox) ((Button) e.getSource()).getParent());
@@ -102,7 +104,7 @@ public class CVueConnexion implements Initializable{
                 CVueVideotheque.imgPath = currentImgPath;
                 message.setText("Welcome");
                 message.setTextFill(Color.rgb(21, 117, 84));
-                //Todo charger la scene de la videothèque (Admin ou User selon les cas)
+
                 Stage stage = (Stage) message.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
                 stage.setMaximized(true);
