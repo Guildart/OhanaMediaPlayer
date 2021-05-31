@@ -4,6 +4,7 @@ import Model.Account;
 import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.MoviesDB;
+import View.CategoryView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,13 +58,20 @@ public class CFilmCreationView implements Initializable{
     }
 
     public void categoryClicked(ActionEvent e){
-        HBox cateNSupButton = new HBox();
+       /** HBox cateNSupButton = new HBox();
         Button supButton = new Button("x");
         supButton.setOnAction(a -> supClicked(a));
         String categoryName = ((MenuItem)e.getSource()).getText();
         Button newCategory = new Button(categoryName);
         cateNSupButton.getChildren().addAll(newCategory, supButton);
         this.categoryList.getChildren().add(cateNSupButton);
+        this.categoryAdded.add(categoryName);**/
+
+
+        String categoryName = ((MenuItem)e.getSource()).getText();
+        CategoryView test = new CategoryView(categoryName, true);
+        test.getXButton().setOnAction(a -> supClicked(a));
+        this.categoryList.getChildren().add(test);
         this.categoryAdded.add(categoryName);
         updateUsersAllowed();
     }
@@ -72,6 +80,7 @@ public class CFilmCreationView implements Initializable{
         HBox currentHBox = (HBox)((Button)e.getSource()).getParent();
         this.categoryAdded.remove(((Button)currentHBox.getChildren().get(0)).getText());
         this.categoryList.getChildren().remove(currentHBox);
+        updateUsersAllowed();
     }
 
 
