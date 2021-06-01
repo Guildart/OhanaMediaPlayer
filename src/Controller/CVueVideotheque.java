@@ -32,7 +32,14 @@ public class CVueVideotheque implements Initializable {
     public TextField barreRecherche;
     public AnchorPane topPanel;
 
-    public void gererCategorie(ActionEvent actionEvent) {
+    public void gererCategorie(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) menu.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CategoryManagerView.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void gererUtilisateur(ActionEvent actionEvent) {

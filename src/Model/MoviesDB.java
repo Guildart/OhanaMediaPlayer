@@ -9,10 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class MoviesDB {
     static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"moviesDB.json";
@@ -69,6 +66,32 @@ public class MoviesDB {
             return false;
         }
 
+    }
+
+    public static boolean addCategoryToMovie(String movieTitle, String category) throws IOException, JSONException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+        boolean contain = false;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(movieTitle)){
+                JSONArray categories = (JSONArray) movie.getJSONArray("categories");
+                System.out.print(categories.length());
+                for(int j = 0; j < categories.length(); j++){
+                    String nameCat = categories.getString(j);
+                    if(nameCat.contentEquals(category))
+                        return false;
+                }
+                categories.put(category);
+                System.out.print(categories.length());
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
     }
 
     public static String fileToString() throws FileNotFoundException {
@@ -141,6 +164,13 @@ public class MoviesDB {
         throw new RuntimeException("Le film : " + title + " n'existe pas");
     }
 
+    public static boolean isOfCategorie(String movie, String categorie){
+        List<String> categories = Arrays.asList(getMovieCategories(movie));
+        if(categories.contains(categorie))
+            return true;
+        return false;
+    }
+
     public static void main(String[] args) {
         createFile();
         ArrayList<String> cat = new ArrayList<>();
@@ -150,6 +180,15 @@ public class MoviesDB {
                 new ArrayList<String>(Arrays.asList(new String[]{"action", "thriller", "voyage dans le temps"})));
         addMovie("Ducobu", "C://videos/Tenet.mp4",
                 new ArrayList<String>(Arrays.asList(new String[]{"Humour", "Famille"})));
+
+        addMovie("Faster", "C://videos/Tenet.mp4",
+                new ArrayList<String>(Arrays.asList(new String[]{"course", "action"})));
+
+        addMovie("Superman", "C://videos/Tenet.mp4",
+                new ArrayList<String>(Arrays.asList(new String[]{"action", "fantastique"})));
+
+        addMovie("Flash", "C://videos/Tenet.mp4",
+                new ArrayList<String>(Arrays.asList(new String[]{"course", "fantastique"})));
 
         for(String s :getTitles())
             System.out.print(s + "\n");
@@ -164,6 +203,8 @@ public class MoviesDB {
 
         System.out.print("Tenet path : " + getMoviePath("Tenet") + "\n");
         System.out.print("Ducobu path : " + getMoviePath("Ducobu") + "\n");
+
+        System.out.print("Ducobu is of categorie famille : " + isOfCategorie("Ducobu", "famille") + "\n");
     }
 
 }
