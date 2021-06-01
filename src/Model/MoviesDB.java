@@ -68,6 +68,32 @@ public class MoviesDB {
 
     }
 
+    public static boolean addCategoryToMovie(String movieTitle, String category) throws IOException, JSONException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+        boolean contain = false;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(movieTitle)){
+                JSONArray categories = (JSONArray) movie.getJSONArray("categories");
+                System.out.print(categories.length());
+                for(int j = 0; j < categories.length(); j++){
+                    String nameCat = categories.getString(j);
+                    if(nameCat.contentEquals(category))
+                        return false;
+                }
+                categories.put(category);
+                System.out.print(categories.length());
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String fileToString() throws FileNotFoundException {
         String data = "";
         File f = new File(accountFile);
