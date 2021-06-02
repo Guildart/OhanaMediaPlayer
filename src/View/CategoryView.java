@@ -25,4 +25,6 @@ public class CategoryView extends HBox {
     public Button getXButton(){
         return this.xButton;
     }
+
+
 }

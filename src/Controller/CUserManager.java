@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.event.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class CUserManager implements Initializable {
@@ -33,10 +34,10 @@ public class CUserManager implements Initializable {
 
     private void setupAllAccounts(){
         toAddOn.getChildren().clear();
-        ArrayList<Account> accounts = AccountManagement.getAccounts();
+        HashMap<String,Account> accounts = AccountManagement.getAccounts();
         System.out.println(accounts.size());
-        for(Account account : accounts){
-            toAddOn.getChildren().add(this.createAccountHBox(account));
+        for(String key : accounts.keySet()){
+            toAddOn.getChildren().add(this.createAccountHBox(accounts.get(key)));
         }
     }
 
@@ -61,10 +62,15 @@ public class CUserManager implements Initializable {
         identifiersBox.getChildren().addAll(bt,new TextField(account.getUserName()));
 
         FlowPane forbiddenCategories = new FlowPane();
+
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
         for (String forbiddenCategory :
              account.getForbiddenCategories()) {
             CategoryView categoryView = new CategoryView(forbiddenCategory, true);
+
+            categoryView.getXButton().setId(account.getUserName());
+            categoryView.getXButton().setOnAction(this::allowCategory);
+
             forbiddenCategories.getChildren().add(categoryView);
         }
         Button forbidBt = new Button();
@@ -84,6 +90,19 @@ public class CUserManager implements Initializable {
     }
 
     private void forbidCategory(ActionEvent actionEvent) {
+
+    }
+
+    private void allowCategory(ActionEvent actionEvent) {
+        String username =((Button) actionEvent.getSource()).getId();
+        Account toAllowOn = AccountManagement.getAccount(username);
+        String categoryToAllow =
+                ((Button)((HBox)((Button) actionEvent.getSource()).getParent()).getChildren().get(0)).getText();
+        System.out.println(username + "  " + categoryToAllow);
+        toAllowOn.allow(categoryToAllow);
+        AccountManagement.saveAccount(toAllowOn);
+
+        setupAllAccounts();
     }
 
     private void changeAccountImage(ActionEvent actionEvent) {

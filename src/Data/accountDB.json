@@ -1,8 +1,1 @@
-{
-  "users" : [
-    {"user name" :  "admin", "password" :  "admin", "image path" :  "res/JacquelinePP.png", "role" :  "admin", "forbidden" :  []},
-    {"user name" :  "other", "password" : "other", "image path" :  "res/KevinPP.png", "role" :  "other", "forbidden" :  []},
-    {"user name" :  "child", "password" : "", "image path" :  "res/childrenPP.png", "role" :  "child", "forbidden" :  ["thriller"]}
-
-  ]
-}
+{"other":{"password":"other","role":"other","forbidden":[],"userName":"other","image path":"res/KevinPP.png"},"admin":{"password":"admin","role":"admin","forbidden":[],"userName":"admin","image path":"res/JacquelinePP.png"},"child":{"password":"","role":"child","forbidden":["thriller"],"userName":"child","image path":"res/childrenPP.png"}}

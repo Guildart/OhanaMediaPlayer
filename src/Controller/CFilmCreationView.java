@@ -154,7 +154,9 @@ public class CFilmCreationView implements Initializable{
 
     public void updateUsersAllowed(){
         notAllowedUsers.getChildren().clear();
-        for (Account curAccount : AccountManagement.getAccounts()) {
+        HashMap<String,Account> accounts = AccountManagement.getAccounts();
+        for (String key : accounts.keySet()) {
+            Account curAccount = accounts.get(key);
             if (hasCommonElements(curAccount.getForbiddenCategories(), categoryAdded)){
                 VBox accountRep = new VBox();
                 ImageView accImgVw = new ImageView(curAccount.getImage());
