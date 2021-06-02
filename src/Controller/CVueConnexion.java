@@ -55,7 +55,6 @@ public class CVueConnexion implements Initializable{
             if (((VBox) accountBox).getChildren().get(1) instanceof PasswordField){
                 ((VBox) accountBox).getChildren().remove(1);
             }
-
         }
     }
 
