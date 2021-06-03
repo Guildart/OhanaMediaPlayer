@@ -33,12 +33,12 @@ public class CCategoryManagerView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String[] allCategories = CategoriesDB.getCategories();
+        ArrayList<String>  allCategories = CategoriesDB.getCategories();
         for(String s : allCategories)
             choiceBox.getItems().add(s);
 
         hboxAddMovie.getChildren().add(1,autoCompleteTextField);
-        autoCompleteTextField.getEntries().addAll(Arrays.asList(MoviesDB.getTitles()));
+        autoCompleteTextField.getEntries().addAll(MoviesDB.getTitles());
     }
 
 

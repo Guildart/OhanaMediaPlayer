@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class CVueVideotheque implements Initializable {
 
-    public static String imgPath;
+    public static String imgPath; //Todo : Account
 
     @FXML
     public MenuButton menu;
