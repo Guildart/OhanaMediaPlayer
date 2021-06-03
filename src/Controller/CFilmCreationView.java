@@ -167,5 +167,15 @@ public class CFilmCreationView implements Initializable{
         }
     }
 
+    public void cancelClicked(ActionEvent e) throws IOException {
+        Stage stage = (Stage) categoryList.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, categoryList.getScene().getWidth(), categoryList.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
+    }
+
 
 }
