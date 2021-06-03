@@ -11,11 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class CategoriesDB {
     static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"categoriesDB.json";
-    private static String accountFile = System.getProperty("user.dir") + relativePath;
+    public static String accountFile = System.getProperty("user.dir") + relativePath;
 
     public static boolean createFile(){
         File f = new File(accountFile);
@@ -90,6 +91,20 @@ public class CategoriesDB {
         }
     }
 
+    public static ArrayList<String> getMoviesOfCategory(String categorie) {
+        List<String> categories = Arrays.asList(getCategories());
+        ArrayList<String> moviesOfCategory = new ArrayList<>();
+        if (categories.contains(categorie)){
+           String movieTitles[]  = MoviesDB.getTitles();
+           for(String title : movieTitles){
+               if (MoviesDB.isOfCategorie(title, categorie)){
+                   moviesOfCategory.add(title);
+               }
+           }
+        }
+        return moviesOfCategory;
+    }
+
     public static void main(String[] args) {
         createFile();
         addCategorie("action");
@@ -98,9 +113,21 @@ public class CategoriesDB {
         addCategorie("thriller");
         addCategorie("humour");
         addCategorie("famille");
+        addCategorie("fantastique");
+        addCategorie("course");
+        addCategorie("fantastique");
+
 
         System.out.print("Afficher toutes catégories : \n");
         for(String s : getCategories())
+            System.out.print(s+"\n");
+
+        System.out.print("Action movies : \n");
+        for(String s : getMoviesOfCategory("action"))
+            System.out.print(s+"\n");
+
+        System.out.print("Course movies : \n");
+        for(String s : getMoviesOfCategory("course"))
             System.out.print(s+"\n");
 
     }

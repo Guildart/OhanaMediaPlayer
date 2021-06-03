@@ -14,8 +14,8 @@ public class Account {
     private Role role = Role.other;
     private ArrayList<String> forbiddenCategories = new ArrayList<String>(0);
 
-    Account (JSONObject jsonObject) throws JSONException {
-        userName = jsonObject.getString("user name");
+    Account (String userName, JSONObject jsonObject) throws JSONException {
+        this.userName = userName;
         password = jsonObject.getString("password");
         imagePath = jsonObject.getString("image path");
         role = Role.valueOf(jsonObject.getString("role"));
@@ -57,4 +57,21 @@ public class Account {
         return forbiddenCategories;
     }
 
+    public void allow(String category){
+        forbiddenCategories.remove(category);
+    }
+
+    public JSONObject toJson(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userName", userName);
+        jsonObject.put("password", password);
+        jsonObject.put("image path", imagePath);
+        jsonObject.put("role", role.toString());
+        JSONArray forbiddenJSONCat = new JSONArray();
+        for (String category: forbiddenCategories) {
+            forbiddenJSONCat.put(category);
+        }
+        jsonObject.put("forbidden", forbiddenJSONCat);
+        return jsonObject;
+    }
 }

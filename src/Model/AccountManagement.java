@@ -1,7 +1,10 @@
 package Model;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.json.*;
@@ -9,6 +12,23 @@ import org.json.*;
 public class AccountManagement {
     static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"accountDB.json";
     private static String accountFile = System.getProperty("user.dir") + relativePath;
+
+    public static boolean createFile(){
+        File f = new File(accountFile);
+        try {
+            boolean b = f.createNewFile();
+            if(b){
+                JSONObject obj = new JSONObject();
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+            }
+            return b;
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public static String fileToString() throws FileNotFoundException {
         String data = "";
@@ -22,15 +42,15 @@ public class AccountManagement {
     }
 
 
-    public static ArrayList<Account> getAccounts(){
+    public static HashMap<String, Account> getAccounts(){
         try {
-            ArrayList<Account> accounts = new ArrayList<Account>(0);
+            HashMap<String,Account> accounts = new HashMap<>(0);
             String data = fileToString();
             JSONObject obj = new JSONObject(data);
-            JSONArray users = obj.getJSONArray("users");
 
-            for (int i = 0; i < users.length(); i++) {
-                accounts.add(new Account(((JSONObject) users.getJSONObject(i))));
+            for (String key:
+                 obj.keySet()) {
+                accounts.put(key, new Account(key,((JSONObject) obj.getJSONObject(key))));
             }
             return accounts;
         }catch (FileNotFoundException | JSONException e){
@@ -40,36 +60,35 @@ public class AccountManagement {
     }
 
     public static String getUserNamePassword(String userName){
-        for (Account account :getAccounts()
-             ) {
-            if (account.getUserName().equals(userName)){
-                return account.getPassword();
-            }
-        }
-        return "";
+        return getAccounts().get(userName).getPassword();
     }
 
 
     public static String getImgPath(String userName){
-        for (Account account :getAccounts()) {
-            if (account.getUserName().equals(userName)){
-                return account.getImagePath();
-            }
-        }
-        return "";
+        return getAccounts().get(userName).getImagePath();
     }
 
     public static Account getAccount(String userName){
-        for (Account account :getAccounts()
-        ) {
-            if (account.getUserName().equals(userName)){
-                return account;
-            }
-        }
-        System.out.println("account not found");
-        return null;
+        return getAccounts().get(userName);
     }
 
+    public static void saveAccount(Account toSave){
+        HashMap<String,Account> accounts = getAccounts();
+        accounts.put(toSave.getUserName(), toSave);
+        try {
+            saveAccounts(accounts);
+        }catch (IOException e){
+            e.printStackTrace();
+            System.out.println("couldn't save account file");
+        }
+    }
+    public static void saveAccounts(HashMap<String,Account> toSave) throws IOException {
+        JSONObject accountJSON = new JSONObject();
+        for (String key: toSave.keySet()
+             ) {
+            accountJSON.put(key, toSave.get(key).toJson());
+        }
+        Files.write(Paths.get(accountFile), accountJSON.toString().getBytes());
 
-
+    }
 }

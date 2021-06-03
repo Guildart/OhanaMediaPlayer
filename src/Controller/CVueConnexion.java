@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class CVueConnexion implements Initializable{
@@ -42,9 +43,9 @@ public class CVueConnexion implements Initializable{
 
     public void setupAllButtons(){
         accountsBox.getChildren().clear();
-        ArrayList<Account> accounts = AccountManagement.getAccounts();
-        for(Account account : accounts){
-            accountsBox.getChildren().add(this.createAccountVBox(account));
+        HashMap<String,Account> accounts = AccountManagement.getAccounts();
+        for(String key : accounts.keySet()){
+            accountsBox.getChildren().add(this.createAccountVBox(accounts.get(key)));
         }
         message.setVisible(false);
     }
@@ -55,7 +56,6 @@ public class CVueConnexion implements Initializable{
             if (((VBox) accountBox).getChildren().get(1) instanceof PasswordField){
                 ((VBox) accountBox).getChildren().remove(1);
             }
-
         }
     }
 
