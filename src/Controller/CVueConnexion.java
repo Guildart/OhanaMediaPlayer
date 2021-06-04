@@ -101,7 +101,7 @@ public class CVueConnexion implements Initializable{
     public void connection(String enteredPassword) {
         if(currentUserName != null){
             if(Model.AccountManagement.getUserNamePassword(currentUserName).equals(enteredPassword)){
-                CVueVideotheque.imgPath = currentImgPath;
+                CVueVideotheque.actualUser = AccountManagement.getAccount(currentUserName);
                 message.setText("Welcome");
                 message.setTextFill(Color.rgb(21, 117, 84));
 

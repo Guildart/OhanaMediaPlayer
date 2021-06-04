@@ -73,16 +73,16 @@ public class CategoriesDB {
         return data;
     }
 
-    public static String[] getCategories() {
+    public static ArrayList<String>  getCategories() {
         File f = new File(accountFile);
         String data = null;
         try {
             data = fileToString();
             JSONObject obj = new JSONObject(data);
             JSONArray jsonArray = (JSONArray) obj.get("categories");
-            String array [] = new String[jsonArray.length()];
+            ArrayList<String> array = new ArrayList<String>(jsonArray.length());
             for(int i = 0; i < jsonArray.length() ; i++){
-                array[i] = jsonArray.getString(i);
+                array.add(jsonArray.getString(i));
             }
             return array;
         } catch (FileNotFoundException | JSONException e) {
@@ -92,10 +92,10 @@ public class CategoriesDB {
     }
 
     public static ArrayList<String> getMoviesOfCategory(String categorie) {
-        List<String> categories = Arrays.asList(getCategories());
+        List<String> categories = getCategories();
         ArrayList<String> moviesOfCategory = new ArrayList<>();
         if (categories.contains(categorie)){
-           String movieTitles[]  = MoviesDB.getTitles();
+            ArrayList<String>  movieTitles  = MoviesDB.getTitles();
            for(String title : movieTitles){
                if (MoviesDB.isOfCategorie(title, categorie)){
                    moviesOfCategory.add(title);

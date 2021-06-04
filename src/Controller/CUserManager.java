@@ -22,9 +22,12 @@ import javafx.scene.layout.VBox;
 
 import javafx.event.*;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class CUserManager implements Initializable {
 
@@ -47,7 +50,6 @@ public class CUserManager implements Initializable {
 
     private HBox createAccountHBox(Account account){
         HBox accountBox = new HBox();
-
         accountBox.setAlignment(Pos.CENTER);
 
         //code to generate img & textfield
@@ -61,10 +63,9 @@ public class CUserManager implements Initializable {
         bt.setId(account.getUserName());
         bt.setGraphic(imgVw);
         bt.setOnAction(this::changeAccountImage);
-
-
         identifiersBox.getChildren().addAll(bt,new TextField(account.getUserName()));
 
+        //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
         for (String forbiddenCategory :
@@ -163,6 +164,11 @@ public class CUserManager implements Initializable {
     }
 
     private void changeAccountImage(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void getBackToMenu(ActionEvent actionEvent) throws IOException {
+        CVueVideotheque.changeToMe(toAddOn,this);
     }
 
 

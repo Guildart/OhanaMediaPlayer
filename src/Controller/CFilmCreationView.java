@@ -46,9 +46,9 @@ public class CFilmCreationView implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String category[] = CategoriesDB.getCategories();
-        for(int i = 0; i < category.length; i++){
-            MenuItem cate = new MenuItem(category[i]);
+        ArrayList<String> category = CategoriesDB.getCategories();
+        for(int i = 0; i < category.size(); i++){
+            MenuItem cate = new MenuItem(category.get(i));
             cate.setOnAction(e -> categoryClicked(e));
             this.splitMenuCategory.getItems().add(cate);
         }
@@ -167,6 +167,16 @@ public class CFilmCreationView implements Initializable{
                 notAllowedUsers.getChildren().add(accountRep);
             }
         }
+    }
+
+    public void cancelClicked(ActionEvent e) throws IOException {
+        Stage stage = (Stage) categoryList.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, categoryList.getScene().getWidth(), categoryList.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 
 
