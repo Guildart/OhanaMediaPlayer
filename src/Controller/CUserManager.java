@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -20,12 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.event.*;
-<<<<<<< Updated upstream
-=======
 import javafx.scene.paint.Color;
-
-import java.io.IOException;
->>>>>>> Stashed changes
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -44,7 +40,6 @@ public class CUserManager implements Initializable {
     private void setupAllAccounts(){
         toAddOn.getChildren().clear();
         HashMap<String,Account> accounts = AccountManagement.getAccounts();
-        System.out.println(accounts.size());
         for(String key : accounts.keySet()){
             toAddOn.getChildren().add(this.createAccountHBox(accounts.get(key)));
         }
@@ -71,31 +66,6 @@ public class CUserManager implements Initializable {
         identifiersBox.getChildren().addAll(bt,new TextField(account.getUserName()));
 
         FlowPane forbiddenCategories = new FlowPane();
-<<<<<<< Updated upstream
-
-        forbiddenCategories.getChildren().add(new Label("forbidden : "));
-        for (String forbiddenCategory :
-             account.getForbiddenCategories()) {
-            CategoryView categoryView = new CategoryView(forbiddenCategory, true);
-
-            categoryView.getXButton().setId(account.getUserName());
-            categoryView.getXButton().setOnAction(this::allowCategory);
-
-            forbiddenCategories.getChildren().add(categoryView);
-        }
-        Button forbidBt = new Button();
-        forbidBt.setText("+");
-        forbidBt.setId(account.getUserName());
-
-        forbidBt.setOnAction(this::forbidCategory);
-
-        forbiddenCategories.getChildren().add(forbidBt);
-
-
-
-
-=======
-        forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
         for (String forbiddenCategory :
              account.getForbiddenCategories()) {
@@ -106,7 +76,6 @@ public class CUserManager implements Initializable {
         message.setTextFill(Color.RED);
         message.setText("");
         forbiddenCategories.getChildren().addAll(createForbidButton(account.getUserName()),message);
->>>>>>> Stashed changes
         accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
 
         return accountBox;
@@ -143,7 +112,6 @@ public class CUserManager implements Initializable {
     }
 
     private void categoryEnteredOrEscaped(KeyEvent keyEvent){
-        System.out.println(keyEvent.getCode().equals(KeyCode.ESCAPE));
         TextField source = ((TextField) keyEvent.getSource());
         ObservableList<Node> userCategories = ((FlowPane) source.getParent()).getChildren();
         int toAddAt = userCategories.indexOf(source);
@@ -160,7 +128,6 @@ public class CUserManager implements Initializable {
                 Account toForbidOn = AccountManagement.getAccount(username);
                 String categoryToForbid =
                         enteredText;
-                System.out.println(username + "  " + categoryToForbid);
                 if (toForbidOn.forbid(categoryToForbid)){
                     AccountManagement.saveAccount(toForbidOn);
                     userCategories.remove(source);
@@ -188,7 +155,6 @@ public class CUserManager implements Initializable {
         Account toAllowOn = AccountManagement.getAccount(username);
         String categoryToAllow =
                 ((Button)((HBox)(source).getParent()).getChildren().get(0)).getText();
-        System.out.println(username + "  " + categoryToAllow);
         toAllowOn.allow(categoryToAllow);
         AccountManagement.saveAccount(toAllowOn);
 
