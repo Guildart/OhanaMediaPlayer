@@ -76,7 +76,11 @@ public class CUserManager implements Initializable {
         Label message = new Label();
         message.setTextFill(Color.RED);
         message.setText("");
-        forbiddenCategories.getChildren().addAll(createForbidButton(account.getUserName()),message);
+        TextField forbidTextField = createForbidTextField(account.getUserName());
+        Button forbidButton = createForbidButton(account.getUserName(), forbidTextField);
+
+
+        forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
         accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
 
         return accountBox;
@@ -89,11 +93,12 @@ public class CUserManager implements Initializable {
         return categoryView;
     }
 
-    private Button createForbidButton(String accountUserName){
+    private Button createForbidButton(String accountUserName, TextField forbidTextField){
         Button forbidBt = new Button();
         forbidBt.setText("+");
         forbidBt.setId(accountUserName);
-        forbidBt.setOnAction(this::onAddCategoryPressed);
+        forbidBt.setOnAction(e -> forbidTextField.fireEvent(new KeyEvent(KeyEvent.KEY_PRESSED,"","",
+                KeyCode.ENTER,false,false,false,false)));
         return forbidBt;
     }
 
@@ -104,43 +109,31 @@ public class CUserManager implements Initializable {
         return forbidTextField;
     }
 
-    private void onAddCategoryPressed(ActionEvent actionEvent) {
-        Button source = ((Button) actionEvent.getSource());
-        ObservableList<Node> userCategories =  ((FlowPane) source.getParent()).getChildren();
-        int toAddAt = userCategories.indexOf(source);
-        userCategories.remove(source);
-        userCategories.add(toAddAt, createForbidTextField(source.getId()));
-    }
 
     private void categoryEnteredOrEscaped(KeyEvent keyEvent){
         TextField source = ((TextField) keyEvent.getSource());
         ObservableList<Node> userCategories = ((FlowPane) source.getParent()).getChildren();
         int toAddAt = userCategories.indexOf(source);
         if (keyEvent.getCode().equals(KeyCode.ESCAPE)){
-            userCategories.remove(source);
-
-            userCategories.add(toAddAt, createForbidButton(source.getId()));
             displayMessage(userCategories,"");
+            source.clear();
         }
         if (keyEvent.getCode().equals(KeyCode.ENTER)){
             String enteredText = source.getText();
             if (enteredText.length() != 0){
                 String username =(source).getId();
                 Account toForbidOn = AccountManagement.getAccount(username);
-                String categoryToForbid =
-                        enteredText;
-                if (toForbidOn.forbid(categoryToForbid)){
+                if (toForbidOn.forbid(enteredText)){
                     AccountManagement.saveAccount(toForbidOn);
-                    userCategories.remove(source);
-                    userCategories.add(toAddAt, createForbidButton(source.getId()));
                     userCategories.add(toAddAt,createCategoryView(enteredText,toForbidOn));
                     displayMessage(userCategories,"");
                     CategoriesDB.addCategory(enteredText);
+                    source.clear();
                 }else{
-                    displayMessage(userCategories,"the added category has to be unique for this user");
+                    displayMessage(userCategories,"category already added");
                 }
             }else{
-                displayMessage(userCategories,"the added category has to not be empty");
+                displayMessage(userCategories,"\"\" is not a category");
             }
         }
     }
