@@ -106,16 +106,16 @@ public class MoviesDB {
         return data;
     }
 
-    public static String[] getTitles() {
+    public static ArrayList<String> getTitles() {
         File f = new File(accountFile);
         String data = null;
         try {
             data = fileToString();
             JSONObject obj = new JSONObject(data);
             JSONArray jsonArray = (JSONArray) obj.get("movies");
-            String array [] = new String[jsonArray.length()];
+            ArrayList<String> array = new ArrayList<String>(jsonArray.length());
             for(int i = 0; i < jsonArray.length() ; i++){
-                array[i] = jsonArray.getJSONObject(i).getString("title");
+                array.add(jsonArray.getJSONObject(i).getString("title"));
             }
             return array;
         } catch (FileNotFoundException | JSONException e) {
@@ -142,7 +142,7 @@ public class MoviesDB {
     }
 
 
-    public static String[] getMovieCategories(String title){
+    public static ArrayList<String> getMovieCategories(String title){
         try {
             File f = new File(accountFile);
             String data = fileToString();
@@ -152,9 +152,9 @@ public class MoviesDB {
                 JSONObject movie = movies.getJSONObject(i);
                 if (movie.getString("title").equals(title)){
                     JSONArray Jcategories = movie.getJSONArray("categories");
-                    String categories[] = new String[Jcategories.length()];
+                    ArrayList<String> categories = new ArrayList<String>(Jcategories.length());
                     for(int n = 0; n < Jcategories.length(); n++)
-                        categories[n] = Jcategories.getString(n);
+                        categories.add(Jcategories.getString(n));
                     return categories;
                 }
             }
@@ -165,10 +165,21 @@ public class MoviesDB {
     }
 
     public static boolean isOfCategorie(String movie, String categorie){
-        List<String> categories = Arrays.asList(getMovieCategories(movie));
+        List<String> categories = getMovieCategories(movie);
         if(categories.contains(categorie))
             return true;
         return false;
+    }
+
+    public static ArrayList<String> getAuthorizedMovies(String username){
+        Account user = AccountManagement.getAccount(username);
+        ArrayList<String> forbiddenCategories = user.getForbiddenCategories();
+        ArrayList<String> movies = MoviesDB.getTitles();
+        Set<String> forbiddenMovies = new LinkedHashSet<>();
+        for(String category : forbiddenCategories)
+            forbiddenMovies.addAll(CategoriesDB.getMoviesOfCategory(category));
+        movies.removeAll(forbiddenMovies);
+        return movies;
     }
 
     public static void main(String[] args) {
@@ -205,6 +216,16 @@ public class MoviesDB {
         System.out.print("Ducobu path : " + getMoviePath("Ducobu") + "\n");
 
         System.out.print("Ducobu is of categorie famille : " + isOfCategorie("Ducobu", "famille") + "\n");
+
+        System.out.print("Thriller movies : \n");
+        for(String s : CategoriesDB.getMoviesOfCategory("thriller"))
+            System.out.print(s+"\n");
+
+        System.out.print("Child authorized movies : \n");
+        for(String s : getAuthorizedMovies("child"))
+            System.out.print(s+"\n");
     }
+
+    //Todo : Renvoie tous les films auxquels un user à accès
 
 }

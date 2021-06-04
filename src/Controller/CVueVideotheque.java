@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
@@ -27,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class CVueVideotheque implements Initializable {
 
-    public static String imgPath;
+    public static Account actualUser;
 
     @FXML
     public MenuButton menu;
@@ -67,12 +68,11 @@ public class CVueVideotheque implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        FileInputStream inputstream = null;
-        try {
-            inputstream = new FileInputStream(imgPath);
-            System.out.print(inputstream);
-            ImageView imageView = new ImageView(new Image(inputstream));
-            imageView.setFitHeight(topPanel.getPrefHeight());
+        ImageView imageView = new ImageView(actualUser.getImage());
+        imageView.setFitHeight(topPanel.getPrefHeight());
+        imageView.setFitHeight(menu.getPrefHeight());
+        imageView.setFitWidth(menu.getPrefWidth());
+        menu.setGraphic(imageView);
 
             //todo : laisser code dur ?
 
@@ -101,5 +101,16 @@ public class CVueVideotheque implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             //todo recherche du film dans DB
         }
+    }
+
+    @FXML
+    public static void changeToMe(Node anySceneNode, Object controller) throws IOException {
+        Stage stage = (Stage) anySceneNode.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 }

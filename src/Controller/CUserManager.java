@@ -6,6 +6,7 @@ import View.CategoryView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,10 +17,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.event.*;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class CUserManager implements Initializable {
 
@@ -43,7 +47,6 @@ public class CUserManager implements Initializable {
 
     private HBox createAccountHBox(Account account){
         HBox accountBox = new HBox();
-
         accountBox.setAlignment(Pos.CENTER);
 
         //code to generate img & textfield
@@ -57,35 +60,25 @@ public class CUserManager implements Initializable {
         bt.setId(account.getUserName());
         bt.setGraphic(imgVw);
         bt.setOnAction(this::changeAccountImage);
-
-
         identifiersBox.getChildren().addAll(bt,new TextField(account.getUserName()));
 
+        //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
-
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
         for (String forbiddenCategory :
              account.getForbiddenCategories()) {
             CategoryView categoryView = new CategoryView(forbiddenCategory, true);
-
             categoryView.getXButton().setId(account.getUserName());
             categoryView.getXButton().setOnAction(this::allowCategory);
-
             forbiddenCategories.getChildren().add(categoryView);
         }
         Button forbidBt = new Button();
         forbidBt.setText("+");
         forbidBt.setId(account.getUserName());
-
         forbidBt.setOnAction(this::forbidCategory);
-
         forbiddenCategories.getChildren().add(forbidBt);
 
-
-
-
         accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
-
         return accountBox;
     }
 
@@ -106,6 +99,11 @@ public class CUserManager implements Initializable {
     }
 
     private void changeAccountImage(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void getBackToMenu(ActionEvent actionEvent) throws IOException {
+        CVueVideotheque.changeToMe(toAddOn,this);
     }
 
 

@@ -46,9 +46,9 @@ public class CFilmCreationView implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String category[] = CategoriesDB.getCategories();
-        for(int i = 0; i < category.length; i++){
-            MenuItem cate = new MenuItem(category[i]);
+        ArrayList<String> category = CategoriesDB.getCategories();
+        for(int i = 0; i < category.size(); i++){
+            MenuItem cate = new MenuItem(category.get(i));
             cate.setOnAction(e -> categoryClicked(e));
             this.splitMenuCategory.getItems().add(cate);
         }
