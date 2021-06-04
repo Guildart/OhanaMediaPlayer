@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Account;
+import Model.CategoriesDB;
 import View.FilmDisplayByCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CVueVideotheque implements Initializable {
@@ -73,18 +76,20 @@ public class CVueVideotheque implements Initializable {
         imageView.setFitHeight(menu.getPrefHeight());
         imageView.setFitWidth(menu.getPrefWidth());
         menu.setGraphic(imageView);
+        //todo : laisser code dur ?
 
-            //todo : laisser code dur ?
+        imageView.setFitHeight(menu.getPrefHeight());
+        imageView.setFitWidth(menu.getPrefWidth());
 
-            imageView.setFitHeight(menu.getPrefHeight());
-            imageView.setFitWidth(menu.getPrefWidth());
-
-            menu.setGraphic(imageView);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        menu.setGraphic(imageView);
+        ArrayList<String> forbidenCategory = this.actualUser.getForbiddenCategories();
+        ArrayList<String> allCategory = CategoriesDB.getCategories();
+        for(String forbiden : forbidenCategory){
+            allCategory.remove(forbiden);
         }
-        this.globalVBox.getChildren().add(new FilmDisplayByCategory("Action"));
-
+        for(String allowd : allCategory){
+            this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
+        }
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
