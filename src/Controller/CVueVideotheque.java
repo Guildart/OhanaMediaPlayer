@@ -1,5 +1,6 @@
 package Controller;
 
+import View.FilmDisplayByCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -31,6 +33,7 @@ public class CVueVideotheque implements Initializable {
     public MenuButton menu;
     public TextField barreRecherche;
     public AnchorPane topPanel;
+    public VBox globalVBox;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -80,6 +83,7 @@ public class CVueVideotheque implements Initializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        this.globalVBox.getChildren().add(new FilmDisplayByCategory("Action"));
 
     }
 
