@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,7 +36,7 @@ public class CategoriesDB {
         }
     }
 
-    public static boolean addCategorie(String title) {
+    public static boolean addCategory(String title) {
         File f = new File(accountFile);
         createFile();
         try {
@@ -107,15 +106,15 @@ public class CategoriesDB {
 
     public static void main(String[] args) {
         createFile();
-        addCategorie("action");
-        addCategorie("aventure");
-        addCategorie("voyage dans le temps");
-        addCategorie("thriller");
-        addCategorie("humour");
-        addCategorie("famille");
-        addCategorie("fantastique");
-        addCategorie("course");
-        addCategorie("fantastique");
+        addCategory("action");
+        addCategory("aventure");
+        addCategory("voyage dans le temps");
+        addCategory("thriller");
+        addCategory("humour");
+        addCategory("famille");
+        addCategory("fantastique");
+        addCategory("course");
+        addCategory("fantastique");
 
 
         System.out.print("Afficher toutes catégories : \n");

@@ -57,10 +57,16 @@ public class Account {
         return forbiddenCategories;
     }
 
-    public void allow(String category){
-        forbiddenCategories.remove(category);
+    public boolean allow(String category){
+        return forbiddenCategories.remove(category);
     }
-
+    public boolean forbid(String category) {
+        boolean isNew = !forbiddenCategories.contains(category);
+        if (isNew){
+            forbiddenCategories.add(category);
+        }
+        return isNew;
+    }
     public JSONObject toJson(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userName", userName);
