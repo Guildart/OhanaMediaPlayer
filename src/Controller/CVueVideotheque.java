@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
@@ -16,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -88,5 +90,16 @@ public class CVueVideotheque implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             //todo recherche du film dans DB
         }
+    }
+
+    @FXML
+    public static void changeToMe(Node anySceneNode, Object controller) throws IOException {
+        Stage stage = (Stage) anySceneNode.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 }
