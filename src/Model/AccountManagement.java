@@ -72,6 +72,22 @@ public class AccountManagement {
         return getAccounts().get(userName);
     }
 
+    public static void deleteAccount(String accountName){
+        HashMap<String,Account> accounts = getAccounts();
+        if (accounts.get(accountName).getRole() != Role.other){
+            System.out.println("can't delete a "+accounts.get(accountName).getRole().toString() +
+                    " role (must be an other role)");
+            return;
+        }
+        accounts.remove(accountName);
+        try {
+            saveAccounts(accounts);
+        }catch (IOException e){
+            e.printStackTrace();
+            System.out.println("couldn't delete account" + accountName);
+        }
+    }
+
     public static void saveAccount(Account toSave){
         HashMap<String,Account> accounts = getAccounts();
         accounts.put(toSave.getUserName(), toSave);
@@ -79,7 +95,7 @@ public class AccountManagement {
             saveAccounts(accounts);
         }catch (IOException e){
             e.printStackTrace();
-            System.out.println("couldn't save account file");
+            System.out.println("couldn't save account :" + toSave.getUserName());
         }
     }
 
@@ -92,4 +108,6 @@ public class AccountManagement {
         Files.write(Paths.get(accountFile), accountJSON.toString().getBytes());
 
     }
+
+
 }

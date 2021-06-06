@@ -3,12 +3,14 @@ package Controller;
 import Model.Account;
 import Model.AccountManagement;
 import Model.CategoriesDB;
+import Model.Role;
 import View.CategoryView;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,10 +20,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import javafx.event.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,7 +56,8 @@ public class CUserManager implements Initializable {
     private HBox createAccountHBox(Account account){
         HBox accountBox = new HBox();
         accountBox.setAlignment(Pos.CENTER);
-
+        accountBox.setMaxWidth(Double.MAX_VALUE);
+        accountBox.setPrefWidth(1500);
         //code to generate img & textfield
         VBox identifiersBox = new VBox();
         ImageView imgVw = new ImageView();
@@ -68,6 +74,7 @@ public class CUserManager implements Initializable {
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
+
         for (String forbiddenCategory :
              account.getForbiddenCategories()) {
             forbiddenCategories.getChildren().add(createCategoryView(forbiddenCategory,account));
@@ -81,9 +88,64 @@ public class CUserManager implements Initializable {
 
 
         forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
-        accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
+
+        HBox.setHgrow(forbiddenCategories, Priority.ALWAYS);
+        forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
+        forbiddenCategories.setPrefWidth(1000);
+        if (account.getRole() == Role.other) {
+            Button deleteButton = new Button("delete this account");
+
+            deleteButton.setOnAction(this::tryToDeleteAccount);
+            deleteButton.setId(account.getUserName());
+
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,deleteButton);
+
+        }else{
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
+        }
+
 
         return accountBox;
+    }
+
+    private void tryToDeleteAccount(ActionEvent actionEvent){
+        String accountName = ((Button) actionEvent.getSource()).getId();
+
+        Stage confirmationWindow=new Stage();
+        confirmationWindow.initModality(Modality.APPLICATION_MODAL);
+        confirmationWindow.setTitle("Warning!");
+
+        Label label= new Label("Are you sure you want to delete "+ accountName+ "'s account?");
+        label.setTextFill(Color.RED);
+
+
+        Button confirmBt= new Button("Yes");
+        Button cancelBt= new Button("No");
+
+
+
+        confirmBt.setOnAction(e -> {
+                                    AccountManagement.deleteAccount(accountName);
+                                    setupAllAccounts();
+                                    confirmationWindow.close();
+        });
+        cancelBt.setOnAction(e -> confirmationWindow.close());
+
+
+        VBox layout= new VBox(10);
+        HBox buttonLayout = new HBox(100);
+        buttonLayout.getChildren().addAll(confirmBt, cancelBt);
+        buttonLayout.setAlignment(Pos.CENTER);
+
+        layout.getChildren().addAll(label, buttonLayout);
+
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene1= new Scene(layout, 300, 250);
+
+        confirmationWindow.setScene(scene1);
+
+        confirmationWindow.showAndWait();
     }
 
     private CategoryView createCategoryView(String categoryName, Account account){
