@@ -89,7 +89,7 @@ public class CUserManager implements Initializable {
 
         forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
 
-        HBox.setHgrow(forbiddenCategories, Priority.ALWAYS);
+        HBox.setHgrow(forbiddenCategories, Priority.SOMETIMES);
         forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
         forbiddenCategories.setPrefWidth(1000);
         if (account.getRole() == Role.other) {
