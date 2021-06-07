@@ -25,9 +25,11 @@ import javafx.scene.layout.VBox;
 
 import javafx.event.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -39,13 +41,42 @@ public class CUserManager implements Initializable {
     @FXML
     private VBox toAddOn;
 
+
+    private HashMap<String, TextField> oldUserNameToNewUserNameTextfield = new HashMap<>(0);
+    private HashMap<String, TextField> oldUserNameToNewPasswordTextfield = new HashMap<>(0);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         setupAllAccounts();
     }
 
+    public void saveNewUsernamesAndPasswords(){
+        HashMap<String,Account> accountHash = AccountManagement.getAccounts();
+        for (String username: oldUserNameToNewUserNameTextfield.keySet()) {
+            String newUserName = oldUserNameToNewUserNameTextfield.get(username).getText();
+            String newPassword = oldUserNameToNewPasswordTextfield.get(username).getText();
+            Account updatedAccount = accountHash.get(username);
+            accountHash.remove(username);
+            updatedAccount.setUserName(newUserName);
+            updatedAccount.setPassword(newPassword);
+            accountHash.put(newUserName,updatedAccount);
+
+        }
+        try {
+            AccountManagement.saveAccounts(accountHash);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.out.println("couldn't save modified username & passwords");
+        }
+    }
+
+
     private void setupAllAccounts(){
+        if (toAddOn.getChildren().size() > 0){
+            saveNewUsernamesAndPasswords();
+        }
         toAddOn.getChildren().clear();
         HashMap<String,Account> accounts = AccountManagement.getAccounts();
         for(String key : accounts.keySet()){
@@ -65,11 +96,22 @@ public class CUserManager implements Initializable {
         imgVw.setImage(img);
         imgVw.setFitWidth(64);
         imgVw.setFitHeight(64);
-        Button bt = new Button("");
-        bt.setId(account.getUserName());
-        bt.setGraphic(imgVw);
-        bt.setOnAction(this::changeAccountImage);
-        identifiersBox.getChildren().addAll(bt,new TextField(account.getUserName()));
+        Button profilePictureButton = new Button("");
+        profilePictureButton.setId(account.getUserName());
+        profilePictureButton.setGraphic(imgVw);
+        profilePictureButton.setOnAction(this::changeAccountImage);
+
+        TextField textFieldUserName = new TextField(account.getUserName());
+        TextField textFieldPassword = new TextField(account.getPassword());
+
+        oldUserNameToNewUserNameTextfield.put(account.getUserName(),textFieldUserName);
+        oldUserNameToNewPasswordTextfield.put(account.getUserName(),textFieldPassword);
+        if (account.getRole().equals(Role.child)){
+            textFieldPassword.setDisable(true);
+        }
+
+        identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
+                new Label("Password"),textFieldPassword);
 
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
@@ -219,12 +261,26 @@ public class CUserManager implements Initializable {
     }
 
     private void changeAccountImage(ActionEvent actionEvent) {
+        String username = ((Button) actionEvent.getSource()).getId();
+        Stage stage = new Stage();
+        FileChooser myFileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filters = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        myFileChooser.getExtensionFilters().add(filters);
+        myFileChooser.setTitle("Sélectionner une photo de profil");
+        File file = myFileChooser.showOpenDialog(stage);
+        if (file != null) {
+            String myPath = file.getPath();
+            Account accountToModify = AccountManagement.getAccount(username);
+            accountToModify.setImagePath(myPath);
+            AccountManagement.saveAccount(accountToModify);
+            setupAllAccounts();
+        }
     }
 
     @FXML
     public void getBackToMenu(ActionEvent actionEvent) throws IOException {
         CVueVideotheque.changeToMe(toAddOn,this);
+        saveNewUsernamesAndPasswords();
     }
-
 
 }

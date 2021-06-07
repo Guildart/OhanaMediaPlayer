@@ -80,4 +80,16 @@ public class Account {
         jsonObject.put("forbidden", forbiddenJSONCat);
         return jsonObject;
     }
+
+    public void setImagePath(String imagePath){
+        this.imagePath = imagePath;
+    }
+
+    public void setUserName(String userName){
+        this.userName = userName;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
 }
