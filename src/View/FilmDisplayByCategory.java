@@ -28,6 +28,7 @@ public class FilmDisplayByCategory extends VBox {
         ArrayList<String> allMyFilm = MoviesDB.getAuthorizedMovies(actualUser.getUserName());
 
         ScrollPane myScroolPane = new ScrollPane();
+        myScroolPane.setMinSize(120,120);
         this.filmDisplay = new HBox();
         this.filmDisplay.setSpacing(10);
         this.filmDisplay.setPadding(new Insets(10));
@@ -38,7 +39,6 @@ public class FilmDisplayByCategory extends VBox {
 
         for(String film : allMyFilm){
             ArrayList<String> currentCategory = MoviesDB.getMovieCategories(film);
-            System.out.println(this.myCategory);
             if(currentCategory.contains(this.myCategory.toLowerCase())){
                 VBox filmRep = new VBox();
                 ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());

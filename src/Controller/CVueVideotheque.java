@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Account;
 import Model.CategoriesDB;
+import Model.MoviesDB;
 import View.FilmDisplayByCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +40,7 @@ public class CVueVideotheque implements Initializable {
     public TextField barreRecherche;
     public AnchorPane topPanel;
     public VBox globalVBox;
+    public AnchorPane myPane;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -88,7 +91,9 @@ public class CVueVideotheque implements Initializable {
             allCategory.remove(forbiden);
         }
         for(String allowd : allCategory){
-            this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
+            if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
+                this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
+            }
         }
     }
 
