@@ -5,6 +5,7 @@ import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
+import View.MultipleChoiceBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,9 +70,9 @@ public class CFilmCreationView implements Initializable{
 
 
         String categoryName = ((MenuItem)e.getSource()).getText();
-        CategoryView test = new CategoryView(categoryName, true);
-        test.getXButton().setOnAction(a -> supClicked(a));
-        this.categoryList.getChildren().add(test);
+        CategoryView categoryToAdd = new CategoryView(categoryName, true);
+        categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
+        this.categoryList.getChildren().add(categoryToAdd);
         this.categoryAdded.add(categoryName);
         updateUsersAllowed();
     }
@@ -177,6 +178,21 @@ public class CFilmCreationView implements Initializable{
         Scene scene = new Scene(root, categoryList.getScene().getWidth(), categoryList.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void addMultipleCategory(ActionEvent e){
+        ArrayList<String> categorySelected = MultipleChoiceBox.displayCategory("test", this.categoryAdded);
+        this.categoryAdded.clear();
+        this.categoryList.getChildren().clear();
+        for(String category : categorySelected){
+            if(!this.categoryAdded.contains(category)){
+                CategoryView categoryToAdd = new CategoryView(category, true);
+                categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
+                this.categoryList.getChildren().add(categoryToAdd);
+                this.categoryAdded.add(category);
+                updateUsersAllowed();
+            }
+        }
     }
 
 
