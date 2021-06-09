@@ -62,6 +62,31 @@ public class CategoriesDB {
 
     }
 
+    public static boolean deleteCategory(String title) {
+        File f = new File(accountFile);
+        createFile();
+        try {
+            String data = fileToString();
+            JSONObject obj = new JSONObject(data);
+            JSONArray categories = (JSONArray) obj.get("categories");
+            boolean contain = false;
+            /**Véirfier si contient le  film**/
+            for(int i = 0; i < categories.length() ; i++) {
+                if (categories.getString(i).equals(title)) {
+                    for(String s : getMoviesOfCategory(title))
+                        MoviesDB.removeCategoryToMovie(s, title);
+                    categories.remove(i);
+                    Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                    return true;
+                }
+            }
+            return false;
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static String fileToString() throws FileNotFoundException {
         String data = "";
         File f = new File(accountFile);
@@ -129,6 +154,14 @@ public class CategoriesDB {
         System.out.print("Course movies : \n");
         for(String s : getMoviesOfCategory("course"))
             System.out.print(s+"\n");
+
+        deleteCategory("aventure");
+
+        System.out.print("Afficher toutes catégories : \n");
+        for(String s : getCategories())
+            System.out.print(s+"\n");
+
+        addCategory("aventure");
 
     }
 

@@ -6,9 +6,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
    <children>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="600.0">
+            <HBox fx:id="hboxAddCategory" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0">
                <children>
                   <Label text="Choix catégorie :">
                      <padding>
@@ -23,7 +23,38 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </ChoiceBox>
+                  <Button mnemonicParsing="false" onAction="#addCategory" text="+">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#deleteCategory" text="Delete">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Label fx:id="labelCatAlreadyExist" text="La catégorie existe déjà" textFill="RED">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
                </children></HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="50.0">
+               <children>
+                  <Label text="Nom de la catégorie">
+                     <padding>
+                        <Insets left="25.0" />
+                     </padding></Label>
+                  <TextField fx:id="nameCategory" onKeyPressed="#renameCategory">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></TextField>
+                  <Label fx:id="message" text="Cette catégorie existe déjà" textFill="RED">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
             <HBox fx:id="hboxAddMovie" prefHeight="60.0" prefWidth="600.0" spacing="25.0">
                <children>
                   <Label text="Ajouter un film à la catégorie :">
@@ -61,5 +92,6 @@
             </HBox>
          </children>
       </VBox>
+      <Button mnemonicParsing="false" onAction="#goBack" text="Retour" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>
