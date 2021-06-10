@@ -36,7 +36,7 @@ public class CFilmCreationView implements Initializable{
     public Button choiceButton;
     public TextField pathText;
     public TextField nameText;
-    public SplitMenuButton splitMenuCategory;
+    public Button splitMenuCategory;
     public HBox categoryList;
     public HBox notAllowedUsers;
     public Label pathErrorMessage;
@@ -47,17 +47,12 @@ public class CFilmCreationView implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<String> category = CategoriesDB.getCategories();
-        for(int i = 0; i < category.size(); i++){
-            MenuItem cate = new MenuItem(category.get(i));
-            cate.setOnAction(e -> categoryClicked(e));
-            this.splitMenuCategory.getItems().add(cate);
-        }
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
     }
 
+    /**
     public void categoryClicked(ActionEvent e){
        /** HBox cateNSupButton = new HBox();
         Button supButton = new Button("x");
@@ -66,7 +61,7 @@ public class CFilmCreationView implements Initializable{
         Button newCategory = new Button(categoryName);
         cateNSupButton.getChildren().addAll(newCategory, supButton);
         this.categoryList.getChildren().add(cateNSupButton);
-        this.categoryAdded.add(categoryName);**/
+        this.categoryAdded.add(categoryName);
 
 
         String categoryName = ((MenuItem)e.getSource()).getText();
@@ -76,6 +71,7 @@ public class CFilmCreationView implements Initializable{
         this.categoryAdded.add(categoryName);
         updateUsersAllowed();
     }
+     **/
 
     public void supClicked(ActionEvent e){
         HBox currentHBox = (HBox)((Button)e.getSource()).getParent();

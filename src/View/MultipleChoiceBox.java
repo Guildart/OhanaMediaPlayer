@@ -1,6 +1,7 @@
 package View;
 
 import Model.CategoriesDB;
+import Model.MoviesDB;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,12 +24,14 @@ public class MultipleChoiceBox {
     private static ArrayList<String> filmSelected = new ArrayList<>();
 
 
+
+
+    //parite film creation
     public static ArrayList<String> displayCategory(String title, ArrayList<String> alreadyAdd){
         categorySelected.clear();
         for(String alredy : alreadyAdd){
             categorySelected.add(alredy);
         }
-        System.out.println(categorySelected);
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -45,12 +48,12 @@ public class MultipleChoiceBox {
 
         ArrayList<String> allCategory = CategoriesDB.getCategories();
         for(String category : allCategory){
-            Button categoryButoon = new Button(category);
+            Button categoryButton = new Button(category);
             if(categorySelected.contains(category)){
-                categoryButoon.setStyle("-fx-background-color: #00ff00");
+                categoryButton.setStyle("-fx-background-color: #00ff00");
             }
-            categoryButoon.setOnAction(e -> categoryPressed(e) );
-            root.getChildren().add(categoryButoon);
+            categoryButton.setOnAction(e -> categoryPressed(e) );
+            root.getChildren().add(categoryButton);
         }
 
         ultraRoot.getChildren().add(root);
@@ -82,4 +85,65 @@ public class MultipleChoiceBox {
             ((Button)e.getSource()).setStyle("-fx-background-color: #00ff00");
         }
     }
+    //fin parite film creation
+
+    //debut parite categorie creation
+
+    public static ArrayList<String> displayFilm(String title, ArrayList<String> alredyAdd){
+        filmSelected.clear();
+        for(String film : alredyAdd){
+            filmSelected.add(film);
+        }
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle(title);
+        window.setMinWidth(250);
+
+        VBox ultraRoot = new VBox();
+
+        FlowPane root = new FlowPane();
+        root.setHgap(10);
+        root.setVgap(20);
+        root.setPadding(new Insets(15,15,15,15));
+
+        ArrayList<String> allFilm = MoviesDB.getTitles();
+        for(String film : allFilm){
+            Button filmButton = new Button("film");
+            if(filmSelected.contains(film)){
+                filmButton.setStyle("-fx-background-color: #00ff00");
+            }
+            filmButton.setOnAction(e -> filmPressed(e));
+            root.getChildren().add(filmButton);
+        }
+
+        ultraRoot.getChildren().add(root);
+
+        Button validate = new Button("valider");
+        validate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                window.close();
+            }
+        });
+        ultraRoot.getChildren().add(validate);
+
+        Scene scene = new Scene(ultraRoot);
+        window.setScene(scene);
+        window.showAndWait();
+        return filmSelected;
+    }
+
+    public static void filmPressed(ActionEvent e){
+        String actualFilm = ((Button)e.getSource()).getText();
+        if(filmSelected.contains(actualFilm)){
+            filmSelected.remove(actualFilm);
+            ((Button)e.getSource()).setStyle("-fx-background-color: #ffffff");
+        }
+        else{
+            filmSelected.add(actualFilm);
+            ((Button)e.getSource()).setStyle("-fx-background-color: #00ff00");
+        }
+    }
+
+
 }
