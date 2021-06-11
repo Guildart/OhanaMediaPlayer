@@ -82,7 +82,6 @@ public class CVueVideotheque implements Initializable {
         imageView.setFitHeight(menu.getPrefHeight());
         imageView.setFitWidth(menu.getPrefWidth());
         menu.setGraphic(imageView);
-        //todo : laisser code dur ?
 
         imageView.setFitHeight(menu.getPrefHeight());
         imageView.setFitWidth(menu.getPrefWidth());
@@ -93,10 +92,13 @@ public class CVueVideotheque implements Initializable {
         for(String forbiden : forbidenCategory){
             allCategory.remove(forbiden);
         }
+
         for(String allowd : allCategory){
             if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
                 //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
-                this.vboxDisplayMovie.getChildren().add(new FilmDisplayByCategory(allowd));
+                FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(allowd);
+                filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
+                this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
             }
         }
 
