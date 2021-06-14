@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="myPane" prefHeight="400" prefWidth="800" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueVideotheque">
+<AnchorPane id="pane" fx:id="myPane" prefHeight="400" prefWidth="800" styleClass="hbox" stylesheets="@../css/videotheque.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueVideotheque">
    <children>
-      <VBox fx:id="globalVBox" prefHeight="316.0" prefWidth="424.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="globalVBox" prefHeight="316.0" prefWidth="424.0" styleClass="hbox" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="topPanel" prefHeight="60.0">
                <children>
@@ -25,17 +20,17 @@
                   </MenuButton>
                   <HBox layoutX="259.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#ajouterFilm" text="Ajouter Film">
+                        <Button fx:id="buttonAddMovie" mnemonicParsing="false" onAction="#ajouterFilm" text="Ajouter Film">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#gererCategorie" text="Gérer Catégorie">
+                        <Button fx:id="buttonHandleCategory" mnemonicParsing="false" onAction="#gererCategorie" text="Gérer Catégorie">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#gererUtilisateur" text="Gérer utilisateur">
+                        <Button fx:id="buttonHandleUser" mnemonicParsing="false" onAction="#gererUtilisateur" text="Gérer utilisateur">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </HBox.margin>
@@ -49,6 +44,11 @@
                   <Insets left="10.0" />
                </padding>
             </AnchorPane>
+            <ScrollPane fx:id="scrollPane" prefHeight="2000.0" prefWidth="799.0">
+               <content>
+                  <VBox fx:id="vboxDisplayMovie" />
+               </content></ScrollPane>
+            <VBox prefHeight="200.0" prefWidth="100.0" />
          </children></VBox>
    </children>
 </AnchorPane>

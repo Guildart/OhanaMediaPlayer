@@ -1,0 +1,17 @@
+.scroll-pane > .viewport{
+-fx-background-color: #1a1a1a;
+}
+
+.scroll-pane {
+-fx-background-color: #1a1a1a;
+}
+
+.hbox{
+-fx-background-color: #0e0e0e;
+-fx-border-color: black;
+}
+
+
+.label{
+-fx-text-fill: white;
+}

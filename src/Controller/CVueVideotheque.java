@@ -3,6 +3,7 @@ package Controller;
 import Model.Account;
 import Model.CategoriesDB;
 import Model.MoviesDB;
+import Model.Role;
 import View.FilmDisplayByCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,10 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -41,6 +39,11 @@ public class CVueVideotheque implements Initializable {
     public AnchorPane topPanel;
     public VBox globalVBox;
     public AnchorPane myPane;
+    public ScrollPane scrollPane;
+    public VBox vboxDisplayMovie;
+    public Button buttonAddMovie;
+    public Button buttonHandleCategory;
+    public Button buttonHandleUser;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -79,7 +82,6 @@ public class CVueVideotheque implements Initializable {
         imageView.setFitHeight(menu.getPrefHeight());
         imageView.setFitWidth(menu.getPrefWidth());
         menu.setGraphic(imageView);
-        //todo : laisser code dur ?
 
         imageView.setFitHeight(menu.getPrefHeight());
         imageView.setFitWidth(menu.getPrefWidth());
@@ -90,11 +92,22 @@ public class CVueVideotheque implements Initializable {
         for(String forbiden : forbidenCategory){
             allCategory.remove(forbiden);
         }
+
         for(String allowd : allCategory){
             if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
-                this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
+                //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
+                FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(allowd);
+                filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
+                this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
             }
         }
+
+        if(!actualUser.getRole().equals(Role.admin)){
+            this.buttonAddMovie.setVisible(false);
+            this.buttonHandleCategory.setVisible(false);
+            this.buttonHandleUser.setVisible(false);
+        }
+
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
