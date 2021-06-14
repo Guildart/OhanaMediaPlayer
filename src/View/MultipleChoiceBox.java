@@ -19,9 +19,9 @@ import javafx.stage.Window;
 import java.util.ArrayList;
 
 public class MultipleChoiceBox {
-    private static boolean answer;
     private static ArrayList<String> categorySelected = new ArrayList<>();
     private static ArrayList<String> filmSelected = new ArrayList<>();
+    private static String oneFilm;
 
 
 
@@ -87,7 +87,7 @@ public class MultipleChoiceBox {
     }
     //fin parite film creation
 
-    //debut parite categorie creation
+    //debut parite category creation
 
     public static ArrayList<String> displayFilm(String title, ArrayList<String> alredyAdd){
         filmSelected.clear();
@@ -108,7 +108,7 @@ public class MultipleChoiceBox {
 
         ArrayList<String> allFilm = MoviesDB.getTitles();
         for(String film : allFilm){
-            Button filmButton = new Button("film");
+            Button filmButton = new Button(film);
             if(filmSelected.contains(film)){
                 filmButton.setStyle("-fx-background-color: #00ff00");
             }
@@ -143,6 +143,42 @@ public class MultipleChoiceBox {
             filmSelected.add(actualFilm);
             ((Button)e.getSource()).setStyle("-fx-background-color: #00ff00");
         }
+    }
+
+    //Bonus part pour ne renvoyer qu'un film
+    public static String displayOneFilm(String title){
+        oneFilm = "";
+
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle(title);
+        window.setMinWidth(250);
+
+
+        FlowPane root = new FlowPane();
+        root.setHgap(10);
+        root.setVgap(20);
+        root.setPadding(new Insets(15,15,15,15));
+
+        ArrayList<String> allFilm = MoviesDB.getTitles();
+        for(String film : allFilm){
+            Button filmButton = new Button(film);
+            filmButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    oneFilm = filmButton.getText();
+                    window.close();
+                }
+            });
+            root.getChildren().add(filmButton);
+        }
+
+
+        Scene scene = new Scene(root);
+        window.setScene(scene);
+        window.showAndWait();
+
+        return oneFilm;
     }
 
 

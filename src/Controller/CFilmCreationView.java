@@ -44,6 +44,8 @@ public class CFilmCreationView implements Initializable{
     public Label errorToAddMessage;
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
+    public Boolean modifying = false;
+    public String oldTitle = "";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -101,13 +103,20 @@ public class CFilmCreationView implements Initializable{
         this.errorToAddMessage.setVisible(false);
         if(this.pathText.getText() != "" &&
            this.nameText.getText() != ""){
-            /**if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded)){
-                this.errorToAddMessage.setVisible(true);
+
+            /**
+             * if(!this.modifying){
+             *    if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded)){
+             *    this.errorToAddMessage.setVisible(true);
+             * else{
+             *     fonction qui modifie un film
+             * }
             }**/
             //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
             System.out.println("liste des categorie \n" + this.categoryAdded);
+            System.out.println("je modifie : " + this.modifying);
 
             Stage stage = (Stage) categoryList.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
@@ -177,7 +186,7 @@ public class CFilmCreationView implements Initializable{
     }
 
     public void addMultipleCategory(ActionEvent e){
-        ArrayList<String> categorySelected = MultipleChoiceBox.displayCategory("test", this.categoryAdded);
+        ArrayList<String> categorySelected = MultipleChoiceBox.displayCategory("Choisissez vos catégories", this.categoryAdded);
         this.categoryAdded.clear();
         this.categoryList.getChildren().clear();
         for(String category : categorySelected){
@@ -188,6 +197,34 @@ public class CFilmCreationView implements Initializable{
                 this.categoryAdded.add(category);
                 updateUsersAllowed();
             }
+        }
+    }
+
+    public void modifClicked(ActionEvent e){
+        this.modifying = !modifying;
+        if(this.modifying){
+            this.oldTitle = MultipleChoiceBox.displayOneFilm("choisissez le film a modifier");
+
+            this.nameText.setText(this.oldTitle);
+            this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
+
+
+            this.categoryAdded = MoviesDB.getMovieCategories(this.oldTitle);
+            this.categoryList.getChildren().clear();
+            for(String category : categoryAdded) {
+                    CategoryView categoryToAdd = new CategoryView(category, true);
+                    categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
+                    this.categoryList.getChildren().add(categoryToAdd);
+                    updateUsersAllowed();
+            }
+            ((Button)e.getSource()).setText("Ne plus modifier");
+        }
+        else{
+            ((Button)e.getSource()).setText("Modifier");
+            this.nameText.setText("");
+            this.pathText.setText("");
+            this.categoryList.getChildren().clear();
+            this.categoryAdded = new ArrayList<>();
         }
     }
 
