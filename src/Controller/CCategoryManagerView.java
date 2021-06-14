@@ -103,9 +103,8 @@ public class CCategoryManagerView implements Initializable {
     public void renameCategory(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             String newName = nameCategory.getText();
-            boolean added = CategoriesDB.addCategory(newName);
+            boolean added = CategoriesDB.changeCategoryName(actualCatgory, newName);
             if(added){
-                CategoriesDB.deleteCategory(actualCatgory);
                 actualCatgory = newName;
                 choiceBox.getItems().setAll(CategoriesDB.getCategories());
                 choiceBox.getSelectionModel().select(actualCatgory);

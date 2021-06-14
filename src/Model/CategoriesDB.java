@@ -73,9 +73,39 @@ public class CategoriesDB {
             /**Véirfier si contient le  film**/
             for(int i = 0; i < categories.length() ; i++) {
                 if (categories.getString(i).equals(title)) {
+                    //On supprime la catégorie de tous les films
                     for(String s : getMoviesOfCategory(title))
                         MoviesDB.removeCategoryToMovie(s, title);
                     categories.remove(i);
+                    Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                    return true;
+                }
+            }
+            return false;
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean changeCategoryName(String oldName, String newName){
+        File f = new File(accountFile);
+        createFile();
+        try {
+            String data = fileToString();
+            JSONObject obj = new JSONObject(data);
+            JSONArray categories = (JSONArray) obj.get("categories");
+            boolean contain = false;
+            /**Véirfier si contient le  film**/
+            for(int i = 0; i < categories.length() ; i++) {
+                if (categories.getString(i).equals(oldName)) {
+                    //On supprime la catégorie de tous les films
+                    for(String s : getMoviesOfCategory(oldName)) {
+                        MoviesDB.removeCategoryToMovie(s, oldName);
+                        MoviesDB.addCategoryToMovie(s, newName);
+                    }
+                    categories.remove(i);
+                    categories.put(newName);
                     Files.write(Paths.get(accountFile), obj.toString().getBytes());
                     return true;
                 }
