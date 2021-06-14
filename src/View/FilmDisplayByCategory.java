@@ -22,7 +22,9 @@ public class FilmDisplayByCategory extends VBox {
 
     public FilmDisplayByCategory(String category){
         this.myCategory = category;
+        this.myCategory = myCategory.substring(0, 1).toUpperCase() + myCategory.substring(1); //Première lettre en majuscule
         this.title = new Label(this.myCategory);
+        this.title.getStyleClass().add("categoryLabel"); //Attribution class style pour le css
 
         Account actualUser = CVueVideotheque.actualUser;
         ArrayList<String> allMyFilm = MoviesDB.getAuthorizedMovies(actualUser.getUserName());
@@ -45,7 +47,9 @@ public class FilmDisplayByCategory extends VBox {
                 filmImgVw.setFitWidth(64);
                 filmImgVw.setFitHeight(64);
                 filmRep.setAlignment(Pos.CENTER);
-                filmRep.getChildren().addAll(filmImgVw, new Label(film));
+                Label movieLabel = new Label(film);
+                movieLabel.getStyleClass().add("movieLabel");
+                filmRep.getChildren().addAll(filmImgVw,movieLabel);
 
                 this.filmDisplay.getChildren().add(filmRep);
             }

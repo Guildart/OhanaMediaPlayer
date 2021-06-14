@@ -12,6 +12,13 @@
 }
 
 
-.label{
+.categoryLabel{
 -fx-text-fill: white;
+-fx-font-size: 20;
+-fx-font-weight: bold;
+}
+
+.movieLabel{
+-fx-text-fill: white;
+-fx-font-weight: bold;
 }
