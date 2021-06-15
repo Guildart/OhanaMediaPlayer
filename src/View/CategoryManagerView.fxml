@@ -6,7 +6,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+      <Button mnemonicParsing="false" onAction="#goBack" text="Retour" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <VBox alignment="TOP_CENTER" layoutY="47.0" prefHeight="353.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
          <children>
             <HBox fx:id="hboxAddCategory" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0">
                <children>
@@ -55,9 +56,9 @@
                   </Label>
                </children>
             </HBox>
-            <HBox fx:id="hboxAddMovie" prefHeight="60.0" prefWidth="600.0" spacing="25.0">
+            <HBox fx:id="hboxAddMovie" alignment="CENTER_LEFT" prefHeight="136.0" prefWidth="600.0" spacing="25.0">
                <children>
-                  <Label text="Ajouter un film à la catégorie :">
+                  <Label text="Film de la catégorie :">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -65,33 +66,17 @@
                         <Insets left="25.0" />
                      </padding>
                   </Label>
+                  <ScrollPane prefHeight="153.0" prefWidth="281.0">
+                     <content>
+                        <FlowPane fx:id="flowPaneMovies" prefHeight="73.0" prefWidth="279.0" />
+                     </content>
+                  </ScrollPane>
                   <Button mnemonicParsing="false" onAction="#addMovie" text="+">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Button>
                </children></HBox>
-            <HBox prefHeight="202.0" prefWidth="600.0">
-               <children>
-                  <Label text="Films de la catégorie :">
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="20.0" />
-                     </HBox.margin>
-                  </ListView>
-               </children>
-            </HBox>
          </children>
       </VBox>
-      <Button mnemonicParsing="false" onAction="#goBack" text="Retour" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

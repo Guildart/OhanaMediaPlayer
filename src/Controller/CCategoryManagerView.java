@@ -3,6 +3,8 @@ package Controller;
 import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.AutoCompleteTextField;
+import View.CategoryView;
+import View.MultipleChoiceBox;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import observerObservable.Observer;
@@ -33,15 +36,14 @@ public class CCategoryManagerView implements Initializable {
     @FXML
     public ChoiceBox choiceBox;
     public HBox hboxAddMovie;
-    public ListView listView;
 
 
-    public AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField() ;
     public TextField nameCategory;
     public Label message;
     public HBox hboxAddCategory;
     public TextField newCategoryName;
     public Label labelCatAlreadyExist;
+    public FlowPane flowPaneMovies;
 
     private String actualCatgory = null;
 
@@ -50,9 +52,6 @@ public class CCategoryManagerView implements Initializable {
         ArrayList<String>  allCategories = CategoriesDB.getCategories();
         for(String s : allCategories)
             choiceBox.getItems().add(s);
-
-        hboxAddMovie.getChildren().add(1,autoCompleteTextField);
-        autoCompleteTextField.getEntries().addAll(MoviesDB.getTitles());
         message.setVisible(false);
         labelCatAlreadyExist.setVisible(false);
 
@@ -82,30 +81,65 @@ public class CCategoryManagerView implements Initializable {
         }
     }
 
+    public void supClicked(ActionEvent e) {
+        try {
+            HBox currentHBox = (HBox)((Button)e.getSource()).getParent();
+            String movie = ((Button)currentHBox.getChildren().get(0)).getText();
+            System.out.print(movie);
+            MoviesDB.removeCategoryToMovie(movie, actualCatgory);
+            this.flowPaneMovies.getChildren().remove(currentHBox);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        //this.categoryAdded.remove(((Button)currentHBox.getChildren().get(0)).getText());
+    }
+
 
     public void selectCategory(ActionEvent actionEvent) {
         actualCatgory = (String) choiceBox.getSelectionModel().getSelectedItem();
-        for(String s : CategoriesDB.getMoviesOfCategory(actualCatgory))
-            System.out.print(s + "\n");
-        listView.getItems().setAll(CategoriesDB.getMoviesOfCategory(actualCatgory));
+        flowPaneMovies.getChildren().clear();
+        for(String s : CategoriesDB.getMoviesOfCategory(actualCatgory)){
+                CategoryView MovieToAdd = new CategoryView(s, true);
+                MovieToAdd.getXButton().setOnAction(a -> supClicked(a));
+                flowPaneMovies.getChildren().add(MovieToAdd);
+        }
+        //listView.getItems().setAll(CategoriesDB.getMoviesOfCategory(actualCatgory));
         nameCategory.setText(actualCatgory);
 
         //System.out.print(actualCatgory + "\n");
     }
 
+
+
     public void addMovie(ActionEvent actionEvent) throws IOException, JSONException {
-        String movie = autoCompleteTextField.getText();
-        boolean isAdd = MoviesDB.addCategoryToMovie(movie, actualCatgory);
-        if(isAdd)
-            listView.getItems().add(movie);
+        ArrayList<String> moviesInCategory = CategoriesDB.getMoviesOfCategory(actualCatgory);
+        ArrayList<String> moviesSelected = MultipleChoiceBox.displayFilm("Choisissez vos films", moviesInCategory);
+        ArrayList<String> moviesAdded = new ArrayList<>();
+
+        for(String s : moviesSelected){
+            if(!moviesInCategory.contains(s)){
+                MoviesDB.addCategoryToMovie(s, actualCatgory);
+                moviesAdded.add(s);
+                moviesInCategory.remove(s);
+            }
+        }
+
+        for(String s : moviesInCategory)
+            MoviesDB.removeCategoryToMovie(s, actualCatgory);
+
+        flowPaneMovies.getChildren().clear();
+        for(String movie : moviesSelected){
+            CategoryView MovieToAdd = new CategoryView(movie, true);
+            MovieToAdd.getXButton().setOnAction(a -> supClicked(a));
+            flowPaneMovies.getChildren().add(MovieToAdd);
+        }
     }
 
     public void renameCategory(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             String newName = nameCategory.getText();
-            boolean added = CategoriesDB.addCategory(newName);
+            boolean added = CategoriesDB.changeCategoryName(actualCatgory, newName);
             if(added){
-                CategoriesDB.deleteCategory(actualCatgory);
                 actualCatgory = newName;
                 choiceBox.getItems().setAll(CategoriesDB.getCategories());
                 choiceBox.getSelectionModel().select(actualCatgory);

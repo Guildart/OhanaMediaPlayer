@@ -3,6 +3,7 @@ package Model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -190,6 +191,87 @@ public class MoviesDB {
         throw new RuntimeException("Le film : " + title + " n'existe pas");
     }
 
+    public static boolean setTitle(String acutalTitle, String newTitle) throws IOException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+
+        if(getTitles().contains(newTitle))
+            return false;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(acutalTitle)){
+                movie.put("title", newTitle);
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean setCategory(String movieTitle, ArrayList<String> categories) throws IOException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(movieTitle)){
+                JSONArray Jcategories = (JSONArray) movie.getJSONArray("categories");
+                Jcategories.clear();
+                for(String s : categories){
+                    Jcategories.put(s);
+                }
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean setPath(String movieTitle, String path) throws IOException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(movieTitle)){
+                movie.put("path", path);
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean set(String actualTitle, String newTitle, String path, ArrayList<String> categories) throws IOException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(actualTitle)){
+                JSONArray Jcategories = (JSONArray) movie.getJSONArray("categories");
+                Jcategories.clear();
+                for(String s : categories){
+                    Jcategories.put(s);
+                }
+                movie.put("path", path);
+                movie.put("title", newTitle);
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isOfCategorie(String movie, String categorie){
         List<String> categories = getMovieCategories(movie);
         if(categories.contains(categorie))
@@ -208,7 +290,7 @@ public class MoviesDB {
         return movies;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         createFile();
         ArrayList<String> cat = new ArrayList<>();
         addMovie("Tenet", "C://videos/Tenet.mp4",
@@ -226,6 +308,9 @@ public class MoviesDB {
 
         addMovie("Flash", "C://videos/Tenet.mp4",
                 new ArrayList<String>(Arrays.asList(new String[]{"course", "fantastique"})));
+
+        addMovie("Tenet2", "C://videos/Tenet.mp4",
+                new ArrayList<String>(Arrays.asList(new String[]{"action", "thriller", "voyage dans le temps"})));
 
         for(String s :getTitles())
             System.out.print(s + "\n");
@@ -250,8 +335,20 @@ public class MoviesDB {
         System.out.print("Child authorized movies : \n");
         for(String s : getAuthorizedMovies("child"))
             System.out.print(s+"\n");
-    }
 
-    //Todo : Renvoie tous les films auxquels un user à accès
+        setCategory("Tenet2", (new ArrayList<String>(List.of("Humour", "fantastique"))));
+        System.out.print("Tenet2 categories : " + "\n");
+        for(String s :getMovieCategories("Tenet2"))
+            System.out.print(s + "\n");
+
+        setTitle("Tenet2", "Tenet3");
+        System.out.println("Contains Tenet2 : " + getTitles().contains("Tenet2"));
+        System.out.println("Contains Tenet3 : " + getTitles().contains("Tenet3"));
+        setTitle("Tenet3", "Tenet2");
+
+        setPath("Tenet2", "C://videos/Tenet2.mp4");
+        System.out.println("path Tenet2 : " + getMoviePath("Tenet2"));
+
+    }
 
 }
