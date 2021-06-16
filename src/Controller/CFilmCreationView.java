@@ -110,6 +110,7 @@ public class CFilmCreationView implements Initializable{
              *    this.errorToAddMessage.setVisible(true);
              * else{
              *     MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(), this.categoryAdded);
+             *     gerer l'erreur de modification d'un film
              * }
             }**/
             //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
