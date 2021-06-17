@@ -19,6 +19,8 @@ public class FilmDisplayByCategory extends VBox {
     private String myCategory;
     private Label title;
 
+    private int numberOfMovies = 0;
+
 
     public FilmDisplayByCategory(String category){
         this.myCategory = category;
@@ -52,8 +54,13 @@ public class FilmDisplayByCategory extends VBox {
                 filmRep.getChildren().addAll(filmImgVw,movieLabel);
 
                 this.filmDisplay.getChildren().add(filmRep);
+                numberOfMovies +=1;
             }
         }
+    }
+
+    public int getNumberOfMovies(){
+        return numberOfMovies;
     }
 
 

@@ -98,7 +98,9 @@ public class CVueVideotheque implements Initializable {
                 //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
                 FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(allowd);
                 filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
-                this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
+                if (filmDisplayByCategory.getNumberOfMovies() > 0) {
+                    this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
+                }
             }
         }
 
