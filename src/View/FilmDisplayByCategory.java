@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,13 +33,25 @@ public class FilmDisplayByCategory extends HBox {
 
     public FilmDisplayByCategory(String category){
 
-        next = new Button(">");
-        previous = new Button("<");
+        next = new Button();
+        previous = new Button();
 
-        next.setMinSize(next.getPrefHeight(), next.getPrefWidth());
+        next.setPrefSize(25, 25);
 
         next.setOnAction(this::onNext);
         previous.setOnAction(this::onPrevious);
+
+        Image img = new Image("file:res/next.png");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(50);
+        view.setPreserveRatio(true);
+        next.setGraphic(view);
+
+        img = new Image("file:res/previous.png");
+        view = new ImageView(img);
+        view.setFitHeight(50);
+        view.setPreserveRatio(true);
+        previous.setGraphic(view);
 
         this.myCategory = category;
         this.myCategory = myCategory.substring(0, 1).toUpperCase() + myCategory.substring(1); //Première lettre en majuscule

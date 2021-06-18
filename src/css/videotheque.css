@@ -11,6 +11,11 @@
 -fx-border-color: black;
 }
 
+.text-field {
+-fx-background-color: #1a1a1a;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
 
 .categoryLabel{
 -fx-text-fill: white;
@@ -21,4 +26,19 @@
 .movieLabel{
 -fx-text-fill: white;
 -fx-font-weight: bold;
+}
+
+.button{
+-fx-background-color: transparent;
+-fx-text-fill: white;
+-fx-font-size: 20;
+-fx-font-weight: bold;
+}
+
+.button:hover {
+-fx-underline: true;
+}
+
+.menu-button{
+-fx-background-color: transparent;
 }
