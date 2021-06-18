@@ -97,6 +97,7 @@ public class CUserManager implements Initializable {
         imgVw.setFitWidth(64);
         imgVw.setFitHeight(64);
         Button profilePictureButton = new Button("");
+        profilePictureButton.getStyleClass().add("profilePicture");
         profilePictureButton.setId(account.getUserName());
         profilePictureButton.setGraphic(imgVw);
         profilePictureButton.setOnAction(this::changeAccountImage);
