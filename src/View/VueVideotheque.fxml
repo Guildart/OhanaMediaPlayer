@@ -5,7 +5,7 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="pane" fx:id="myPane" prefHeight="400" prefWidth="800" styleClass="hbox" stylesheets="@../css/videotheque.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueVideotheque">
+<AnchorPane id="pane" fx:id="myPane" prefHeight="400" prefWidth="900" styleClass="hbox" stylesheets="@../css/videotheque.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CVueVideotheque">
    <children>
       <VBox fx:id="globalVBox" prefHeight="316.0" prefWidth="424.0" styleClass="hbox" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
          <children>
