@@ -123,6 +123,8 @@ public class CVueVideotheque implements Initializable {
     public void research(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             //todo recherche du film dans DB
+            String myResearch = this.barreRecherche.getText();
+
         }
     }
 

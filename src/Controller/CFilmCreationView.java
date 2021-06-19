@@ -231,6 +231,7 @@ public class CFilmCreationView implements Initializable{
             this.pathText.setText("");
             this.categoryList.getChildren().clear();
             this.categoryAdded = new ArrayList<>();
+            updateUsersAllowed();
         }
     }
 
