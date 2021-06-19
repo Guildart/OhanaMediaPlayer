@@ -1,0 +1,22 @@
+.scroll-pane > .viewport{
+-fx-background-color: #1a1a1a;
+}
+
+.label{
+-fx-text-fill: white;
+-fx-font-size: 18;
+-fx-font-weight: bold;
+}
+
+.password-field {
+-fx-background-color: #1a1a1a;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.button{
+-fx-background-color: transparent;
+-fx-text-fill: white;
+-fx-font-size: 20;
+-fx-font-weight: bold;
+}
