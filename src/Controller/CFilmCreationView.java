@@ -36,12 +36,12 @@ public class CFilmCreationView implements Initializable{
     public Button choiceButton;
     public TextField pathText;
     public TextField nameText;
-    public Button splitMenuCategory;
     public HBox categoryList;
     public HBox notAllowedUsers;
     public Label pathErrorMessage;
     public Label titleErrorMessage;
     public Label errorToAddMessage;
+    public Label modificationLabel;
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
     public Boolean modifying = false;
@@ -52,6 +52,7 @@ public class CFilmCreationView implements Initializable{
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
+        this.modificationLabel.setVisible(false);
     }
 
     /**
@@ -206,6 +207,9 @@ public class CFilmCreationView implements Initializable{
         if(this.modifying){
             this.oldTitle = MultipleChoiceBox.displayOneFilm("choisissez le film a modifier");
 
+            this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
+            this.modificationLabel.setVisible(true);
+
             this.nameText.setText(this.oldTitle);
             this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
 
@@ -222,6 +226,7 @@ public class CFilmCreationView implements Initializable{
         }
         else{
             ((Button)e.getSource()).setText("Modifier");
+            this.modificationLabel.setVisible(false);
             this.nameText.setText("");
             this.pathText.setText("");
             this.categoryList.getChildren().clear();
