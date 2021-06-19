@@ -6,6 +6,7 @@ import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
 import View.MultipleChoiceBox;
+import View.ResearchPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -206,23 +207,28 @@ public class CFilmCreationView implements Initializable{
         this.modifying = !modifying;
         if(this.modifying){
             this.oldTitle = MultipleChoiceBox.displayOneFilm("choisissez le film a modifier");
+            if(this.oldTitle != "" && this.oldTitle != null) {
 
-            this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
-            this.modificationLabel.setVisible(true);
+                this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
+                this.modificationLabel.setVisible(true);
 
-            this.nameText.setText(this.oldTitle);
-            this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
+                this.nameText.setText(this.oldTitle);
+                this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
 
 
-            this.categoryAdded = MoviesDB.getMovieCategories(this.oldTitle);
-            this.categoryList.getChildren().clear();
-            for(String category : categoryAdded) {
+                this.categoryAdded = MoviesDB.getMovieCategories(this.oldTitle);
+                this.categoryList.getChildren().clear();
+                for (String category : categoryAdded) {
                     CategoryView categoryToAdd = new CategoryView(category, true);
                     categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
                     this.categoryList.getChildren().add(categoryToAdd);
                     updateUsersAllowed();
+                }
+                ((Button) e.getSource()).setText("Ne plus modifier");
             }
-            ((Button)e.getSource()).setText("Ne plus modifier");
+            else{
+                modifying = false;
+            }
         }
         else{
             ((Button)e.getSource()).setText("Modifier");
