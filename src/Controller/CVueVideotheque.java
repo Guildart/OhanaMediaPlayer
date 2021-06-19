@@ -22,6 +22,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class CVueVideotheque implements Initializable {
         for(String allowd : allCategory){
             if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
                 //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
-                FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(allowd);
+                FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(allowd,this);
                 filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
                 if (filmDisplayByCategory.getNumberOfMovies() > 0) {
                     this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
@@ -137,5 +138,18 @@ public class CVueVideotheque implements Initializable {
         Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void startMovieFromButton(ActionEvent actionEvent) {
+        Button sender = (Button) actionEvent.getSource();
+        String movieToStart = sender.getId();
+        System.out.println(movieToStart);
+        try {
+            CMediaPlayer.changeToMe(sender, this, movieToStart);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.out.println(e);
+        }
     }
 }
