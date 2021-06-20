@@ -92,10 +92,11 @@ public class CategoriesDB {
         File f = new File(accountFile);
         createFile();
         try {
+            if(getCategories().contains(newName))
+                return false;
             String data = fileToString();
             JSONObject obj = new JSONObject(data);
             JSONArray categories = (JSONArray) obj.get("categories");
-            boolean contain = false;
             /**Véirfier si contient le  film**/
             for(int i = 0; i < categories.length() ; i++) {
                 if (categories.getString(i).equals(oldName)) {
