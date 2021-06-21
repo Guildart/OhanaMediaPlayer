@@ -5,6 +5,7 @@ import Model.CategoriesDB;
 import Model.MoviesDB;
 import Model.Role;
 import View.FilmDisplayByCategory;
+import View.FilmDisplayFlowPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,6 +46,9 @@ public class CVueVideotheque implements Initializable {
     public Button buttonAddMovie;
     public Button buttonHandleCategory;
     public Button buttonHandleUser;
+    public Button stopSearchingButton;
+
+    public FilmDisplayFlowPane flowPaneDisplayMovie;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -78,6 +82,7 @@ public class CVueVideotheque implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.stopSearchingButton.setVisible(false);
         ImageView imageView = new ImageView(actualUser.getImage());
         imageView.setFitHeight(topPanel.getPrefHeight());
         imageView.setFitHeight(menu.getPrefHeight());
@@ -125,6 +130,12 @@ public class CVueVideotheque implements Initializable {
     public void research(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             //todo recherche du film dans DB
+            this.stopSearchingButton.setVisible(true);
+            String myResearch = this.barreRecherche.getText();
+            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
         }
     }
 
@@ -151,4 +162,26 @@ public class CVueVideotheque implements Initializable {
             System.out.println(e);
         }
     }
+
+    public ArrayList<String> searchingAlgorithm(String search){
+        ArrayList<String> allFilm = MoviesDB.getTitles();
+        return allFilm;
+    }
+
+    public void stopSearch(ActionEvent e){
+        this.scrollPane.setContent(this.vboxDisplayMovie);
+        this.stopSearchingButton.setVisible(false);
+    }
+
+    public void changeLayout(ActionEvent e){
+        if(this.scrollPane.getContent() == this.vboxDisplayMovie){
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()));
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+        }
+        else{
+            this.scrollPane.setContent(this.vboxDisplayMovie);
+        }
+    }
+
 }

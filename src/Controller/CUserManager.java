@@ -116,6 +116,8 @@ public class CUserManager implements Initializable {
 
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
+        forbiddenCategories.setVgap(10);
+        forbiddenCategories.setHgap(10);
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
 
         for (String forbiddenCategory :

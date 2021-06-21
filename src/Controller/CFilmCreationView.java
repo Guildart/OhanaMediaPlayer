@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Account;
 import Model.AccountManagement;
-import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
 import View.MultipleChoiceBox;
@@ -13,10 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,7 +21,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -36,12 +31,12 @@ public class CFilmCreationView implements Initializable{
     public Button choiceButton;
     public TextField pathText;
     public TextField nameText;
-    public Button splitMenuCategory;
     public HBox categoryList;
     public HBox notAllowedUsers;
     public Label pathErrorMessage;
     public Label titleErrorMessage;
     public Label errorToAddMessage;
+    public Label modificationLabel;
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
     public Boolean modifying = false;
@@ -52,6 +47,7 @@ public class CFilmCreationView implements Initializable{
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
+        this.modificationLabel.setVisible(false);
     }
 
     /**
@@ -205,27 +201,37 @@ public class CFilmCreationView implements Initializable{
         this.modifying = !modifying;
         if(this.modifying){
             this.oldTitle = MultipleChoiceBox.displayOneFilm("choisissez le film a modifier");
+            if(this.oldTitle != "" && this.oldTitle != null) {
 
-            this.nameText.setText(this.oldTitle);
-            this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
+                this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
+                this.modificationLabel.setVisible(true);
+
+                this.nameText.setText(this.oldTitle);
+                this.pathText.setText(MoviesDB.getMoviePath(this.oldTitle));
 
 
-            this.categoryAdded = MoviesDB.getMovieCategories(this.oldTitle);
-            this.categoryList.getChildren().clear();
-            for(String category : categoryAdded) {
+                this.categoryAdded = MoviesDB.getMovieCategories(this.oldTitle);
+                this.categoryList.getChildren().clear();
+                for (String category : categoryAdded) {
                     CategoryView categoryToAdd = new CategoryView(category, true);
                     categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
                     this.categoryList.getChildren().add(categoryToAdd);
                     updateUsersAllowed();
+                }
+                ((Button) e.getSource()).setText("Ne plus modifier");
             }
-            ((Button)e.getSource()).setText("Ne plus modifier");
+            else{
+                modifying = false;
+            }
         }
         else{
             ((Button)e.getSource()).setText("Modifier");
+            this.modificationLabel.setVisible(false);
             this.nameText.setText("");
             this.pathText.setText("");
             this.categoryList.getChildren().clear();
             this.categoryAdded = new ArrayList<>();
+            updateUsersAllowed();
         }
     }
 
