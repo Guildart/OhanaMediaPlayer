@@ -44,6 +44,7 @@ public class CCategoryManagerView implements Initializable {
     public TextField newCategoryName;
     public Label labelCatAlreadyExist;
     public FlowPane flowPaneMovies;
+    public FlowPane flowPaneUsers;
 
     private String actualCatgory = null;
 
