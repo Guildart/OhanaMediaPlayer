@@ -5,6 +5,7 @@ import Model.CategoriesDB;
 import Model.MoviesDB;
 import Model.Role;
 import View.FilmDisplayByCategory;
+import View.FilmDisplayFlowPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,6 +46,8 @@ public class CVueVideotheque implements Initializable {
     public Button buttonAddMovie;
     public Button buttonHandleCategory;
     public Button buttonHandleUser;
+
+    public FilmDisplayFlowPane flowPaneDisplayMovie;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -127,7 +130,10 @@ public class CVueVideotheque implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             //todo recherche du film dans DB
             String myResearch = this.barreRecherche.getText();
-
+            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
+            this.flowPaneDisplayMovie.setPrefSize(this.globalVBox.getHeight(), this.globalVBox.getWidth());
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
         }
     }
 
@@ -154,4 +160,10 @@ public class CVueVideotheque implements Initializable {
             System.out.println(e);
         }
     }
+
+    public ArrayList<String> searchingAlgorithm(String search){
+        ArrayList<String> allFilm = MoviesDB.getTitles();
+        return allFilm;
+    }
+
 }
