@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javafx.event.ActionEvent;
 import org.json.*;
 
 public class AccountManagement {
@@ -110,4 +111,8 @@ public class AccountManagement {
     }
 
 
+
+    public static void createAccount(ActionEvent actionEvent) {
+        saveAccount(new Account("untitled","0000","",new ArrayList<>(0)));
+    }
 }
