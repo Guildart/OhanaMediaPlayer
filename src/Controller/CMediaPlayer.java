@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.MoviesDB;
-import View.Player;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
