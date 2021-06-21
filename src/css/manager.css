@@ -1,0 +1,84 @@
+
+.root {
+  -bg-color: #1a1a1a;
+  -fx-background-color: -bg-color;
+  -red : #8B0000;
+}
+
+.anchor-pane > .viewport{
+    -fx-background-color: -bg-color;
+}
+
+.label{
+-fx-text-fill: white;
+-fx-font-size:15;
+-fx-font-weight: bold;
+}
+
+.scroll-pane {
+-fx-background-color: -bg-color;
+-fx-border-color: white;
+}
+
+.scroll-pane .viewport {
+-fx-background-color: -bg-color;
+}
+
+.password-field {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.choice-box {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: black;
+}
+
+.button{
+-fx-background-color: grey;
+-fx-text-fill: white;
+-fx-font-size: 15;
+}
+
+.text-field {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.menu-button{
+-fx-background-color: transparent;
+}
+
+.profilePicture{
+-fx-background-color: transparent;
+-fx-text-fill: white;
+-fx-font-size: 20;
+-fx-font-weight: bold;
+}
+
+.delete-button{
+    -fx-background-image: url(file:res/dustbin.png);
+    -fx-background-size: 25px 25px;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: -red;
+}
+
+.retour-button{
+    -fx-background-image: url(file:res/retour.png);
+    -fx-background-size: 100px 100px;
+    -fx-pref-height: 100px;
+    -fx-pref-width: 100px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
