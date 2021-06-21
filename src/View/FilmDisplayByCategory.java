@@ -43,6 +43,8 @@ public class FilmDisplayByCategory extends HBox {
         next.setOnAction(this::onNext);
         previous.setOnAction(this::onPrevious);
 
+        //next.getStyleClass().add("button-next");
+
         Image img = new Image("file:res/next.png");
         ImageView view = new ImageView(img);
         view.setFitHeight(50);

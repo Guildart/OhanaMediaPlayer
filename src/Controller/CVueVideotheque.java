@@ -110,7 +110,6 @@ public class CVueVideotheque implements Initializable {
             this.buttonHandleCategory.setVisible(false);
             this.buttonHandleUser.setVisible(false);
         }
-
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {

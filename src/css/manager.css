@@ -15,6 +15,12 @@
 -fx-font-weight: bold;
 }
 
+.alerte-label{
+-fx-text-fill: red;
+-fx-font-size:15;
+-fx-font-weight: bold;
+}
+
 .scroll-pane {
 -fx-background-color: -bg-color;
 -fx-border-color: white;
@@ -38,6 +44,17 @@
 
 .choice-box .context-menu {
     -fx-background-color: black;
+}
+
+.combo-box {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.combo-box .list-cell{
+    -fx-background-color: -bg-color;
+    -fx-text-fill: white;
 }
 
 .button{

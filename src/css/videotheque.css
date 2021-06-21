@@ -42,3 +42,10 @@
 .menu-button{
 -fx-background-color: transparent;
 }
+
+.barre-recherche{
+  -fx-background-image:url(file:res/magnifier.png);
+  -fx-background-size: 20px;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: right center;
+}
