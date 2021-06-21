@@ -5,6 +5,7 @@ import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.Role;
 import View.CategoryView;
+import View.MultipleChoiceBox;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,9 +33,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 public class CUserManager implements Initializable {
 
@@ -57,11 +58,12 @@ public class CUserManager implements Initializable {
             String newUserName = oldUserNameToNewUserNameTextfield.get(username).getText();
             String newPassword = oldUserNameToNewPasswordTextfield.get(username).getText();
             Account updatedAccount = accountHash.get(username);
-            accountHash.remove(username);
-            updatedAccount.setUserName(newUserName);
-            updatedAccount.setPassword(newPassword);
-            accountHash.put(newUserName,updatedAccount);
-
+            if (updatedAccount != null) {
+                accountHash.remove(username);
+                updatedAccount.setUserName(newUserName);
+                updatedAccount.setPassword(newPassword);
+                accountHash.put(newUserName, updatedAccount);
+            }
         }
         try {
             AccountManagement.saveAccounts(accountHash);
@@ -82,6 +84,14 @@ public class CUserManager implements Initializable {
         for(String key : accounts.keySet()){
             toAddOn.getChildren().add(this.createAccountHBox(accounts.get(key)));
         }
+        Button accountCreatorBt = new Button("create a new Account");
+        accountCreatorBt.setOnAction(this::createAccount);
+        toAddOn.getChildren().add(accountCreatorBt);
+    }
+
+    private void createAccount(ActionEvent actionEvent) {
+        AccountManagement.createAccount(actionEvent);
+        setupAllAccounts();
     }
 
     private HBox createAccountHBox(Account account){
@@ -116,6 +126,8 @@ public class CUserManager implements Initializable {
 
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
+        forbiddenCategories.setVgap(10);
+        forbiddenCategories.setHgap(10);
         forbiddenCategories.getChildren().add(new Label("forbidden : "));
 
         for (String forbiddenCategory :
@@ -135,20 +147,34 @@ public class CUserManager implements Initializable {
         HBox.setHgrow(forbiddenCategories, Priority.SOMETIMES);
         forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
         forbiddenCategories.setPrefWidth(1000);
+
+        Button multipleCatSelect = new Button("forbid/allow");
+        multipleCatSelect.setId(account.getUserName());
+        multipleCatSelect.setOnAction(this::multipleCatSelect);
+
+
         if (account.getRole() == Role.other) {
             Button deleteButton = new Button("delete this account");
 
             deleteButton.setOnAction(this::tryToDeleteAccount);
             deleteButton.setId(account.getUserName());
 
-            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,deleteButton);
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,multipleCatSelect,deleteButton);
 
         }else{
-            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,multipleCatSelect);
         }
 
 
         return accountBox;
+    }
+
+    private void multipleCatSelect(ActionEvent actionEvent) {
+        Account account = AccountManagement.getAccount(((Button) actionEvent.getSource()).getId());
+        ArrayList<String> newForbidden = MultipleChoiceBox.displayCategory("Highlight in green the category to forbid.",account.getForbiddenCategories());
+        account.setForbiddenCategories(newForbidden);
+        AccountManagement.saveAccount(account);
+        setupAllAccounts();
     }
 
     private void tryToDeleteAccount(ActionEvent actionEvent){

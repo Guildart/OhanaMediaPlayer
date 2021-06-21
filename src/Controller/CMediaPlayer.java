@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.MoviesDB;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -19,12 +20,12 @@ import java.util.ResourceBundle;
 
 public class CMediaPlayer implements Initializable {
     MediaView moviePlayer;
-    AnchorPane toAddMovieOn;
+    @FXML
+    public AnchorPane toAddMovieOn;
     static Media media;
     public static void changeToMe(Node anySceneNode, Object controller, String movieName) throws IOException {
-        String videoPath = MoviesDB.getMoviePath(movieName);
+        String videoPath = MoviesDB.getMoviePath(movieName).substring(3);
         String videoFileURIStr = new File(videoPath).toURI().toString();
-        System.out.println(videoFileURIStr);
         media = new Media(videoFileURIStr);
 
         Stage stage = (Stage) anySceneNode.getScene().getWindow();
@@ -40,7 +41,9 @@ public class CMediaPlayer implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         moviePlayer = new MediaView(mediaPlayer);
+        mediaPlayer.setAutoPlay(true);
         toAddMovieOn.getChildren().add(moviePlayer);
+
     }
 
 }

@@ -50,13 +50,13 @@ public class FilmDisplayByCategory extends HBox {
         view.setFitHeight(50);
         view.setPreserveRatio(true);
         next.setGraphic(view);
-
+/**
         img = new Image("file:res/previous.png");
         view = new ImageView(img);
         view.setFitHeight(50);
         view.setPreserveRatio(true);
         previous.setGraphic(view);
-
+**/
         this.myCategory = category;
         this.myCategory = myCategory.substring(0, 1).toUpperCase() + myCategory.substring(1); //Première lettre en majuscule
         this.title = new Label(this.myCategory);
