@@ -11,7 +11,7 @@
          <children>
             <AnchorPane fx:id="topPanel" prefHeight="60.0">
                <children>
-                  <TextField fx:id="barreRecherche" layoutX="14.0" layoutY="4.0" maxHeight="25.0" onKeyPressed="#research" prefHeight="25.0" promptText="Barre de Recherche" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+                  <TextField fx:id="barreRecherche" layoutX="101.0" layoutY="24.0" maxHeight="25.0" onKeyPressed="#research" prefHeight="25.0" promptText="Barre de Recherche" styleClass="barre-recherche" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="24.0" />
                   <MenuButton fx:id="menu" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="555.0" layoutY="8.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="57.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="1.0">
                     <items>
                       <MenuItem mnemonicParsing="false" text="compte" />
