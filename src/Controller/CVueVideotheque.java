@@ -155,7 +155,7 @@ public class CVueVideotheque implements Initializable {
         String movieToStart = sender.getId();
         System.out.println(movieToStart);
         try {
-            CMediaPlayer.changeToMe(sender, this, movieToStart);
+            CMediaPlayer.playVideo(sender, this, movieToStart);
         }
         catch (IOException e){
             e.printStackTrace();

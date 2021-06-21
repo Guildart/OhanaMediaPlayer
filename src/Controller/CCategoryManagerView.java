@@ -199,21 +199,6 @@ public class CCategoryManagerView implements Initializable {
             }
         }
     }
-    private static boolean hasCommonElements(ArrayList<String> arr1, ArrayList<String> arr2) {
-        if (arr1.size() > 0 && arr2.size() > 0) {
-            Set<String> firstSet = new HashSet<String>();
-            for (int i = 0; i < arr1.size(); i++) {
-                firstSet.add(arr1.get(i));
-            }
-
-            for (int j = 0; j < arr2.size(); j++) {
-                if (firstSet.contains(arr2.get(j))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public void updateUsersAllowed(){
         notAllowedUsers.getChildren().clear();
