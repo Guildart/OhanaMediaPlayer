@@ -190,4 +190,8 @@ public class CMediaPlayer implements Initializable {
         }
     }
 
+    public void onEscape(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.ESCAPE && fullScreenButton.isSelected())
+            fullScreenButton.setSelected(false);
+    }
 }
