@@ -28,8 +28,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.sql.Struct;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class CVueVideotheque implements Initializable {
 
@@ -49,6 +51,9 @@ public class CVueVideotheque implements Initializable {
     public Button stopSearchingButton;
 
     public FilmDisplayFlowPane flowPaneDisplayMovie;
+    public ToggleButton displayButton;
+    public Label labelPosition;
+    public ComboBox comboBox;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -115,6 +120,11 @@ public class CVueVideotheque implements Initializable {
             this.buttonHandleCategory.setVisible(false);
             this.buttonHandleUser.setVisible(false);
         }
+
+        ArrayList<String>  allCategories = CategoriesDB.getCategories();
+        comboBox.getItems().add(0,"Toutes catégories");
+        comboBox.getItems().addAll(CategoriesDB.getCategories());
+        comboBox.getSelectionModel().select("Toutes catégories");
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
@@ -163,11 +173,6 @@ public class CVueVideotheque implements Initializable {
         }
     }
 
-    public ArrayList<String> searchingAlgorithm(String search){
-        ArrayList<String> allFilm = MoviesDB.getTitles();
-        return allFilm;
-    }
-
     public void stopSearch(ActionEvent e){
         this.scrollPane.setContent(this.vboxDisplayMovie);
         this.stopSearchingButton.setVisible(false);
@@ -178,10 +183,69 @@ public class CVueVideotheque implements Initializable {
             this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()));
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/list.png);");
         }
         else{
             this.scrollPane.setContent(this.vboxDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
+
         }
     }
 
+    public void goHome(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) menu.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void selectCategory(ActionEvent actionEvent) {
+        String getSelection = (String) comboBox.getSelectionModel().getSelectedItem();
+        if(getSelection.equals("Toutes catégories")){
+            this.scrollPane.setContent(this.vboxDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
+            displayButton.setVisible(true);
+        }else{
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection));
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            displayButton.setVisible(false);
+        }
+    }
+
+
+    private ArrayList<String> searchingAlgorithm(String recherche){
+        recherche = recherche.toLowerCase();
+        final String SEPARATEUR = " ";
+        String mots[] = recherche.split(SEPARATEUR);
+        HashMap<String, Integer> movies = new HashMap<String, Integer>();
+        ArrayList<String> test = new ArrayList<>();
+
+        for(String movie : MoviesDB.getTitles()) {
+            String movieLowerCase = movie.toLowerCase();
+            int compteur = mots.length;
+            for (String s : mots) {
+                if(movieLowerCase.contains(s))
+                    compteur-=1;
+            }
+            if(compteur != mots.length) {
+                movies.put(movie, compteur);
+                System.out.println(true);
+            }
+        }
+
+        Comparator<Map.Entry<String, Integer>> valueComparator =
+                Comparator.comparing(Map.Entry::getValue);
+        Map<String, Integer> sortedMap =
+                movies.entrySet().stream().
+                        sorted(valueComparator).
+                        collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+        for(String key : sortedMap.keySet())
+            System.out.println(key + ":" +sortedMap.get(key));
+        return new ArrayList<String>(sortedMap.keySet());
+    }
 }

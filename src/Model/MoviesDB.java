@@ -348,6 +348,7 @@ public class MoviesDB {
 
         setPath("Tenet2", "C://videos/Tenet2.mp4");
         System.out.println("path Tenet2 : " + getMoviePath("Tenet2"));
+        System.out.println("nombre de film : " + getTitles().size());
 
     }
 

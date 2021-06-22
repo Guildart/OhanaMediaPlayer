@@ -125,19 +125,21 @@ public class CMediaPlayer implements Initializable {
                 // Updating to the new time value
                 // This will move the slider while running your video
                 timeSlider.setValue(mediaPlayer.getCurrentTime().toMillis()/mediaPlayer.getTotalDuration().toMillis() * 100);
+                if(controlBar.isVisible() && mediaPlayer.getCurrentTime().toSeconds() - lastAction > 10){
+                    controlBar.setVisible(false);
+                    goBackButton.setVisible(false);
+                }
             }
         });
 
-        if(controlBar.isVisible() && mediaPlayer.getCurrentTime().toSeconds() - lastAction > 5){
-            controlBar.setVisible(false);
-            goBackButton.setVisible(false);
-        }
+
     }
 
     protected void timeJump(){
         if (timeSlider.isPressed()) { // It would set the time
             // as specified by user by pressing
             mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(timeSlider.getValue() / 100));
+            lastAction = mediaPlayer.getCurrentTime().toSeconds();
         }
     }
 

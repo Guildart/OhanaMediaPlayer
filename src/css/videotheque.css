@@ -1,3 +1,9 @@
+.root {
+  -bg-color: #1a1a1a;
+  -fx-background-color: -bg-color;
+  -red : #8B0000;
+}
+
 .scroll-pane > .viewport{
 -fx-background-color: #1a1a1a;
 }
@@ -48,4 +54,42 @@
   -fx-background-size: 20px;
   -fx-background-repeat: no-repeat;
   -fx-background-position: right center;
+}
+
+.toggle-button{
+    -fx-background-image:url(file:res/grid.png);
+    -fx-background-color:transparent;
+    -fx-background-size: 25px;
+    -fx-pref-height: 25px;
+    -fx-pref-width: 25px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+}
+
+.labelPosition{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.combo-box {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.combo-box .list-cell{
+    -fx-background-color: -bg-color;
+    -fx-text-fill: white;
+}
+
+.homeButton{
+    -fx-background-image:url(file:res/home.png);
+    -fx-background-color:transparent;
+    -fx-background-size: 24px;
+    -fx-pref-height: 24px;
+    -fx-pref-width: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
 }
