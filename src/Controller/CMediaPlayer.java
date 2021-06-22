@@ -102,18 +102,20 @@ public class CMediaPlayer implements Initializable {
 
                 // If the player is at the end of video
                 mediaPlayer.seek(mediaPlayer.getStartTime()); // Restart the video
-                mediaPlayer.play();
+                //mediaPlayer.play();
             }
             else {
                 // Pausing the player
                 mediaPlayer.pause();
 
-                pauseButton.setText(">");
+                //pauseButton.setText(">");
             }
+            pauseButton.setStyle("-fx-background-image:url(file:res/play.png);");
         } // If the video is stopped, halted or paused
         if (status == MediaPlayer.Status.HALTED || status == MediaPlayer.Status.STOPPED || status == MediaPlayer.Status.PAUSED) {
             mediaPlayer.play(); // Start the video
-            pauseButton.setText("||");
+            pauseButton.setStyle("-fx-background-image:url(file:res/pause.png);");
+            //pauseButton.setText("||");
         }
     }
 

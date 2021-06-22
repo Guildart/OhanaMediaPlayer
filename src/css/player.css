@@ -18,3 +18,12 @@
 .anchor-pane > .viewport{
     -fx-background-color: -bg-color;
 }
+
+.pause-button{
+    -fx-background-image:url(file:res/pause.png);
+    -fx-background-size: 20px;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}

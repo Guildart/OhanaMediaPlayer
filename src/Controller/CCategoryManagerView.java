@@ -7,6 +7,7 @@ import Model.MoviesDB;
 import View.AutoCompleteTextField;
 import View.CategoryView;
 import View.MultipleChoiceBox;
+import View.WarningTrigger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,7 +39,6 @@ public class CCategoryManagerView implements Initializable {
     @FXML
     public ComboBox choiceBox;
     public HBox hboxAddMovie;
-
 
     public TextField nameCategory;
     public Label message;
@@ -167,11 +167,15 @@ public class CCategoryManagerView implements Initializable {
     }
 
     public void deleteCategory(ActionEvent actionEvent) {
-        //Todo : Trogger "êtes vous certain" à implémenter
-        System.out.print(CategoriesDB.deleteCategory(actualCatgory));
-        choiceBox.getSelectionModel().clearSelection();
-        choiceBox.getItems().clear();
-        choiceBox.getItems().setAll(CategoriesDB.getCategories());
+        boolean test = false;
+        if(choiceBox.getValue() != null)
+            test = WarningTrigger.warningWindow("Êtes vous sûr de vouloir supprimer la catégorie : " + actualCatgory + " ?");
+        if(test){
+            System.out.print(CategoriesDB.deleteCategory(actualCatgory));
+            choiceBox.getSelectionModel().clearSelection();
+            choiceBox.getItems().clear();
+            choiceBox.getItems().setAll(CategoriesDB.getCategories());
+        }
     }
 
     public void addCategory(ActionEvent actionEvent) {

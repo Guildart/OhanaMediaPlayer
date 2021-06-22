@@ -15,7 +15,7 @@
       </HBox>
       <HBox fx:id="controlBar" alignment="CENTER" layoutY="300.0" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" text="||">
+            <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" styleClass="pause-button">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
