@@ -4,6 +4,10 @@ import Model.MoviesDB;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +18,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -25,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+//Todo : Full Screen Button + Sound Button + Hide Button + Afficher temps de video
+
 public class CMediaPlayer implements Initializable {
     public Button pauseButton;
     public Slider timeSlider;
@@ -34,6 +47,10 @@ public class CMediaPlayer implements Initializable {
     public static String videoPath = "C:\\Users\\Guild\\Downloads\\test.mp4";
     public String file = new File(videoPath).toURI().toString();
     public AnchorPane root;
+    public HBox controlBar;
+    public ToggleButton fullScreenButton;
+    public Button goBackButton;
+    private double lastAction = 0;
 
     public static void playVideo(Node anySceneNode, Object controller, String movieName) throws IOException {
         videoPath = MoviesDB.getMoviePath(movieName);
@@ -43,7 +60,9 @@ public class CMediaPlayer implements Initializable {
         stage.setMaximized(true);
         Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
         stage.setScene(scene);
+        //stage.setFullScreen(true);
         stage.show();
+
     }
 
     @Override
@@ -55,14 +74,24 @@ public class CMediaPlayer implements Initializable {
         mediaView.fitHeightProperty().bind(root.heightProperty());
         mediaView.fitWidthProperty().bind(root.widthProperty());
         timeSlider.prefWidthProperty().bind(root.widthProperty().multiply(0.75));
+        volumeSlider.setValue(mediaPlayer.getVolume()*100);
+
+        Image img = new Image("file:res/not_full_screen.png");
+        ImageView view = new ImageView(img);
+        view.setFitHeight(20);
+        view.setPreserveRatio(true);
+        fullScreenButton.setGraphic(view);
+        fullScreenButton.selectedProperty().addListener(ov -> setFullScreenIcon());
+
+        /*Stage stage = (Stage) fullScreenButton.getScene().getWindow();
+        stage.fullScreenProperty().addListener(ov -> fullScreenButton.fire());*/
 
         mediaPlayer.currentTimeProperty().addListener(ov -> updatesValues());
         timeSlider.valueProperty().addListener(ov -> timeJump());
         volumeSlider.valueProperty().addListener(ov -> changeVolume());
-
-
         mediaPlayer.setAutoPlay(true);
     }
+
 
     public void pause(ActionEvent actionEvent) {
         MediaPlayer.Status status = mediaPlayer.getStatus(); // To get the status of Player
@@ -98,6 +127,11 @@ public class CMediaPlayer implements Initializable {
                 timeSlider.setValue(mediaPlayer.getCurrentTime().toMillis()/mediaPlayer.getTotalDuration().toMillis() * 100);
             }
         });
+
+        if(controlBar.isVisible() && mediaPlayer.getCurrentTime().toSeconds() - lastAction > 5){
+            controlBar.setVisible(false);
+            goBackButton.setVisible(false);
+        }
     }
 
     protected void timeJump(){
@@ -116,6 +150,7 @@ public class CMediaPlayer implements Initializable {
 
     public void goBack(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        mediaPlayer.stop();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
         stage.setMaximized(true);
         Parent root = null;
@@ -128,4 +163,31 @@ public class CMediaPlayer implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void onMouseMoved(MouseEvent mouseEvent) {
+        controlBar.setVisible(true);
+        goBackButton.setVisible(true);
+        lastAction = mediaPlayer.getCurrentTime().toSeconds();
+    }
+
+    private void setFullScreenIcon() {
+        if(fullScreenButton.isSelected()) {
+            Image img = new Image("file:res/full_screen.png");
+            ImageView view = new ImageView(img);
+            view.setFitHeight(20);
+            view.setPreserveRatio(true);
+            fullScreenButton.setGraphic(view);
+            Stage stage = (Stage) fullScreenButton.getScene().getWindow();
+            stage.setFullScreen(true);
+        }else{
+            Image img = new Image("file:res/not_full_screen.png");
+            ImageView view = new ImageView(img);
+            view.setFitHeight(20);
+            view.setPreserveRatio(true);
+            fullScreenButton.setGraphic(view);
+            Stage stage = (Stage) fullScreenButton.getScene().getWindow();
+            stage.setFullScreen(false);
+        }
+    }
+
 }
