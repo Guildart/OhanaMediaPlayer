@@ -69,6 +69,31 @@ public class MoviesDB {
 
     }
 
+    public static boolean deleteMovie(String title) {
+        File f = new File(accountFile);
+        createFile();
+        try {
+            String data = fileToString();
+            JSONObject obj = new JSONObject(data);
+            JSONArray movies = (JSONArray) obj.get("movies");
+            JSONObject movie;
+            boolean contain = false;
+            /**Véirfier si contient le  film**/
+            for(int i = 0; i < movies.length() ; i++) {
+                movie = movies.getJSONObject(i);
+                if (movie.get("title").equals(title)){
+                    movies.remove(i);
+                    Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                    return true;
+                }
+            }
+            return false;
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean addCategoryToMovie(String movieTitle, String category) throws IOException, JSONException {
         String data = fileToString();
         JSONObject obj = new JSONObject(data);
@@ -351,5 +376,4 @@ public class MoviesDB {
         System.out.println("nombre de film : " + getTitles().size());
 
     }
-
 }

@@ -161,6 +161,18 @@ public class CategoriesDB {
         return moviesOfCategory;
     }
 
+    public static ArrayList<String> getMoviesWithoutCategory(){
+        List<String> categories = getCategories();
+        ArrayList<String> moviesOfCategory = new ArrayList<>();
+        ArrayList<String>  movieTitles  = MoviesDB.getTitles();
+        for(String title : movieTitles){
+            if (MoviesDB.getMovieCategories(title).isEmpty()){
+                moviesOfCategory.add(title);
+            }
+        }
+        return moviesOfCategory;
+    }
+
     public static void main(String[] args) {
         createFile();
         addCategory("action");

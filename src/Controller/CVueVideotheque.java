@@ -7,6 +7,7 @@ import Model.Role;
 import View.FilmDisplayByCategory;
 import View.FilmDisplayFlowPane;
 import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -52,8 +54,9 @@ public class CVueVideotheque implements Initializable {
 
     public FilmDisplayFlowPane flowPaneDisplayMovie;
     public ToggleButton displayButton;
-    public Label labelPosition;
     public ComboBox comboBox;
+    public Button searchButton;
+    public HBox searchHBox;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -104,6 +107,14 @@ public class CVueVideotheque implements Initializable {
             allCategory.remove(forbiden);
         }
 
+        if(CategoriesDB.getMoviesWithoutCategory().size()!=0){
+            FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(null,this);
+            filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
+            if (filmDisplayByCategory.getNumberOfMovies() > 0) {
+                this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
+            }
+        }
+
         for(String allowd : allCategory){
             if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
                 //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
@@ -139,13 +150,7 @@ public class CVueVideotheque implements Initializable {
 
     public void research(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
-            //todo recherche du film dans DB
-            this.stopSearchingButton.setVisible(true);
-            String myResearch = this.barreRecherche.getText();
-            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
-            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
-            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            searchButton.fire();
         }
     }
 
@@ -207,12 +212,14 @@ public class CVueVideotheque implements Initializable {
         if(getSelection.equals("Toutes catégories")){
             this.scrollPane.setContent(this.vboxDisplayMovie);
             displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
-            displayButton.setVisible(true);
+            //displayButton.setVisible(true);
+            displayButton.setDisable(false);
         }else{
             this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection));
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
-            displayButton.setVisible(false);
+            //displayButton.setVisible(false);
+            displayButton.setDisable(true);
         }
     }
 
@@ -247,5 +254,16 @@ public class CVueVideotheque implements Initializable {
         for(String key : sortedMap.keySet())
             System.out.println(key + ":" +sortedMap.get(key));
         return new ArrayList<String>(sortedMap.keySet());
+    }
+
+    public void onClickSearch(ActionEvent actionEvent) {
+        if(searchHBox.getChildren().contains(barreRecherche)){
+            this.stopSearchingButton.setVisible(true);
+            String myResearch = this.barreRecherche.getText();
+            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+        }
     }
 }

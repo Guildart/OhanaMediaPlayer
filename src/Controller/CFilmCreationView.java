@@ -2,9 +2,11 @@ package Controller;
 
 import Model.Account;
 import Model.AccountManagement;
+import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
 import View.MultipleChoiceBox;
+import View.WarningTrigger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +42,11 @@ public class CFilmCreationView implements Initializable{
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
     public Boolean modifying = false;
+    public String actualMovie;
     public String oldTitle = "";
+    public Button deleteButton;
+    public HBox buttonBox;
+    public Button modifButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -216,9 +222,11 @@ public class CFilmCreationView implements Initializable{
                     updateUsersAllowed();
                 }
                 ((Button) e.getSource()).setText("Ne plus modifier");
+                buttonBox.getChildren().add(deleteButton);
             }
             else{
                 modifying = false;
+                buttonBox.getChildren().remove(deleteButton);
             }
         }
         else{
@@ -233,4 +241,13 @@ public class CFilmCreationView implements Initializable{
     }
 
 
+    public void deleteMovie(ActionEvent actionEvent) {
+        boolean test = false;
+        if(modifying)
+            test = WarningTrigger.warningWindow("Êtes vous sûr de vouloir supprimer le film : " + oldTitle + " ?");
+        if(test){
+            MoviesDB.deleteMovie(oldTitle);
+            modifButton.fire();
+        }
+    }
 }
