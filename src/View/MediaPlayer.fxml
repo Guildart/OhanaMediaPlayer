@@ -6,23 +6,23 @@
 <?import javafx.scene.media.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" stylesheets="@../css/player.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CMediaPlayer">
+<AnchorPane fx:id="root" onKeyPressed="#onEscape" stylesheets="@../css/player.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CMediaPlayer">
    <children>
       <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" />
+            <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" onMouseMoved="#onMouseMoved" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutY="300.0" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox fx:id="controlBar" alignment="CENTER" layoutY="300.0" prefHeight="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" text="||">
+            <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" styleClass="pause-button">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></Button>
-            <Slider fx:id="timeSlider" prefHeight="14.0" prefWidth="360.0">
+            <Slider fx:id="timeSlider" prefHeight="14.0" prefWidth="320.0">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></Slider>
@@ -35,8 +35,12 @@
                </HBox.margin>
             </Label>
             <Slider fx:id="volumeSlider" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="14.0" prefWidth="125.0" />
+            <ToggleButton fx:id="fullScreenButton" mnemonicParsing="false">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></ToggleButton>
          </children>
       </HBox>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
+      <Button fx:id="goBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
    </children>
 </AnchorPane>

@@ -14,7 +14,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <Button mnemonicParsing="false" onAction="#modifClicked" text="Modifier" />
+                  <Button fx:id="modifButton" mnemonicParsing="false" onAction="#modifClicked" text="Modifier" />
                   <Label fx:id="modificationLabel" text="vous ne mofiez rien" />
                </children>
             </HBox>
@@ -115,11 +115,12 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#validate" text="Valider">
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </Button>
+            <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#validate" text="Valider" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteMovie" styleClass="delete-button" />
+               </children>
+            </HBox>
             <Label fx:id="errorToAddMessage" text="Le film n'a pas pu s'ajouter correctement&#10;Important : Il est possible qu'un film du même nom est deja été ajouté&#10;&#9;&#9;&#9;ou que vous ayez deja ajouté ce film." textFill="RED" />
          </children>
          <opaqueInsets>

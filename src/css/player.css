@@ -5,17 +5,25 @@
 }
 
 .retour-button{
-    -fx-background-image: url(file:res/retour.png);
-    -fx-background-size: 100px 100px;
+    -fx-background-image: url(file:res/retour2.png);
+    -fx-background-size: 100px;
     -fx-pref-height: 50px;
     -fx-pref-width: 50px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-color: black;
-    -fx-background-radius: 5em;
+    -fx-background-color: transparent;
 
 }
 
 .anchor-pane > .viewport{
     -fx-background-color: -bg-color;
+}
+
+.pause-button{
+    -fx-background-image:url(file:res/pause.png);
+    -fx-background-size: 20px;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
