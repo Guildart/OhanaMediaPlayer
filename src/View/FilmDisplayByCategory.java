@@ -93,8 +93,9 @@ public class FilmDisplayByCategory extends HBox {
                 VBox filmRep = new VBox();
                 Button movieBt = new Button();
                 movieBt.setOnAction(controller::startMovieFromButton);
-                ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());
-                filmImgVw.setFitWidth(170.5);
+                //ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());
+                ImageView filmImgVw = new ImageView(MoviesDB.getImagePath(film));
+                filmImgVw.setFitWidth(171);
                 filmImgVw.setFitHeight(96);
                 movieBt.setGraphic(filmImgVw);
                 filmRep.setAlignment(Pos.CENTER);
