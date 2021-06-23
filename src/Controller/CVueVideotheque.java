@@ -185,7 +185,7 @@ public class CVueVideotheque implements Initializable {
 
     public void changeLayout(ActionEvent e){
         if(this.scrollPane.getContent() == this.vboxDisplayMovie){
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()));
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()), this);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
             displayButton.setStyle("-fx-background-image:url(file:res/list.png);");
@@ -193,7 +193,6 @@ public class CVueVideotheque implements Initializable {
         else{
             this.scrollPane.setContent(this.vboxDisplayMovie);
             displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
-
         }
     }
 
@@ -215,7 +214,7 @@ public class CVueVideotheque implements Initializable {
             //displayButton.setVisible(true);
             displayButton.setDisable(false);
         }else{
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection));
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection), this);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
             //displayButton.setVisible(false);
@@ -261,7 +260,7 @@ public class CVueVideotheque implements Initializable {
             this.stopSearchingButton.setVisible(true);
             String myResearch = this.barreRecherche.getText();
             ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm, this);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
         }

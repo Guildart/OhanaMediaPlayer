@@ -16,8 +16,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
@@ -35,6 +34,8 @@ public class FilmDisplayByCategory extends HBox {
 
 
     public FilmDisplayByCategory(String category, CVueVideotheque controller){
+
+        Background back;
         next = new Button();
         previous = new Button();
 
@@ -93,8 +94,8 @@ public class FilmDisplayByCategory extends HBox {
                 Button movieBt = new Button();
                 movieBt.setOnAction(controller::startMovieFromButton);
                 ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());
-                filmImgVw.setFitWidth(64);
-                filmImgVw.setFitHeight(64);
+                filmImgVw.setFitWidth(170.5);
+                filmImgVw.setFitHeight(96);
                 movieBt.setGraphic(filmImgVw);
                 filmRep.setAlignment(Pos.CENTER);
                 Label movieLabel = new Label(film);
@@ -110,11 +111,10 @@ public class FilmDisplayByCategory extends HBox {
         vboxCat.widthProperty().addListener((observable, oldValue, newValue) -> {
             this.visible();
         });
-
     }
 
 
-    private void visible() {
+    public void visible() {
         if(this.filmDisplay.getWidth() > vboxCat.getWidth()){
             next.setVisible(true);
             previous.setVisible(true);

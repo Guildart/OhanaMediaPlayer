@@ -13,14 +13,14 @@ import java.util.ArrayList;
 public class FilmDisplayFlowPane extends FlowPane {
 
 
-    public FilmDisplayFlowPane(ArrayList<String> films){
+    public FilmDisplayFlowPane(ArrayList<String> films, CVueVideotheque controller){
         for(String film : films){
             VBox filmRep = new VBox();
             Button movieBt = new Button();
-            //movieBt.setOnAction(controller::startMovieFromButton);
+            movieBt.setOnAction(controller::startMovieFromButton);
             ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());
-            filmImgVw.setFitWidth(64);
-            filmImgVw.setFitHeight(64);
+            filmImgVw.setFitWidth(170.5);
+            filmImgVw.setFitHeight(96);
             movieBt.setGraphic(filmImgVw);
             filmRep.setAlignment(Pos.CENTER);
             Label movieLabel = new Label(film);
