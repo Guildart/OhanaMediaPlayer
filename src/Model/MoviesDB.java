@@ -333,11 +333,15 @@ public class MoviesDB {
         return false;
     }*/
     public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
-        boolean test = MoviesDB.addMovie(newTitle, path, imagePath, categories);
-        if(test)
+        if(actualTitle.equals(newTitle)){
             MoviesDB.deleteMovie(actualTitle);
-        System.out.println("dedans : " + test + actualTitle);
-        return test;
+            return MoviesDB.addMovie(newTitle, path, imagePath, categories);
+        }else{
+            boolean test = MoviesDB.addMovie(newTitle, path, imagePath, categories);
+            if(test)
+                MoviesDB.deleteMovie(actualTitle);
+            return test;
+        }
     }
 
     public static boolean isOfCategorie(String movie, String categorie){

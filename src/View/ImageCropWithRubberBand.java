@@ -62,7 +62,7 @@ public class ImageCropWithRubberBand {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("image", "*.png", "*.jpg"));
         File file = fileChooser.showOpenDialog(window);
         if (file != null) {
-            String myPath = file.getAbsolutePath();
+            String myPath = file.toURI().toString();
             //System.out.println(myPath);
             return myPath;
         }
@@ -89,7 +89,7 @@ public class ImageCropWithRubberBand {
         if(imgpath == null)
             return false;
         System.out.println(imgpath);
-        Image image = new Image(("file:" + imgpath));
+        Image image = new Image((imgpath));
 
         // the container for the image as a javafx node
         imageView = new ImageView(image);
@@ -104,6 +104,11 @@ public class ImageCropWithRubberBand {
         root.setCenter(scrollPane);
 
         //calc rec size
+
+        if(Math.min(image.getWidth()%finalWidth,image.getWidth()%finalHeight) == 0){
+            finaleImage = imgpath;
+            return true;
+        }
 
         int fact = Math.min(((int) image.getWidth()/finalWidth), ((int) image.getHeight()/finalHeight));
         int width = finalWidth*fact;
