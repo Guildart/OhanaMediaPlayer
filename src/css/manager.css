@@ -99,3 +99,13 @@
     -fx-background-position: center;
     -fx-background-color: transparent;
 }
+
+.image-button{
+    -fx-background-image: url(file:res/default.png);
+    -fx-background-size: 171px 96px;
+    -fx-pref-height: 96px;
+    -fx-pref-width: 171px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}

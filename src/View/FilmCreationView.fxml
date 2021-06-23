@@ -18,6 +18,14 @@
                   <Label fx:id="modificationLabel" text="vous ne mofiez rien" />
                </children>
             </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="96.0" prefWidth="603.0" spacing="10.0">
+               <children>
+                  <Button fx:id="imageButton" mnemonicParsing="false" onAction="#addImage" styleClass="image-button" text="Ajouter Image" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label text="Chemin d'accès :">

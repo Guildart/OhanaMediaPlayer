@@ -35,7 +35,7 @@ public class MoviesDB {
         }
     }
 
-    public static boolean addMovie(String title, String path, ArrayList<String> categories) {
+    public static boolean addMovie(String title, String path, String imagePath, ArrayList<String> categories) {
         File f = new File(accountFile);
         createFile();
         try {
@@ -54,6 +54,7 @@ public class MoviesDB {
                 movie = new JSONObject();
                 movie.put("title", title);
                 movie.put("path", path);
+                movie.put("imagePath", imagePath);
                 JSONArray Jcategories = new JSONArray();
                 for (String cat : categories)
                     Jcategories.put(cat);
@@ -193,6 +194,23 @@ public class MoviesDB {
         throw new RuntimeException("Le film : " + title + " n'existe pas");
     }
 
+    public static String getImagePath(String title){
+        try {
+            File f = new File(accountFile);
+            String data = fileToString();
+            JSONObject obj = new JSONObject(data);
+            JSONArray movies = (JSONArray) obj.get("movies");
+            for (int i = 0; i < movies.length(); i++) {
+                JSONObject movie = movies.getJSONObject(i);
+                if (movie.getString("title").equals(title))
+                    return movie.getString("imagePath");
+            }
+        }catch (FileNotFoundException | JSONException e){
+            e.printStackTrace();
+        }
+        throw new RuntimeException("Le film : " + title + " n'existe pas");
+    }
+
 
     public static ArrayList<String> getMovieCategories(String title){
         try {
@@ -274,7 +292,24 @@ public class MoviesDB {
         return false;
     }
 
-    public static boolean set(String actualTitle, String newTitle, String path, ArrayList<String> categories) throws IOException {
+    public static boolean setImagePath(String movieTitle, String path) throws IOException {
+        String data = fileToString();
+        JSONObject obj = new JSONObject(data);
+        JSONArray movies = (JSONArray) obj.get("movies");
+        JSONObject movie;
+
+        for(int i = 0; i < movies.length() ; i++) {
+            movie = movies.getJSONObject(i);
+            if (movie.get("title").equals(movieTitle)){
+                movie.put("imagePath", path);
+                Files.write(Paths.get(accountFile), obj.toString().getBytes());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
         String data = fileToString();
         JSONObject obj = new JSONObject(data);
         JSONArray movies = (JSONArray) obj.get("movies");
@@ -289,12 +324,20 @@ public class MoviesDB {
                     Jcategories.put(s);
                 }
                 movie.put("path", path);
+                movie.put("imagePath", imagePath);
                 movie.put("title", newTitle);
                 Files.write(Paths.get(accountFile), obj.toString().getBytes());
                 return true;
             }
         }
         return false;
+    }*/
+    public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
+        boolean test = MoviesDB.addMovie(newTitle, path, imagePath, categories);
+        if(test)
+            MoviesDB.deleteMovie(actualTitle);
+        System.out.println("dedans : " + test + actualTitle);
+        return test;
     }
 
     public static boolean isOfCategorie(String movie, String categorie){
@@ -318,24 +361,6 @@ public class MoviesDB {
     public static void main(String[] args) throws IOException {
         createFile();
         ArrayList<String> cat = new ArrayList<>();
-        addMovie("Tenet", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"action", "thriller", "voyage dans le temps"})));
-        addMovie("Tenet", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"action", "thriller", "voyage dans le temps"})));
-        addMovie("Ducobu", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"Humour", "Famille"})));
-
-        addMovie("Faster", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"course", "action"})));
-
-        addMovie("Superman", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"action", "fantastique"})));
-
-        addMovie("Flash", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"course", "fantastique"})));
-
-        addMovie("Tenet2", "C://videos/Tenet.mp4",
-                new ArrayList<String>(Arrays.asList(new String[]{"action", "thriller", "voyage dans le temps"})));
 
         for(String s :getTitles())
             System.out.print(s + "\n");
@@ -374,6 +399,10 @@ public class MoviesDB {
         setPath("Tenet2", "C://videos/Tenet2.mp4");
         System.out.println("path Tenet2 : " + getMoviePath("Tenet2"));
         System.out.println("nombre de film : " + getTitles().size());
+
+        addMovie("newMovie", "null", "file:res/default", new ArrayList<>());
+        for(String s :getTitles())
+            setImagePath(s,"file:res/default.png");
 
     }
 }

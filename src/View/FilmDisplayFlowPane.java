@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CVueVideotheque;
+import Model.MoviesDB;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +19,7 @@ public class FilmDisplayFlowPane extends FlowPane {
             VBox filmRep = new VBox();
             Button movieBt = new Button();
             movieBt.setOnAction(controller::startMovieFromButton);
-            ImageView filmImgVw = new ImageView(CVueVideotheque.actualUser.getImage());
+            ImageView filmImgVw = new ImageView(MoviesDB.getImagePath(film));
             filmImgVw.setFitWidth(170.5);
             filmImgVw.setFitHeight(96);
             movieBt.setGraphic(filmImgVw);

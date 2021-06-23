@@ -5,6 +5,7 @@ import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
+import View.ImageCropWithRubberBand;
 import View.MultipleChoiceBox;
 import View.WarningTrigger;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -47,6 +49,9 @@ public class CFilmCreationView implements Initializable{
     public Button deleteButton;
     public HBox buttonBox;
     public Button modifButton;
+    public Button imageButton;
+
+    private String movieImagePath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,6 +59,8 @@ public class CFilmCreationView implements Initializable{
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
         this.modificationLabel.setVisible(false);
+        buttonBox.getChildren().remove(deleteButton);
+        movieImagePath = "file:res/default.png";
     }
 
     /**
@@ -106,15 +113,18 @@ public class CFilmCreationView implements Initializable{
         if(this.pathText.getText() != "" &&
            this.nameText.getText() != ""){
             if(!this.modifying){
-                if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded))
+                if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), movieImagePath, this.categoryAdded))
                     this.errorToAddMessage.setVisible(true);
                 else{
-                  MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(), this.categoryAdded);
+                    System.out.println("yayaay");
+                  MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded);
               }
             }
             //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
+            System.out.println("old titre : " + this.oldTitle);
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
+            System.out.println("chemain image: " + this.movieImagePath);
             System.out.println("liste des categorie \n" + this.categoryAdded);
             System.out.println("je modifie : " + this.modifying);
 
@@ -207,6 +217,8 @@ public class CFilmCreationView implements Initializable{
             if(this.oldTitle != "" && this.oldTitle != null) {
 
                 this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
+                this.movieImagePath = MoviesDB.getImagePath(this.oldTitle);
+                imageButton.setStyle("-fx-background-image:url(" + movieImagePath +");");
                 this.modificationLabel.setVisible(true);
 
                 this.nameText.setText(this.oldTitle);
@@ -248,6 +260,16 @@ public class CFilmCreationView implements Initializable{
         if(test){
             MoviesDB.deleteMovie(oldTitle);
             modifButton.fire();
+        }
+    }
+
+    public void addImage(ActionEvent actionEvent) throws MalformedURLException {
+        ImageCropWithRubberBand imgCrop = new ImageCropWithRubberBand();
+        imgCrop.cropApplication();
+        if(imgCrop.getImagePath() != null){
+            movieImagePath = imgCrop.getImagePath();
+            System.out.println("movie : " + movieImagePath);
+            imageButton.setStyle("-fx-background-image:url(" + movieImagePath +");");
         }
     }
 }
