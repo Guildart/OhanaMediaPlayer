@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CFirstLaunch">
+   <children>
+      <VBox alignment="CENTER" layoutX="6.0" layoutY="64.0" prefHeight="335.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <Label text="Bienvenu dans Ohana Media Player, pour continuer veuillez vous créer un compte :" textAlignment="CENTER" />
+            <Button fx:id="imageButton" mnemonicParsing="false" onAction="#chooseProfilePic" styleClass="profile-button" text="Choisissez une image" />
+            <TextField fx:id="textField" maxWidth="-Infinity" prefWidth="150.0" promptText="Entrez pseudo" />
+            <PasswordField fx:id="passField" maxWidth="-Infinity" prefWidth="150.0" promptText="Entrez mots de passe" />
+            <Button mnemonicParsing="false" onAction="#valider" text="Valider" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

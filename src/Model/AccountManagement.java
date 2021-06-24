@@ -11,10 +11,21 @@ import javafx.event.ActionEvent;
 import org.json.*;
 
 public class AccountManagement {
-    static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"accountDB.json";
+    static String relativePath = File.separator + "Data" + File.separator +"accountDB.json";
     private static String accountFile = System.getProperty("user.dir") + relativePath;
 
+    public static boolean createDataFile(){
+        File f = new File(System.getProperty("user.dir") + File.separator + "Data");
+        System.out.println(f.toURI().toString());
+        if(!f.exists()){
+            f.mkdir();
+            return true;
+        }
+        return false;
+    }
+
     public static boolean createFile(){
+        createDataFile();
         File f = new File(accountFile);
         try {
             boolean b = f.createNewFile();
@@ -102,17 +113,15 @@ public class AccountManagement {
 
     public static void saveAccounts(HashMap<String,Account> toSave) throws IOException {
         JSONObject accountJSON = new JSONObject();
-        for (String key: toSave.keySet()
-             ) {
+        for (String key: toSave.keySet()) {
             accountJSON.put(key, toSave.get(key).toJson());
         }
         Files.write(Paths.get(accountFile), accountJSON.toString().getBytes());
-
     }
 
 
 
     public static void createAccount(ActionEvent actionEvent) {
-        saveAccount(new Account("untitled","0000","",new ArrayList<>(0)));
+        saveAccount(new Account("untitled","0000","file:res/user.png",Role.other,new ArrayList<>(0)));
     }
 }
