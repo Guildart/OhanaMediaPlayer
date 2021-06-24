@@ -139,3 +139,7 @@
     -fx-background-position: center;
     -fx-background-color: transparent;
 }
+
+.hbox-users{
+    -fx-border-color: white;
+}

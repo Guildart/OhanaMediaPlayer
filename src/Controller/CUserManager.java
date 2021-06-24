@@ -9,6 +9,7 @@ import View.MultipleChoiceBox;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -101,6 +102,9 @@ public class CUserManager implements Initializable {
 
     private HBox createAccountHBox(Account account){
         HBox accountBox = new HBox();
+        accountBox.getStyleClass().add("hbox-users");
+        accountBox.setSpacing(10);
+        accountBox.setPadding(new Insets(5,5,5,5));
         accountBox.setAlignment(Pos.CENTER);
         accountBox.setMaxWidth(Double.MAX_VALUE);
         accountBox.setPrefWidth(1500);
@@ -130,7 +134,7 @@ public class CUserManager implements Initializable {
             textFieldPassword.setDisable(true);
             choiceRole.setDisable(true);
         }
-
+        identifiersBox.setSpacing(10);
         if(choiceRole.getValue() != Role.child)
             identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
                 new Label("Password"),textFieldPassword, new Label("Role"), choiceRole);
@@ -168,7 +172,8 @@ public class CUserManager implements Initializable {
 
 
         if (account.getRole() == Role.other) {
-            Button deleteButton = new Button("delete this account");
+            Button deleteButton = new Button();
+            deleteButton.getStyleClass().add("delete-button");
 
             deleteButton.setOnAction(this::tryToDeleteAccount);
             deleteButton.setId(account.getUserName());
