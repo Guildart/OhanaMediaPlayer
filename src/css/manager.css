@@ -16,6 +16,12 @@
 -fx-font-weight: bold;
 }
 
+.label-interface{
+-fx-text-fill: white;
+-fx-font-size:20;
+-fx-font-weight: bold;
+}
+
 .alerte-label{
 -fx-text-fill: red;
 -fx-font-size:15;

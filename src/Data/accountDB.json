@@ -1,1 +1,0 @@
-{"other":{"password":"other","role":"other","forbidden":[],"userName":"other","image path":"res/KevinPP.png"},"admin":{"password":"admin","role":"admin","forbidden":[],"userName":"admin","image path":"res/JacquelinePP.png"},"child":{"password":"needless for password here!","role":"child","forbidden":["thriller","zombie"],"userName":"child","image path":"res/childrenPP.png"}}
