@@ -138,11 +138,11 @@ public class CUserManager implements Initializable {
         Label message = new Label();
         message.setTextFill(Color.RED);
         message.setText("");
-        TextField forbidTextField = createForbidTextField(account.getUserName());
-        Button forbidButton = createForbidButton(account.getUserName(), forbidTextField);
+        //TextField forbidTextField = createForbidTextField(account.getUserName());
+        //Button forbidButton = createForbidButton(account.getUserName());
 
 
-        forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
+        //forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
 
         HBox.setHgrow(forbiddenCategories, Priority.SOMETIMES);
         forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
@@ -151,6 +151,7 @@ public class CUserManager implements Initializable {
         Button multipleCatSelect = new Button("forbid/allow");
         multipleCatSelect.setId(account.getUserName());
         multipleCatSelect.setOnAction(this::multipleCatSelect);
+        forbiddenCategories.getChildren().add(multipleCatSelect);
 
 
         if (account.getRole() == Role.other) {
@@ -159,10 +160,10 @@ public class CUserManager implements Initializable {
             deleteButton.setOnAction(this::tryToDeleteAccount);
             deleteButton.setId(account.getUserName());
 
-            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,multipleCatSelect,deleteButton);
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,deleteButton);
 
         }else{
-            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories,multipleCatSelect);
+            accountBox.getChildren().addAll(identifiersBox, forbiddenCategories);
         }
 
 
