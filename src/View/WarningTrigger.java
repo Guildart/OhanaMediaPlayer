@@ -50,6 +50,7 @@ public class WarningTrigger {
         cancel.setOnAction(ov -> cancelAction(ov));
 
         Scene scene = new Scene(ultraRoot);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
         return bool;
@@ -79,6 +80,7 @@ public class WarningTrigger {
         validate.setOnAction(ov -> validateAction(ov));
 
         Scene scene = new Scene(ultraRoot);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
     }
