@@ -115,10 +115,10 @@ public class CFilmCreationView implements Initializable{
             if(!this.modifying){
                 if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), movieImagePath, this.categoryAdded))
                     this.errorToAddMessage.setVisible(true);
-                else{
-                    System.out.println("yayaay");
-                  MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded);
-              }
+
+            }else{
+                System.out.println("yayaay");
+                MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded);
             }
             //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
             System.out.println("old titre : " + this.oldTitle);

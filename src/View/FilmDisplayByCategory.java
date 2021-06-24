@@ -18,7 +18,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class FilmDisplayByCategory extends HBox {
     private VBox vboxCat;
@@ -33,7 +35,7 @@ public class FilmDisplayByCategory extends HBox {
     private int numberOfMovies = 0;
 
 
-    public FilmDisplayByCategory(String category, CVueVideotheque controller){
+    public FilmDisplayByCategory(String category, CVueVideotheque controller) {
 
         Background back;
         next = new Button();
@@ -69,6 +71,7 @@ public class FilmDisplayByCategory extends HBox {
 
         Account actualUser = CVueVideotheque.actualUser;
         ArrayList<String> allMyFilm = MoviesDB.getAuthorizedMovies(actualUser.getUserName());
+        allMyFilm.sort(Comparator.naturalOrder());
 
         myScroolPane = new ScrollPane();
         myScroolPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

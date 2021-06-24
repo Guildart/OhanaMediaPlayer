@@ -37,7 +37,9 @@ import javax.imageio.ImageIO;
 
 /**
  * Load image, provide rectangle for rubberband selection. Press right mouse button for "crop" context menu which then crops the image at the selection rectangle and saves it as jpg.
- */
+ * Source du Code : https://stackoverflow.com/questions/30993681/how-to-make-a-javafx-image-crop-app
+ **/
+
 public class ImageCropWithRubberBand {
 
     RubberBandSelection rubberBandSelection;
@@ -62,7 +64,7 @@ public class ImageCropWithRubberBand {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("image", "*.png", "*.jpg"));
         File file = fileChooser.showOpenDialog(window);
         if (file != null) {
-            String myPath = file.getAbsolutePath();
+            String myPath = file.toURI().toString();
             //System.out.println(myPath);
             return myPath;
         }
@@ -89,7 +91,7 @@ public class ImageCropWithRubberBand {
         if(imgpath == null)
             return false;
         System.out.println(imgpath);
-        Image image = new Image(("file:" + imgpath));
+        Image image = new Image((imgpath));
 
         // the container for the image as a javafx node
         imageView = new ImageView(image);
@@ -104,6 +106,10 @@ public class ImageCropWithRubberBand {
         root.setCenter(scrollPane);
 
         //calc rec size
+        if(Math.max(image.getWidth()%finalWidth,image.getHeight()%finalHeight) < 2){
+            finaleImage = imgpath;
+            return true;
+        }
 
         int fact = Math.min(((int) image.getWidth()/finalWidth), ((int) image.getHeight()/finalHeight));
         int width = finalWidth*fact;

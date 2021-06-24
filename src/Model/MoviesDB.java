@@ -8,6 +8,9 @@ import org.json.JSONString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -202,15 +205,24 @@ public class MoviesDB {
             JSONArray movies = (JSONArray) obj.get("movies");
             for (int i = 0; i < movies.length(); i++) {
                 JSONObject movie = movies.getJSONObject(i);
-                if (movie.getString("title").equals(title))
-                    return movie.getString("imagePath");
+                if (movie.getString("title").equals(title)) {
+                    String path = movie.getString("imagePath");
+                    URL url = new URL(path);
+                    File file = new File(url.getPath());
+                    if(file.exists()) {
+                        return movie.getString("imagePath");
+                    }else{
+                        setImagePath(title, "file:res/default.png");
+                        return "file:res/default.png";
+                    }
+
+                }
             }
-        }catch (FileNotFoundException | JSONException e){
+        }catch (JSONException | IOException e){
             e.printStackTrace();
         }
         throw new RuntimeException("Le film : " + title + " n'existe pas");
     }
-
 
     public static ArrayList<String> getMovieCategories(String title){
         try {
@@ -333,11 +345,15 @@ public class MoviesDB {
         return false;
     }*/
     public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
-        boolean test = MoviesDB.addMovie(newTitle, path, imagePath, categories);
-        if(test)
+        if(actualTitle.equals(newTitle)){
             MoviesDB.deleteMovie(actualTitle);
-        System.out.println("dedans : " + test + actualTitle);
-        return test;
+            return MoviesDB.addMovie(newTitle, path, imagePath, categories);
+        }else{
+            boolean test = MoviesDB.addMovie(newTitle, path, imagePath, categories);
+            if(test)
+                MoviesDB.deleteMovie(actualTitle);
+            return test;
+        }
     }
 
     public static boolean isOfCategorie(String movie, String categorie){
