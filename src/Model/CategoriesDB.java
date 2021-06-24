@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CategoriesDB {
-    static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"categoriesDB.json";
+    static String relativePath = File.separator + "Data" + File.separator +"categoriesDB.json";
     public static String accountFile = System.getProperty("user.dir") + relativePath;
 
     public static boolean createFile(){

@@ -16,6 +16,8 @@ public class Main extends Application {
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/FilmCreationView.fxml")); // on charge la première page fxml
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaPlayer.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueConnexion.fxml"));
+        if(AccountManagement.getAccounts() == null)
+            loader = new FXMLLoader(getClass().getResource("/View/firstLaunch.fxml"));;
         Parent root = loader.load(); // on charge le parent
         primaryStage.setTitle("Ohana Media Player");
         primaryStage.setMaximized(true);

@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -45,6 +46,7 @@ public class CUserManager implements Initializable {
 
     private HashMap<String, TextField> oldUserNameToNewUserNameTextfield = new HashMap<>(0);
     private HashMap<String, TextField> oldUserNameToNewPasswordTextfield = new HashMap<>(0);
+    private HashMap<String, ComboBox> oldUserNameToNewComboBox = new HashMap<>(0);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,11 +59,14 @@ public class CUserManager implements Initializable {
         for (String username: oldUserNameToNewUserNameTextfield.keySet()) {
             String newUserName = oldUserNameToNewUserNameTextfield.get(username).getText();
             String newPassword = oldUserNameToNewPasswordTextfield.get(username).getText();
+            Role newRole = (Role) oldUserNameToNewComboBox.get(username).getValue();
+            System.out.println(newRole);
             Account updatedAccount = accountHash.get(username);
             if (updatedAccount != null) {
                 accountHash.remove(username);
                 updatedAccount.setUserName(newUserName);
                 updatedAccount.setPassword(newPassword);
+                updatedAccount.setRole(newRole);
                 accountHash.put(newUserName, updatedAccount);
             }
         }
@@ -114,16 +119,24 @@ public class CUserManager implements Initializable {
 
         TextField textFieldUserName = new TextField(account.getUserName());
         TextField textFieldPassword = new TextField(account.getPassword());
+        ComboBox choiceRole = new ComboBox();
+        choiceRole.getItems().addAll(Role.other, Role.admin);
+        choiceRole.setValue(account.getRole());
 
         oldUserNameToNewUserNameTextfield.put(account.getUserName(),textFieldUserName);
         oldUserNameToNewPasswordTextfield.put(account.getUserName(),textFieldPassword);
+        oldUserNameToNewComboBox.put(account.getUserName(),choiceRole);
         if (account.getRole().equals(Role.child)){
             textFieldPassword.setDisable(true);
+            choiceRole.setDisable(true);
         }
 
-        identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
-                new Label("Password"),textFieldPassword);
-
+        if(choiceRole.getValue() != Role.child)
+            identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
+                new Label("Password"),textFieldPassword, new Label("Role"), choiceRole);
+        else
+            identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
+                    new Label("Password"),textFieldPassword);
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
         forbiddenCategories.setVgap(10);

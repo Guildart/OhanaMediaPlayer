@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class MoviesDB {
-    static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"moviesDB.json";
+    static String relativePath = File.separator + "Data" + File.separator +"moviesDB.json";
     private static String accountFile = System.getProperty("user.dir") + relativePath;
 
     public static boolean createFile(){

@@ -122,3 +122,14 @@
     -fx-background-radius: 5em;
     -fx-text-fill: white;
 }
+
+.profile-button{
+    -fx-text-fill: black;
+    -fx-background-image: url(file:res/user.png);
+    -fx-background-size: 128px;
+    -fx-pref-height: 128px;
+    -fx-pref-width: 128px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
