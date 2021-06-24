@@ -56,6 +56,33 @@ public class WarningTrigger {
 
     }
 
+    public static void warningNoFiles(String message){
+        window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("File Not Found");
+        window.setMinWidth(250);
+
+        VBox ultraRoot = new VBox();
+        ultraRoot.setAlignment(Pos.CENTER);
+
+        Label label = new Label(message);
+
+        Button validate = new Button("Valider");
+
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        ultraRoot.setSpacing(10);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().addAll(validate);
+        ultraRoot.getChildren().addAll(label, hbox);
+
+        validate.setOnAction(ov -> validateAction(ov));
+
+        Scene scene = new Scene(ultraRoot);
+        window.setScene(scene);
+        window.showAndWait();
+    }
+
     private static void cancelAction(ActionEvent e) {
         bool = false;
         window.close();

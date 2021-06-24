@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -34,7 +35,7 @@ public class FilmDisplayByCategory extends HBox {
     private int numberOfMovies = 0;
 
 
-    public FilmDisplayByCategory(String category, CVueVideotheque controller){
+    public FilmDisplayByCategory(String category, CVueVideotheque controller) {
 
         Background back;
         next = new Button();

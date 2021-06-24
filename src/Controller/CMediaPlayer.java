@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.MoviesDB;
+import View.WarningTrigger;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -33,6 +34,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,17 +54,33 @@ public class CMediaPlayer implements Initializable {
     public Button goBackButton;
     private double lastAction = 0;
 
-    public static void playVideo(Node anySceneNode, Object controller, String movieName) throws IOException {
+    public void playVideo(Node anySceneNode, Object controller, String movieName) throws IOException {
         videoPath = MoviesDB.getMoviePath(movieName);
+
         Stage stage = (Stage) anySceneNode.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/View/MediaPlayer.fxml"));
+        if(!isPayable(videoPath)){
+            WarningTrigger.warningWindow("Le chemin d'accès du film " + movieName + " est incorrect ! \n Le film à été supprimé de la vidéothèque.");
+            MoviesDB.deleteMovie(movieName);
+            //goBackButton.fire();
+            loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
+        }
         Parent root = loader.load();
         stage.setMaximized(true);
         Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
         stage.setScene(scene);
         //stage.setFullScreen(true);
         stage.show();
+    }
 
+    private boolean isPayable(String path) throws MalformedURLException {
+        //URL url = new URL(path);
+        File file = new File(path);
+        if(path != null && path.length() >= 4) {
+            String extension = path.substring(path.length() - 4);
+            return file.exists() && extension.equals(".mp4");
+        }
+        return false;
     }
 
     @Override
