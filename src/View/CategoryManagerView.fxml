@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
+<AnchorPane onKeyPressed="#onKeyPressed" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
    <children>
-      <Button mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <Button fx:id="goBackButton" layoutX="26.0" layoutY="20.0" mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="20.0" />
       <Label layoutX="127.0" layoutY="12.0" styleClass="label-interface" text="Gestionnaire de Catégories" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="60.0">
          <font>
             <Font size="18.0" />

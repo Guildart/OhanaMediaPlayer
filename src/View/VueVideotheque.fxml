@@ -48,7 +48,7 @@
                               <Insets />
                            </HBox.margin>
                         </ComboBox>
-                        <Button fx:id="buttonAddMovie" mnemonicParsing="false" onAction="#ajouterFilm" text="Ajouter Film">
+                        <Button fx:id="buttonAddMovie" mnemonicParsing="false" onAction="#ajouterFilm" text="Gérer Film">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

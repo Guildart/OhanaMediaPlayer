@@ -41,6 +41,7 @@ import java.util.ResourceBundle;
 
 public class CUserManager implements Initializable {
 
+    public Button goBackButton;
     @FXML
     private VBox toAddOn;
 
@@ -327,6 +328,11 @@ public class CUserManager implements Initializable {
     public void getBackToMenu(ActionEvent actionEvent) throws IOException {
         CVueVideotheque.changeToMe(toAddOn,this);
         saveNewUsernamesAndPasswords();
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
     }
 
 }

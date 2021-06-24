@@ -3,10 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CUserManager">
+<VBox onKeyPressed="#onKeyPressed" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CUserManager">
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <children>
-         <Button onAction="#getBackToMenu" prefHeight="73.0" prefWidth="112.0" styleClass="retour-button">
+         <Button fx:id="goBackButton" onAction="#getBackToMenu" prefHeight="73.0" prefWidth="112.0" styleClass="retour-button">
    </Button>
          <Label styleClass="label-interface" text="Gestionaire d'utilisateurs" />
       </children></HBox>

@@ -51,6 +51,7 @@ public class CCategoryManagerView implements Initializable {
     public HBox hboxUsers;
     public HBox hboxCatName;
     public ScrollPane scrollFilms;
+    public Button goBackButton;
 
     private String actualCatgory = null;
 
@@ -237,5 +238,10 @@ public class CCategoryManagerView implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
     }
 }
