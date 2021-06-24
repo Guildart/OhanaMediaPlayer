@@ -50,6 +50,7 @@ public class CCategoryManagerView implements Initializable {
     public HBox notAllowedUsers;
     public HBox hboxUsers;
     public HBox hboxCatName;
+    public ScrollPane scrollFilms;
 
     private String actualCatgory = null;
 
@@ -68,6 +69,8 @@ public class CCategoryManagerView implements Initializable {
         labelCatAlreadyExist.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             focusMessageState(newValue, labelCatAlreadyExist);
         });
+
+        this.flowPaneMovies.prefWidthProperty().bind(scrollFilms.widthProperty().subtract(10));
 
         hboxCatName.setVisible(false);
         hboxAddMovie.setVisible(false);
