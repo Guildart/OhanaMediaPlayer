@@ -94,18 +94,19 @@ public class CFilmCreationView implements Initializable{
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
-        if(this.pathText.getText() != "" &&
-           this.nameText.getText() != ""){
+        String path = this.pathText.getText();
+        String name = this.nameText.getText();
+        if( name != null && path!= null && !name.isEmpty() && !path.isEmpty()){
             if(!this.modifying){
                 if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), movieImagePath, this.categoryAdded))
                     this.errorToAddMessage.setVisible(true);
 
             }else{
-                System.out.println("yayaay");
-                MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded);
+                if(!MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded))
+                    this.errorToAddMessage.setVisible(true);
             }
-            //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
             System.out.println("old titre : " + this.oldTitle);
+            System.out.println(this.nameText.getText().isEmpty());
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
             System.out.println("chemain image: " + this.movieImagePath);
@@ -121,10 +122,10 @@ public class CFilmCreationView implements Initializable{
             stage.show();
         }
         else {
-            if(this.pathText.getText() == ""){
+            if(path.isEmpty() || path == null){
                 this.pathErrorMessage.setVisible(true);
             }
-            if(this.nameText.getText() == ""){
+            if(name.isEmpty() || name == null){
                 this.titleErrorMessage.setVisible(true);
             }
         }

@@ -246,7 +246,7 @@ public class MoviesDB {
         throw new RuntimeException("Le film : " + title + " n'existe pas");
     }
 
-    public static boolean setTitle(String acutalTitle, String newTitle) throws IOException {
+    /*public static boolean setTitle(String acutalTitle, String newTitle) throws IOException {
         String data = fileToString();
         JSONObject obj = new JSONObject(data);
         JSONArray movies = (JSONArray) obj.get("movies");
@@ -302,7 +302,7 @@ public class MoviesDB {
             }
         }
         return false;
-    }
+    }*/
 
     public static boolean setImagePath(String movieTitle, String path) throws IOException {
         String data = fileToString();
@@ -402,7 +402,7 @@ public class MoviesDB {
         for(String s : getAuthorizedMovies("child"))
             System.out.print(s+"\n");
 
-        setCategory("Tenet2", (new ArrayList<String>(List.of("Humour", "fantastique"))));
+        /*setCategory("Tenet2", (new ArrayList<String>(List.of("Humour", "fantastique"))));
         System.out.print("Tenet2 categories : " + "\n");
         for(String s :getMovieCategories("Tenet2"))
             System.out.print(s + "\n");
@@ -418,7 +418,7 @@ public class MoviesDB {
 
         addMovie("newMovie", "null", "file:res/default", new ArrayList<>());
         for(String s :getTitles())
-            setImagePath(s,"file:res/default.png");
+            setImagePath(s,"file:res/default.png");*/
 
     }
 }

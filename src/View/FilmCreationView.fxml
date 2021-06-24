@@ -46,7 +46,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Label fx:id="pathErrorMessage" text="Chemain invalide" textFill="RED" />
+                  <Label fx:id="pathErrorMessage" styleClass="alerte-label" text="Chemain invalide" textFill="RED" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
@@ -67,7 +67,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Label fx:id="titleErrorMessage" text="pensez a donner un titre" textFill="RED" />
+                  <Label fx:id="titleErrorMessage" styleClass="alerte-label" text="pensez a donner un titre" textFill="RED" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
