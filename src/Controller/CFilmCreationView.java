@@ -18,11 +18,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +53,7 @@ public class CFilmCreationView implements Initializable{
     public HBox buttonBox;
     public Button modifButton;
     public Button imageButton;
+    public Button goBackButton;
 
     private String movieImagePath;
 
@@ -63,26 +67,6 @@ public class CFilmCreationView implements Initializable{
         movieImagePath = "file:res/default.png";
     }
 
-    /**
-    public void categoryClicked(ActionEvent e){
-       /** HBox cateNSupButton = new HBox();
-        Button supButton = new Button("x");
-        supButton.setOnAction(a -> supClicked(a));
-        String categoryName = ((MenuItem)e.getSource()).getText();
-        Button newCategory = new Button(categoryName);
-        cateNSupButton.getChildren().addAll(newCategory, supButton);
-        this.categoryList.getChildren().add(cateNSupButton);
-        this.categoryAdded.add(categoryName);
-
-
-        String categoryName = ((MenuItem)e.getSource()).getText();
-        CategoryView categoryToAdd = new CategoryView(categoryName, true);
-        categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
-        this.categoryList.getChildren().add(categoryToAdd);
-        this.categoryAdded.add(categoryName);
-        updateUsersAllowed();
-    }
-     **/
 
     public void supClicked(ActionEvent e){
         HBox currentHBox = (HBox)((Button)e.getSource()).getParent();
@@ -271,5 +255,10 @@ public class CFilmCreationView implements Initializable{
             System.out.println("movie : " + movieImagePath);
             imageButton.setStyle("-fx-background-image:url(" + movieImagePath +");");
         }
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
     }
 }

@@ -188,6 +188,7 @@ public class MultipleChoiceBox {
 
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
 

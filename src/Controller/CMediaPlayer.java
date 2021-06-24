@@ -56,6 +56,7 @@ public class CMediaPlayer implements Initializable {
     public Label timeLabel;
     public Label volumeLabel;
     public ToggleButton soundToggle;
+    public Button stopButton;
     private double lastAction = 0;
 
     public void playVideo(Node anySceneNode, Object controller, String movieName) throws IOException {
@@ -254,6 +255,10 @@ public class CMediaPlayer implements Initializable {
             fullScreenButton.setSelected(false);
         if(keyEvent.getCode()==KeyCode.F && keyEvent.isControlDown())
             fullScreenButton.fire();
+        if(keyEvent.getCode()==KeyCode.A && keyEvent.isControlDown())
+            stopButton.fire();
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
         if(keyEvent.getCode() == KeyCode.SPACE)
             pauseButton.fire();
         if(keyEvent.getCode() == KeyCode.RIGHT)

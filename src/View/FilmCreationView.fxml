@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="643.0" prefWidth="803.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CFilmCreationView">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#onKeyPressed" prefHeight="643.0" prefWidth="803.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CFilmCreationView">
    <children>
-      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="80.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                <VBox.margin>
@@ -129,12 +129,13 @@
                   <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteMovie" styleClass="delete-button" />
                </children>
             </HBox>
-            <Label fx:id="errorToAddMessage" text="Le film n'a pas pu s'ajouter correctement&#10;Important : Il est possible qu'un film du même nom est deja été ajouté&#10;&#9;&#9;&#9;ou que vous ayez deja ajouté ce film." textFill="RED" />
+            <Label fx:id="errorToAddMessage" styleClass="alerte-label" text="Le film n'a pas pu s'ajouter correctement&#10;Important : Il est possible qu'un film du même nom est deja été ajouté&#10;&#9;&#9;&#9;ou que vous ayez deja ajouté ce film." textFill="RED" />
          </children>
          <opaqueInsets>
             <Insets bottom="50.0" />
          </opaqueInsets>
       </VBox>
-      <Button layoutX="14.0" layoutY="67.0" mnemonicParsing="false" onAction="#cancelClicked" styleClass="retour-button" />
+      <Button fx:id="goBackButton" layoutX="14.0" layoutY="67.0" mnemonicParsing="false" onAction="#cancelClicked" styleClass="retour-button" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <Label layoutX="114.0" layoutY="23.0" styleClass="label-interface" text="Gestionaire de Films" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="60.0" />
    </children>
 </AnchorPane>
