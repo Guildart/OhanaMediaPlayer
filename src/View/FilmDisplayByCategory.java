@@ -24,13 +24,13 @@ import java.util.Comparator;
 
 public class FilmDisplayByCategory extends HBox {
     private VBox vboxCat;
-    private HBox filmDisplay;
+    public HBox filmDisplay;
     private String myCategory;
     private Label title;
     private CVueVideotheque controller;
     private Button next;
     private Button previous;
-    private ScrollPane myScroolPane;
+    public ScrollPane myScroolPane;
 
     private int numberOfMovies = 0;
 
@@ -115,10 +115,15 @@ public class FilmDisplayByCategory extends HBox {
         vboxCat.widthProperty().addListener((observable, oldValue, newValue) -> {
             this.visible();
         });
+
+        filmDisplay.widthProperty().addListener((observable, oldValue, newValue) -> {
+            this.visible();
+        });
     }
 
 
     public void visible() {
+        System.out.println(this.filmDisplay.getWidth() + " : " + vboxCat.getWidth());
         if(this.filmDisplay.getWidth() > vboxCat.getWidth()){
             next.setVisible(true);
             previous.setVisible(true);

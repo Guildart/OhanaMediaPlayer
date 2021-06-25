@@ -1,10 +1,7 @@
-package javatpoint;
+package Main;
 
 import java.io.File;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

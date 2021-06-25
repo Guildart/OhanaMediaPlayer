@@ -1,4 +1,4 @@
-package javatpoint;
+package Main;
 
 import Model.AccountManagement;
 import javafx.application.Application;
