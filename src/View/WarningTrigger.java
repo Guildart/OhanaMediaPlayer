@@ -36,8 +36,8 @@ public class WarningTrigger {
 
         Label label = new Label(message);
 
-        Button validate = new Button("Valider");
-        Button cancel = new Button("Annuler");
+        Button validate = new Button("Oui");
+        Button cancel = new Button("Non");
 
         HBox hbox = new HBox();
         hbox.setSpacing(10);

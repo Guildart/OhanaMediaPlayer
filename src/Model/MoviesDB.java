@@ -285,7 +285,7 @@ public class MoviesDB {
             }
         }
         return false;
-    }
+    }*/
 
     public static boolean setPath(String movieTitle, String path) throws IOException {
         String data = fileToString();
@@ -302,7 +302,7 @@ public class MoviesDB {
             }
         }
         return false;
-    }*/
+    }
 
     public static boolean setImagePath(String movieTitle, String path) throws IOException {
         String data = fileToString();
@@ -321,29 +321,6 @@ public class MoviesDB {
         return false;
     }
 
-    /*public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
-        String data = fileToString();
-        JSONObject obj = new JSONObject(data);
-        JSONArray movies = (JSONArray) obj.get("movies");
-        JSONObject movie;
-
-        for(int i = 0; i < movies.length() ; i++) {
-            movie = movies.getJSONObject(i);
-            if (movie.get("title").equals(actualTitle)){
-                JSONArray Jcategories = (JSONArray) movie.getJSONArray("categories");
-                Jcategories.clear();
-                for(String s : categories){
-                    Jcategories.put(s);
-                }
-                movie.put("path", path);
-                movie.put("imagePath", imagePath);
-                movie.put("title", newTitle);
-                Files.write(Paths.get(accountFile), obj.toString().getBytes());
-                return true;
-            }
-        }
-        return false;
-    }*/
     public static boolean set(String actualTitle, String newTitle, String path, String imagePath, ArrayList<String> categories) throws IOException {
         if(actualTitle.equals(newTitle)){
             MoviesDB.deleteMovie(actualTitle);
@@ -375,7 +352,7 @@ public class MoviesDB {
     }
 
     public static void main(String[] args) throws IOException {
-        createFile();
+        /*createFile();
         ArrayList<String> cat = new ArrayList<>();
 
         for(String s :getTitles())
@@ -402,7 +379,7 @@ public class MoviesDB {
         for(String s : getAuthorizedMovies("child"))
             System.out.print(s+"\n");
 
-        /*setCategory("Tenet2", (new ArrayList<String>(List.of("Humour", "fantastique"))));
+        setCategory("Tenet2", (new ArrayList<String>(List.of("Humour", "fantastique"))));
         System.out.print("Tenet2 categories : " + "\n");
         for(String s :getMovieCategories("Tenet2"))
             System.out.print(s + "\n");
@@ -419,6 +396,10 @@ public class MoviesDB {
         addMovie("newMovie", "null", "file:res/default", new ArrayList<>());
         for(String s :getTitles())
             setImagePath(s,"file:res/default.png");*/
+
+        String path = getMoviePath("slime");
+        for(String s :getTitles())
+            setPath(s,"res/loki.mp4");
 
     }
 }
