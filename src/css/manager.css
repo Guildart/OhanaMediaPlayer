@@ -2,6 +2,7 @@
 .root {
   -bg-color: #1a1a1a;
   -fx-background-color: -bg-color;
+  -pastille-color: grey;
   -red : #8B0000;
 }
 
@@ -11,6 +12,18 @@
 
 .label{
 -fx-text-fill: white;
+-fx-font-size:15;
+-fx-font-weight: bold;
+}
+
+.label-interface{
+-fx-text-fill: white;
+-fx-font-size:20;
+-fx-font-weight: bold;
+}
+
+.alerte-label{
+-fx-text-fill: red;
 -fx-font-size:15;
 -fx-font-weight: bold;
 }
@@ -38,6 +51,17 @@
 
 .choice-box .context-menu {
     -fx-background-color: black;
+}
+
+.combo-box {
+-fx-background-color: -bg-color;
+-fx-text-fill: white;
+-fx-border-color: white;
+}
+
+.combo-box .list-cell{
+    -fx-background-color: -bg-color;
+    -fx-text-fill: white;
 }
 
 .button{
@@ -81,4 +105,41 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-color: transparent;
+}
+
+.image-button{
+    -fx-background-image: url(file:res/default.png);
+    -fx-background-size: 171px 96px;
+    -fx-pref-height: 96px;
+    -fx-pref-width: 171px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.close-button{
+    -fx-background-color : black;
+    -fx-background-radius: 5em;
+    -fx-text-fill: white;
+}
+
+.pastille{
+    -fx-background-color : grey;
+    -fx-background-radius: 5em;
+    -fx-text-fill: white;
+}
+
+.profile-button{
+    -fx-text-fill: black;
+    -fx-background-image: url(file:res/user.png);
+    -fx-background-size: 128px;
+    -fx-pref-height: 128px;
+    -fx-pref-width: 128px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.hbox-users{
+    -fx-border-color: white;
 }

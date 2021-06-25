@@ -14,22 +14,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import View.ImageCropWithRubberBand;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CVueVideotheque implements Initializable {
 
@@ -49,6 +46,10 @@ public class CVueVideotheque implements Initializable {
     public Button stopSearchingButton;
 
     public FilmDisplayFlowPane flowPaneDisplayMovie;
+    public ToggleButton displayButton;
+    public ComboBox comboBox;
+    public Button searchButton;
+    public HBox searchHBox;
 
     public void gererCategorie(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) menu.getScene().getWindow();
@@ -99,6 +100,14 @@ public class CVueVideotheque implements Initializable {
             allCategory.remove(forbiden);
         }
 
+        if(CategoriesDB.getMoviesWithoutCategory().size()!=0){
+            FilmDisplayByCategory filmDisplayByCategory = new FilmDisplayByCategory(null,this);
+            filmDisplayByCategory.prefWidthProperty().bind(myPane.widthProperty().subtract(20)); /*Pour redimensionnement avec la fenêtre*/
+            if (filmDisplayByCategory.getNumberOfMovies() > 0) {
+                this.vboxDisplayMovie.getChildren().add(filmDisplayByCategory);
+            }
+        }
+
         for(String allowd : allCategory){
             if(CategoriesDB.getMoviesOfCategory(allowd).size() != 0){
                 //this.globalVBox.getChildren().add(new FilmDisplayByCategory(allowd));
@@ -116,6 +125,10 @@ public class CVueVideotheque implements Initializable {
             this.buttonHandleUser.setVisible(false);
         }
 
+        ArrayList<String>  allCategories = CategoriesDB.getCategories();
+        comboBox.getItems().add(0,"Toutes catégories");
+        comboBox.getItems().addAll(CategoriesDB.getCategories());
+        comboBox.getSelectionModel().select("Toutes catégories");
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
@@ -130,13 +143,7 @@ public class CVueVideotheque implements Initializable {
 
     public void research(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
-            //todo recherche du film dans DB
-            this.stopSearchingButton.setVisible(true);
-            String myResearch = this.barreRecherche.getText();
-            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm);
-            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
-            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            searchButton.fire();
         }
     }
 
@@ -156,17 +163,13 @@ public class CVueVideotheque implements Initializable {
         String movieToStart = sender.getId();
         System.out.println(movieToStart);
         try {
-            CMediaPlayer.changeToMe(sender, this, movieToStart);
+            CMediaPlayer player = new CMediaPlayer();
+            player.playVideo(sender, this, movieToStart);
         }
         catch (IOException e){
             e.printStackTrace();
             System.out.println(e);
         }
-    }
-
-    public ArrayList<String> searchingAlgorithm(String search){
-        ArrayList<String> allFilm = MoviesDB.getTitles();
-        return allFilm;
     }
 
     public void stopSearch(ActionEvent e){
@@ -176,13 +179,84 @@ public class CVueVideotheque implements Initializable {
 
     public void changeLayout(ActionEvent e){
         if(this.scrollPane.getContent() == this.vboxDisplayMovie){
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()));
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()), this);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/list.png);");
         }
         else{
             this.scrollPane.setContent(this.vboxDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
         }
     }
 
+    public void goHome(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) menu.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
+        Parent root = loader.load();
+        stage.setMaximized(true);
+        Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void selectCategory(ActionEvent actionEvent) {
+        String getSelection = (String) comboBox.getSelectionModel().getSelectedItem();
+        if(getSelection.equals("Toutes catégories")){
+            this.scrollPane.setContent(this.vboxDisplayMovie);
+            displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
+            //displayButton.setVisible(true);
+            displayButton.setDisable(false);
+        }else{
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection), this);
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            //displayButton.setVisible(false);
+            displayButton.setDisable(true);
+        }
+    }
+
+
+    private ArrayList<String> searchingAlgorithm(String recherche){
+        recherche = recherche.toLowerCase();
+        final String SEPARATEUR = " ";
+        String mots[] = recherche.split(SEPARATEUR);
+        HashMap<String, Integer> movies = new HashMap<String, Integer>();
+        ArrayList<String> test = new ArrayList<>();
+
+        for(String movie : MoviesDB.getTitles()) {
+            String movieLowerCase = movie.toLowerCase();
+            int compteur = mots.length;
+            for (String s : mots) {
+                if(movieLowerCase.contains(s))
+                    compteur-=1;
+            }
+            if(compteur != mots.length) {
+                movies.put(movie, compteur);
+                System.out.println(true);
+            }
+        }
+
+        Comparator<Map.Entry<String, Integer>> valueComparator =
+                Comparator.comparing(Map.Entry::getValue);
+        Map<String, Integer> sortedMap =
+                movies.entrySet().stream().
+                        sorted(valueComparator).
+                        collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+        for(String key : sortedMap.keySet())
+            System.out.println(key + ":" +sortedMap.get(key));
+        return new ArrayList<String>(sortedMap.keySet());
+    }
+
+    public void onClickSearch(ActionEvent actionEvent) {
+        if(searchHBox.getChildren().contains(barreRecherche)){
+            this.stopSearchingButton.setVisible(true);
+            String myResearch = this.barreRecherche.getText();
+            ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm, this);
+            this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+            this.scrollPane.setContent(this.flowPaneDisplayMovie);
+        }
+    }
 }

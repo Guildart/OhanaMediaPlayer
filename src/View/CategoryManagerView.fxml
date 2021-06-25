@@ -3,11 +3,17 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
+<AnchorPane onKeyPressed="#onKeyPressed" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/manager.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CCategoryManagerView">
    <children>
-      <Button mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
-      <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
+      <Button fx:id="goBackButton" layoutX="26.0" layoutY="20.0" mnemonicParsing="false" onAction="#goBack" styleClass="retour-button" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="20.0" />
+      <Label layoutX="127.0" layoutY="12.0" styleClass="label-interface" text="Gestionnaire de Catégories" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="60.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="629.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="70.0">
          <children>
             <HBox fx:id="hboxAddCategory" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0">
                <children>
@@ -19,11 +25,11 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <ChoiceBox fx:id="choiceBox" onAction="#selectCategory" prefWidth="150.0">
+                  <ComboBox fx:id="choiceBox" onAction="#selectCategory" prefHeight="25.0" prefWidth="189.0" promptText="Sélectionnez une catégorie">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
-                  </ChoiceBox>
+                  </ComboBox>
                   <Button mnemonicParsing="false" onAction="#addCategory" prefHeight="31.0" prefWidth="35.0" text="+">
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -33,13 +39,13 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Label fx:id="labelCatAlreadyExist" text="La catégorie existe déjà" textFill="RED">
+                  <Label fx:id="labelCatAlreadyExist" styleClass="alerte-label" text="La catégorie existe déjà" textFill="RED">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Label>
                </children></HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
+            <HBox fx:id="hboxCatName" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
                <children>
                   <Label text="Nom de la catégorie">
                      <padding>
@@ -49,7 +55,7 @@
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin></TextField>
-                  <Label fx:id="message" text="Cette catégorie existe déjà" textFill="RED">
+                  <Label fx:id="message" styleClass="alerte-label" text="Cette catégorie existe déjà" textFill="RED">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
@@ -66,7 +72,7 @@
                         <Insets left="25.0" />
                      </padding>
                   </Label>
-                  <ScrollPane prefHeight="50.0" prefWidth="284.0" HBox.hgrow="SOMETIMES">
+                  <ScrollPane fx:id="scrollFilms" prefHeight="50.0" prefWidth="284.0" HBox.hgrow="SOMETIMES">
                      <content>
                         <FlowPane fx:id="flowPaneMovies" maxWidth="1.7976931348623157E308" prefHeight="132.0" prefWidth="343.0" prefWrapLength="800.0">
                            <padding>
@@ -79,15 +85,12 @@
                         <Insets />
                      </HBox.margin></Button>
                </children></HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+            <HBox fx:id="hboxUsers" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                <children>
                   <Label text="Utilisateurs Interdits :" />
-                  <ScrollPane prefHeight="50.0" prefWidth="284.0" HBox.hgrow="SOMETIMES">
+                  <ScrollPane prefHeight="100.0" prefWidth="364.0" HBox.hgrow="SOMETIMES">
                      <content>
-                        <FlowPane fx:id="flowPaneUsers" maxWidth="1.7976931348623157E308" prefHeight="132.0" prefWidth="343.0" prefWrapLength="800.0">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding></FlowPane>
+                        <HBox fx:id="notAllowedUsers" prefHeight="96.0" prefWidth="392.0" />
                      </content>
                   </ScrollPane>
                </children>

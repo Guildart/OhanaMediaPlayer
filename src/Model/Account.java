@@ -25,11 +25,11 @@ public class Account {
         }
     }
 
-    Account (String userName, String password, String imagePath, ArrayList<String> forbiddenCategories){ // l'admin ne peut ajouter que des comptes other
+    public Account(String userName, String password, String imagePath, Role role, ArrayList<String> forbiddenCategories){ // l'admin ne peut ajouter que des comptes other
         this.userName = userName;
         this.password = password;
         this.imagePath = imagePath;
-        this.role = Role.other;
+        this.role = role;
         this.forbiddenCategories = forbiddenCategories;
     }
 
@@ -46,7 +46,7 @@ public class Account {
     }
 
     public Image getImage(){
-        return new Image("file:"+imagePath);
+        return new Image(imagePath);
     }
 
     public Role getRole(){
@@ -91,5 +91,13 @@ public class Account {
 
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public void setForbiddenCategories(ArrayList<String> newForbidden) {
+        forbiddenCategories = newForbidden;
+    }
+
+    public void setRole(Role newRole) {
+        this.role = newRole;
     }
 }

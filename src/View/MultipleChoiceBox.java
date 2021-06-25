@@ -59,15 +59,22 @@ public class MultipleChoiceBox {
         ultraRoot.getChildren().add(root);
 
         Button validate = new Button("valider");
+        VBox vbox = new VBox();
+        vbox.setPrefHeight(validate.getPrefHeight());
+        vbox.setPrefWidth(ultraRoot.getWidth());
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(validate);
+
         validate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 window.close();
             }
         });
-        ultraRoot.getChildren().add(validate);
+        ultraRoot.getChildren().add(vbox);
 
         Scene scene = new Scene(ultraRoot);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
         return categorySelected;
@@ -119,15 +126,21 @@ public class MultipleChoiceBox {
         ultraRoot.getChildren().add(root);
 
         Button validate = new Button("valider");
+        VBox vbox = new VBox();
+        vbox.setPrefHeight(validate.getPrefHeight());
+        vbox.setPrefWidth(ultraRoot.getWidth());
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(validate);
         validate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 window.close();
             }
         });
-        ultraRoot.getChildren().add(validate);
+        ultraRoot.getChildren().add(vbox);
 
         Scene scene = new Scene(ultraRoot);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
         return filmSelected;
@@ -175,6 +188,7 @@ public class MultipleChoiceBox {
 
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("file:src/css/manager.css");
         window.setScene(scene);
         window.showAndWait();
 

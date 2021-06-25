@@ -1,24 +1,30 @@
 package Controller;
 
+import Model.Account;
+import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.AutoCompleteTextField;
 import View.CategoryView;
 import View.MultipleChoiceBox;
+import View.WarningTrigger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import observerObservable.Observer;
 import org.json.JSONException;
@@ -27,16 +33,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class CCategoryManagerView implements Initializable {
     @FXML
-    public ChoiceBox choiceBox;
+    public ComboBox choiceBox;
     public HBox hboxAddMovie;
-
 
     public TextField nameCategory;
     public Label message;
@@ -45,6 +47,11 @@ public class CCategoryManagerView implements Initializable {
     public Label labelCatAlreadyExist;
     public FlowPane flowPaneMovies;
     public FlowPane flowPaneUsers;
+    public HBox notAllowedUsers;
+    public HBox hboxUsers;
+    public HBox hboxCatName;
+    public ScrollPane scrollFilms;
+    public Button goBackButton;
 
     private String actualCatgory = null;
 
@@ -63,6 +70,13 @@ public class CCategoryManagerView implements Initializable {
         labelCatAlreadyExist.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             focusMessageState(newValue, labelCatAlreadyExist);
         });
+
+        this.flowPaneMovies.prefWidthProperty().bind(scrollFilms.widthProperty().subtract(10));
+
+        hboxCatName.setVisible(false);
+        hboxAddMovie.setVisible(false);
+        hboxUsers.setVisible(false);
+
 
     }
 
@@ -106,6 +120,10 @@ public class CCategoryManagerView implements Initializable {
         }
         //listView.getItems().setAll(CategoriesDB.getMoviesOfCategory(actualCatgory));
         nameCategory.setText(actualCatgory);
+        updateUsersAllowed();
+        hboxCatName.setVisible(true);
+        hboxAddMovie.setVisible(true);
+        hboxUsers.setVisible(true);
 
         //System.out.print(actualCatgory + "\n");
     }
@@ -121,8 +139,8 @@ public class CCategoryManagerView implements Initializable {
             if(!moviesInCategory.contains(s)){
                 MoviesDB.addCategoryToMovie(s, actualCatgory);
                 moviesAdded.add(s);
-                moviesInCategory.remove(s);
             }
+            moviesInCategory.remove(s);
         }
 
         for(String s : moviesInCategory)
@@ -153,11 +171,15 @@ public class CCategoryManagerView implements Initializable {
     }
 
     public void deleteCategory(ActionEvent actionEvent) {
-        //Todo : Trogger "êtes vous certain" à implémenter
-        System.out.print(CategoriesDB.deleteCategory(actualCatgory));
-        choiceBox.getSelectionModel().clearSelection();
-        choiceBox.getItems().clear();
-        choiceBox.getItems().setAll(CategoriesDB.getCategories());
+        boolean test = false;
+        if(choiceBox.getValue() != null)
+            test = WarningTrigger.warningWindow("Êtes vous sûr de vouloir supprimer la catégorie : " + actualCatgory + " ?");
+        if(test){
+            System.out.print(CategoriesDB.deleteCategory(actualCatgory));
+            choiceBox.getSelectionModel().clearSelection();
+            choiceBox.getItems().clear();
+            choiceBox.getItems().setAll(CategoriesDB.getCategories());
+        }
     }
 
     public void addCategory(ActionEvent actionEvent) {
@@ -186,6 +208,23 @@ public class CCategoryManagerView implements Initializable {
         }
     }
 
+    public void updateUsersAllowed(){
+        notAllowedUsers.getChildren().clear();
+        HashMap<String, Account> accounts = AccountManagement.getAccounts();
+        for (String key : accounts.keySet()) {
+            Account curAccount = accounts.get(key);
+            if (curAccount.getForbiddenCategories().contains(actualCatgory)){
+                VBox accountRep = new VBox();
+                ImageView accImgVw = new ImageView(curAccount.getImage());
+                accImgVw.setFitWidth(64);
+                accImgVw.setFitHeight(64);
+                accountRep.setAlignment(Pos.CENTER);
+                accountRep.getChildren().addAll(accImgVw, new Label(curAccount.getUserName() ) );
+                notAllowedUsers.getChildren().add(accountRep);
+            }
+        }
+    }
+
     public void goBack(ActionEvent actionEvent) {
         Stage stage = (Stage) choiceBox.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
@@ -199,5 +238,10 @@ public class CCategoryManagerView implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
     }
 }

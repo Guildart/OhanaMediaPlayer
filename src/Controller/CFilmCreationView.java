@@ -2,9 +2,12 @@ package Controller;
 
 import Model.Account;
 import Model.AccountManagement;
+import Model.CategoriesDB;
 import Model.MoviesDB;
 import View.CategoryView;
+import View.ImageCropWithRubberBand;
 import View.MultipleChoiceBox;
+import View.WarningTrigger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +18,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -40,7 +47,15 @@ public class CFilmCreationView implements Initializable{
 
     public ArrayList<String> categoryAdded = new ArrayList<>();
     public Boolean modifying = false;
+    public String actualMovie;
     public String oldTitle = "";
+    public Button deleteButton;
+    public HBox buttonBox;
+    public Button modifButton;
+    public Button imageButton;
+    public Button goBackButton;
+
+    private String movieImagePath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,28 +63,10 @@ public class CFilmCreationView implements Initializable{
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
         this.modificationLabel.setVisible(false);
+        buttonBox.getChildren().remove(deleteButton);
+        movieImagePath = "file:res/default.png";
     }
 
-    /**
-    public void categoryClicked(ActionEvent e){
-       /** HBox cateNSupButton = new HBox();
-        Button supButton = new Button("x");
-        supButton.setOnAction(a -> supClicked(a));
-        String categoryName = ((MenuItem)e.getSource()).getText();
-        Button newCategory = new Button(categoryName);
-        cateNSupButton.getChildren().addAll(newCategory, supButton);
-        this.categoryList.getChildren().add(cateNSupButton);
-        this.categoryAdded.add(categoryName);
-
-
-        String categoryName = ((MenuItem)e.getSource()).getText();
-        CategoryView categoryToAdd = new CategoryView(categoryName, true);
-        categoryToAdd.getXButton().setOnAction(a -> supClicked(a));
-        this.categoryList.getChildren().add(categoryToAdd);
-        this.categoryAdded.add(categoryName);
-        updateUsersAllowed();
-    }
-     **/
 
     public void supClicked(ActionEvent e){
         HBox currentHBox = (HBox)((Button)e.getSource()).getParent();
@@ -97,21 +94,22 @@ public class CFilmCreationView implements Initializable{
         this.pathErrorMessage.setVisible(false);
         this.titleErrorMessage.setVisible(false);
         this.errorToAddMessage.setVisible(false);
-        if(this.pathText.getText() != "" &&
-           this.nameText.getText() != ""){
+        String path = this.pathText.getText();
+        String name = this.nameText.getText();
+        if( name != null && path!= null && !name.isEmpty() && !path.isEmpty()){
+            if(!this.modifying){
+                if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), movieImagePath, this.categoryAdded))
+                    this.errorToAddMessage.setVisible(true);
 
-            /**
-             * if(!this.modifying){
-             *    if(!MoviesDB.addMovie(nameText.getText(), pathText.getText(), this.categoryAdded)){
-             *    this.errorToAddMessage.setVisible(true);
-             * else{
-             *     MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(), this.categoryAdded);
-             *     gerer l'erreur de modification d'un film
-             * }
-            }**/
-            //CVueVideotheque.imgPath = currentImgPath; //Donner chemin image pour test rapide
+            }else{
+                if(!MoviesDB.set(this.oldTitle, this.nameText.getText(), this.pathText.getText(),movieImagePath, this.categoryAdded))
+                    this.errorToAddMessage.setVisible(true);
+            }
+            System.out.println("old titre : " + this.oldTitle);
+            System.out.println(this.nameText.getText().isEmpty());
             System.out.println("titre : " + this.nameText.getText());
             System.out.println("chemain d'acces : " + this.pathText.getText());
+            System.out.println("chemain image: " + this.movieImagePath);
             System.out.println("liste des categorie \n" + this.categoryAdded);
             System.out.println("je modifie : " + this.modifying);
 
@@ -124,10 +122,10 @@ public class CFilmCreationView implements Initializable{
             stage.show();
         }
         else {
-            if(this.pathText.getText() == ""){
+            if(path.isEmpty() || path == null){
                 this.pathErrorMessage.setVisible(true);
             }
-            if(this.nameText.getText() == ""){
+            if(name.isEmpty() || name == null){
                 this.titleErrorMessage.setVisible(true);
             }
         }
@@ -204,6 +202,8 @@ public class CFilmCreationView implements Initializable{
             if(this.oldTitle != "" && this.oldTitle != null) {
 
                 this.modificationLabel.setText("Vous ètes en train de modifiez " + this.oldTitle);
+                this.movieImagePath = MoviesDB.getImagePath(this.oldTitle);
+                imageButton.setStyle("-fx-background-image:url(" + movieImagePath +");");
                 this.modificationLabel.setVisible(true);
 
                 this.nameText.setText(this.oldTitle);
@@ -219,9 +219,11 @@ public class CFilmCreationView implements Initializable{
                     updateUsersAllowed();
                 }
                 ((Button) e.getSource()).setText("Ne plus modifier");
+                buttonBox.getChildren().add(deleteButton);
             }
             else{
                 modifying = false;
+                buttonBox.getChildren().remove(deleteButton);
             }
         }
         else{
@@ -236,4 +238,28 @@ public class CFilmCreationView implements Initializable{
     }
 
 
+    public void deleteMovie(ActionEvent actionEvent) {
+        boolean test = false;
+        if(modifying)
+            test = WarningTrigger.warningWindow("Êtes vous sûr de vouloir supprimer le film : " + oldTitle + " ?");
+        if(test){
+            MoviesDB.deleteMovie(oldTitle);
+            modifButton.fire();
+        }
+    }
+
+    public void addImage(ActionEvent actionEvent) throws MalformedURLException {
+        ImageCropWithRubberBand imgCrop = new ImageCropWithRubberBand();
+        imgCrop.cropApplication();
+        if(imgCrop.getImagePath() != null){
+            movieImagePath = imgCrop.getImagePath();
+            System.out.println("movie : " + movieImagePath);
+            imageButton.setStyle("-fx-background-image:url(" + movieImagePath +");");
+        }
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
+    }
 }

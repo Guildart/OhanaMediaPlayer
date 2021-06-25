@@ -5,13 +5,16 @@ import Model.AccountManagement;
 import Model.CategoriesDB;
 import Model.Role;
 import View.CategoryView;
+import View.MultipleChoiceBox;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -32,18 +35,20 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 public class CUserManager implements Initializable {
 
+    public Button goBackButton;
     @FXML
     private VBox toAddOn;
 
 
     private HashMap<String, TextField> oldUserNameToNewUserNameTextfield = new HashMap<>(0);
     private HashMap<String, TextField> oldUserNameToNewPasswordTextfield = new HashMap<>(0);
+    private HashMap<String, ComboBox> oldUserNameToNewComboBox = new HashMap<>(0);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,12 +61,16 @@ public class CUserManager implements Initializable {
         for (String username: oldUserNameToNewUserNameTextfield.keySet()) {
             String newUserName = oldUserNameToNewUserNameTextfield.get(username).getText();
             String newPassword = oldUserNameToNewPasswordTextfield.get(username).getText();
+            Role newRole = (Role) oldUserNameToNewComboBox.get(username).getValue();
+            System.out.println(newRole);
             Account updatedAccount = accountHash.get(username);
-            accountHash.remove(username);
-            updatedAccount.setUserName(newUserName);
-            updatedAccount.setPassword(newPassword);
-            accountHash.put(newUserName,updatedAccount);
-
+            if (updatedAccount != null) {
+                accountHash.remove(username);
+                updatedAccount.setUserName(newUserName);
+                updatedAccount.setPassword(newPassword);
+                updatedAccount.setRole(newRole);
+                accountHash.put(newUserName, updatedAccount);
+            }
         }
         try {
             AccountManagement.saveAccounts(accountHash);
@@ -82,10 +91,21 @@ public class CUserManager implements Initializable {
         for(String key : accounts.keySet()){
             toAddOn.getChildren().add(this.createAccountHBox(accounts.get(key)));
         }
+        Button accountCreatorBt = new Button("create a new Account");
+        accountCreatorBt.setOnAction(this::createAccount);
+        toAddOn.getChildren().add(accountCreatorBt);
+    }
+
+    private void createAccount(ActionEvent actionEvent) {
+        AccountManagement.createAccount(actionEvent);
+        setupAllAccounts();
     }
 
     private HBox createAccountHBox(Account account){
         HBox accountBox = new HBox();
+        accountBox.getStyleClass().add("hbox-users");
+        accountBox.setSpacing(10);
+        accountBox.setPadding(new Insets(5,5,5,5));
         accountBox.setAlignment(Pos.CENTER);
         accountBox.setMaxWidth(Double.MAX_VALUE);
         accountBox.setPrefWidth(1500);
@@ -104,16 +124,24 @@ public class CUserManager implements Initializable {
 
         TextField textFieldUserName = new TextField(account.getUserName());
         TextField textFieldPassword = new TextField(account.getPassword());
+        ComboBox choiceRole = new ComboBox();
+        choiceRole.getItems().addAll(Role.other, Role.admin);
+        choiceRole.setValue(account.getRole());
 
         oldUserNameToNewUserNameTextfield.put(account.getUserName(),textFieldUserName);
         oldUserNameToNewPasswordTextfield.put(account.getUserName(),textFieldPassword);
+        oldUserNameToNewComboBox.put(account.getUserName(),choiceRole);
         if (account.getRole().equals(Role.child)){
             textFieldPassword.setDisable(true);
+            choiceRole.setDisable(true);
         }
-
-        identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
-                new Label("Password"),textFieldPassword);
-
+        identifiersBox.setSpacing(10);
+        if(choiceRole.getValue() != Role.child)
+            identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
+                new Label("Password"),textFieldPassword, new Label("Role"), choiceRole);
+        else
+            identifiersBox.getChildren().addAll(profilePictureButton,new Label("Username"),textFieldUserName,
+                    new Label("Password"),textFieldPassword);
         //code to generate categories
         FlowPane forbiddenCategories = new FlowPane();
         forbiddenCategories.setVgap(10);
@@ -128,17 +156,25 @@ public class CUserManager implements Initializable {
         Label message = new Label();
         message.setTextFill(Color.RED);
         message.setText("");
-        TextField forbidTextField = createForbidTextField(account.getUserName());
-        Button forbidButton = createForbidButton(account.getUserName(), forbidTextField);
+        //TextField forbidTextField = createForbidTextField(account.getUserName());
+        //Button forbidButton = createForbidButton(account.getUserName());
 
 
-        forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
+        //forbiddenCategories.getChildren().addAll(forbidTextField,forbidButton,message);
 
         HBox.setHgrow(forbiddenCategories, Priority.SOMETIMES);
         forbiddenCategories.setMaxWidth(Double.MAX_VALUE);
         forbiddenCategories.setPrefWidth(1000);
+
+        Button multipleCatSelect = new Button("forbid/allow");
+        multipleCatSelect.setId(account.getUserName());
+        multipleCatSelect.setOnAction(this::multipleCatSelect);
+        forbiddenCategories.getChildren().add(multipleCatSelect);
+
+
         if (account.getRole() == Role.other) {
-            Button deleteButton = new Button("delete this account");
+            Button deleteButton = new Button();
+            deleteButton.getStyleClass().add("delete-button");
 
             deleteButton.setOnAction(this::tryToDeleteAccount);
             deleteButton.setId(account.getUserName());
@@ -151,6 +187,14 @@ public class CUserManager implements Initializable {
 
 
         return accountBox;
+    }
+
+    private void multipleCatSelect(ActionEvent actionEvent) {
+        Account account = AccountManagement.getAccount(((Button) actionEvent.getSource()).getId());
+        ArrayList<String> newForbidden = MultipleChoiceBox.displayCategory("Highlight in green the category to forbid.",account.getForbiddenCategories());
+        account.setForbiddenCategories(newForbidden);
+        AccountManagement.saveAccount(account);
+        setupAllAccounts();
     }
 
     private void tryToDeleteAccount(ActionEvent actionEvent){
@@ -284,6 +328,11 @@ public class CUserManager implements Initializable {
     public void getBackToMenu(ActionEvent actionEvent) throws IOException {
         CVueVideotheque.changeToMe(toAddOn,this);
         saveNewUsernamesAndPasswords();
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()==KeyCode.Z && keyEvent.isControlDown())
+            goBackButton.fire();
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CategoriesDB {
-    static String relativePath = File.separator + "src" + File.separator + "Data" + File.separator +"categoriesDB.json";
+    static String relativePath = File.separator + "Data" + File.separator +"categoriesDB.json";
     public static String accountFile = System.getProperty("user.dir") + relativePath;
 
     public static boolean createFile(){
@@ -92,10 +92,11 @@ public class CategoriesDB {
         File f = new File(accountFile);
         createFile();
         try {
+            if(getCategories().contains(newName))
+                return false;
             String data = fileToString();
             JSONObject obj = new JSONObject(data);
             JSONArray categories = (JSONArray) obj.get("categories");
-            boolean contain = false;
             /**Véirfier si contient le  film**/
             for(int i = 0; i < categories.length() ; i++) {
                 if (categories.getString(i).equals(oldName)) {
@@ -156,6 +157,18 @@ public class CategoriesDB {
                    moviesOfCategory.add(title);
                }
            }
+        }
+        return moviesOfCategory;
+    }
+
+    public static ArrayList<String> getMoviesWithoutCategory(){
+        List<String> categories = getCategories();
+        ArrayList<String> moviesOfCategory = new ArrayList<>();
+        ArrayList<String>  movieTitles  = MoviesDB.getTitles();
+        for(String title : movieTitles){
+            if (MoviesDB.getMovieCategories(title).isEmpty()){
+                moviesOfCategory.add(title);
+            }
         }
         return moviesOfCategory;
     }
