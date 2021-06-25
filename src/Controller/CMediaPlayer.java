@@ -65,9 +65,10 @@ public class CMediaPlayer implements Initializable {
         Stage stage = (Stage) anySceneNode.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/View/MediaPlayer.fxml"));
         if(!isPayable(videoPath)){
-            WarningTrigger.warningWindow("Le chemin d'accès du film " + movieName + " est incorrect ! \n Le film à été supprimé de la vidéothèque.");
-            MoviesDB.deleteMovie(movieName);
-            //goBackButton.fire();
+            boolean test = WarningTrigger.warningWindow("Le chemin d'accès du film " + movieName + " est incorrect ! \n " +
+                    "Voulez vous que le film soit supprimé de la vidéothèque ?");
+            if(test)
+                MoviesDB.deleteMovie(movieName);
             loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
         }
         Parent root = loader.load();

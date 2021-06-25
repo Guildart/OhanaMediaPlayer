@@ -15,8 +15,9 @@ import java.util.Comparator;
 public class FilmDisplayFlowPane extends FlowPane {
 
 
-    public FilmDisplayFlowPane(ArrayList<String> films, CVueVideotheque controller){
-        films.sort(Comparator.naturalOrder());
+    public FilmDisplayFlowPane(ArrayList<String> films, CVueVideotheque controller, boolean sort){
+        if(sort)
+            films.sort(Comparator.naturalOrder());
         for(String film : films){
             VBox filmRep = new VBox();
             Button movieBt = new Button();

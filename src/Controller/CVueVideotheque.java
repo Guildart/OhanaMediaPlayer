@@ -175,11 +175,12 @@ public class CVueVideotheque implements Initializable {
     public void stopSearch(ActionEvent e){
         this.scrollPane.setContent(this.vboxDisplayMovie);
         this.stopSearchingButton.setVisible(false);
+        this.displayButton.setVisible(true);
     }
 
     public void changeLayout(ActionEvent e){
         if(this.scrollPane.getContent() == this.vboxDisplayMovie){
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()), this);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getAuthorizedMovies(this.actualUser.getUserName()), this, true);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
             displayButton.setStyle("-fx-background-image:url(file:res/list.png);");
@@ -202,17 +203,24 @@ public class CVueVideotheque implements Initializable {
 
     public void selectCategory(ActionEvent actionEvent) {
         String getSelection = (String) comboBox.getSelectionModel().getSelectedItem();
-        if(getSelection.equals("Toutes catégories")){
+        if(getSelection.equals("Toutes catégories") && !displayButton.isSelected()){
             this.scrollPane.setContent(this.vboxDisplayMovie);
             displayButton.setStyle("-fx-background-image:url(file:res/grid.png);");
             //displayButton.setVisible(true);
-            displayButton.setDisable(false);
+            displayButton.setVisible(true);
         }else{
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection), this);
+            if(getSelection.equals("Toutes catégories")) {
+                this.flowPaneDisplayMovie = new FilmDisplayFlowPane(MoviesDB.getTitles(), this, true);
+                displayButton.setVisible(true);
+            }
+            else {
+                this.flowPaneDisplayMovie = new FilmDisplayFlowPane(CategoriesDB.getMoviesOfCategory(getSelection), this, true);
+                displayButton.setVisible(false);
+            }
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
             //displayButton.setVisible(false);
-            displayButton.setDisable(true);
+
         }
     }
 
@@ -254,9 +262,10 @@ public class CVueVideotheque implements Initializable {
             this.stopSearchingButton.setVisible(true);
             String myResearch = this.barreRecherche.getText();
             ArrayList<String> searchFilm = this.searchingAlgorithm(myResearch);
-            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm, this);
+            this.flowPaneDisplayMovie = new FilmDisplayFlowPane(searchFilm, this, false);
             this.flowPaneDisplayMovie.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
             this.scrollPane.setContent(this.flowPaneDisplayMovie);
+            this.displayButton.setVisible(false);
         }
     }
 }
