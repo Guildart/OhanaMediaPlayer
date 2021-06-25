@@ -24,15 +24,17 @@ import java.util.Comparator;
 
 public class FilmDisplayByCategory extends HBox {
     private VBox vboxCat;
-    private HBox filmDisplay;
+    public HBox filmDisplay;
     private String myCategory;
     private Label title;
     private CVueVideotheque controller;
     private Button next;
     private Button previous;
-    private ScrollPane myScroolPane;
+    public ScrollPane myScroolPane;
+    public ScrollBar scrollBar;
 
     private int numberOfMovies = 0;
+    private double incrementUnit = -1;
 
 
     public FilmDisplayByCategory(String category, CVueVideotheque controller) {
@@ -115,6 +117,10 @@ public class FilmDisplayByCategory extends HBox {
         vboxCat.widthProperty().addListener((observable, oldValue, newValue) -> {
             this.visible();
         });
+
+        filmDisplay.widthProperty().addListener((observable, oldValue, newValue) -> {
+            this.visible();
+        });
     }
 
 
@@ -139,8 +145,12 @@ public class FilmDisplayByCategory extends HBox {
             if(scroll.getOrientation() == Orientation.HORIZONTAL)
                 myScrollBar = scroll;
         }
-        //myScrollBar.setUnitIncrement(0.1);
+        if(myScrollBar.getUnitIncrement() != incrementUnit*10){
+            incrementUnit = myScrollBar.getUnitIncrement();
+            myScrollBar.setUnitIncrement(incrementUnit*10);
+        }
         //System.out.println(myScrollBar.getUnitIncrement());
+
         myScrollBar.increment();
     }
 
@@ -151,9 +161,11 @@ public class FilmDisplayByCategory extends HBox {
             if(scroll.getOrientation() == Orientation.HORIZONTAL)
                 myScrollBar = scroll;
         }
+        if(myScrollBar.getUnitIncrement() != incrementUnit*10){
+            incrementUnit = myScrollBar.getUnitIncrement();
+            myScrollBar.setUnitIncrement(incrementUnit*10);
+        }
         //System.out.println(myScrollBar.getUnitIncrement());
-        System.out.println(this.filmDisplay.getWidth() > myScroolPane.getScene().getWidth());
-        //myScrollBar.setUnitIncrement(0.1);
         myScrollBar.decrement();
 
     }
