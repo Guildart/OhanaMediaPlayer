@@ -316,7 +316,7 @@ public class CUserManager implements Initializable {
         myFileChooser.setTitle("Sélectionner une photo de profil");
         File file = myFileChooser.showOpenDialog(stage);
         if (file != null) {
-            String myPath = file.getPath();
+            String myPath = file.toURI().toString();
             Account accountToModify = AccountManagement.getAccount(username);
             accountToModify.setImagePath(myPath);
             AccountManagement.saveAccount(accountToModify);
