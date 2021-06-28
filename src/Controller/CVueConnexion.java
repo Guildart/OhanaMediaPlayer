@@ -107,7 +107,7 @@ public class CVueConnexion implements Initializable{
 
                 Stage stage = (Stage) message.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
-                stage.setMaximized(true);
+                //stage.setMaximized(true);
                 //stage.setMinWidth(900);
                 Parent root = null;
                 try {

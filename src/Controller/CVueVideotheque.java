@@ -55,7 +55,7 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) menu.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CategoryManagerView.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
@@ -65,7 +65,7 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) menu.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/UserManagerView.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
@@ -75,7 +75,7 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) menu.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/FilmCreationView.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
@@ -135,7 +135,7 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) menu.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueConnexion.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
@@ -152,7 +152,8 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) anySceneNode.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
+        //stage.setMinWidth(700);
         Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
         stage.setScene(scene);
         stage.show();
@@ -195,7 +196,7 @@ public class CVueVideotheque implements Initializable {
         Stage stage = (Stage) menu.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, menu.getScene().getWidth(), menu.getScene().getHeight());
         stage.setScene(scene);
         stage.show();

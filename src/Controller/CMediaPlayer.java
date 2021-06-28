@@ -72,7 +72,7 @@ public class CMediaPlayer implements Initializable {
             loader = new FXMLLoader(controller.getClass().getResource("/View/VueVideotheque.fxml"));
         }
         Parent root = loader.load();
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Scene scene = new Scene(root, anySceneNode.getScene().getWidth(), anySceneNode.getScene().getHeight());
         stage.setScene(scene);
         //stage.setFullScreen(true);
@@ -213,7 +213,7 @@ public class CMediaPlayer implements Initializable {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         mediaPlayer.stop();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Parent root = null;
         try {
             root = loader.load();

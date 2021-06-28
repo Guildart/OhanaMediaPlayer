@@ -55,7 +55,7 @@ public class CFirstLaunch implements Initializable {
 
             Stage stage = (Stage) imageButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueConnexion.fxml"));
-            stage.setMaximized(true);
+            //stage.setMaximized(true);
             //stage.setMinWidth(900);
             Parent root = null;
             try {

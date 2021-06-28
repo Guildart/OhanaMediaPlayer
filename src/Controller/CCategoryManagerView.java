@@ -46,13 +46,11 @@ public class CCategoryManagerView implements Initializable {
     public TextField newCategoryName;
     public Label labelCatAlreadyExist;
     public FlowPane flowPaneMovies;
-    public FlowPane flowPaneUsers;
     public HBox notAllowedUsers;
     public HBox hboxUsers;
     public HBox hboxCatName;
     public ScrollPane scrollFilms;
     public Button goBackButton;
-
     private String actualCatgory = null;
 
     @Override
@@ -228,7 +226,7 @@ public class CCategoryManagerView implements Initializable {
     public void goBack(ActionEvent actionEvent) {
         Stage stage = (Stage) choiceBox.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/VueVideotheque.fxml"));
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         Parent root = null;
         try {
             root = loader.load();
