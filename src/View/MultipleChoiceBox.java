@@ -85,7 +85,7 @@ public class MultipleChoiceBox {
         String actualCategory = ((Button)e.getSource()).getText();
         if(categorySelected.contains(actualCategory)){
             categorySelected.remove(actualCategory);
-            ((Button)e.getSource()).setStyle("-fx-background-color: #ffffff");
+            ((Button)e.getSource()).setStyle("-fx-background-color: grey");
         }
         else{
             categorySelected.add(actualCategory);
@@ -150,7 +150,7 @@ public class MultipleChoiceBox {
         String actualFilm = ((Button)e.getSource()).getText();
         if(filmSelected.contains(actualFilm)){
             filmSelected.remove(actualFilm);
-            ((Button)e.getSource()).setStyle("-fx-background-color: #ffffff");
+            ((Button)e.getSource()).setStyle("-fx-background-color: grey");
         }
         else{
             filmSelected.add(actualFilm);
